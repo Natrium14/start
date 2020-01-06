@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<div style="margin-top: 11px">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index_dataset' %}">Данные</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'index_management' %}">Управление</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Личный кабинет</a>
+      </li>
+    </ul>
+</div>
+
+<div style="margin-top: 10px; width: 500px">
+
+    <div class="alert alert-success" role="alert">
+        Подключение к базе данных
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label for="inputUrl">URL базы данных</label>
+        <input type="text" class="form-control" id="inputUrl" >
+        <small id="urlHelp" class="form-text text-muted">Введите IP адрес базы данных</small>
+      </div>
+      <div class="form-group">
+        <label for="inputLogin">Логин</label>
+        <input type="text" class="form-control" id="inputLogin" >
+        <small id="loginHelp" class="form-text text-muted">Введите логин пользователя базы данных</small>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword">Пароль</label>
+        <input type="password" class="form-control" id="inputPassword">
+      </div>
+      <button type="submit" class="btn btn-primary">Подключиться</button>
+    </form>
+
+</div>
+
+
+{% endblock %}
