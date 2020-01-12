@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'data_set',
     'management',
+    'ml_core',
 ]
 
 MIDDLEWARE = [

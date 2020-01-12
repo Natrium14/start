@@ -17,25 +17,21 @@
     <tr>
         <td>
             <div class="alert alert-warning" role="alert">
-                Получение выборки данных
+                Выборка данных
             </div>
 
-            <form>
+            <div class="form-group mb-2">
+                <label for="datasetSelect">Выборки данных</label>
+                <select multiple class="form-control" id="datasetSelect">
+                  <option>Выборка 1</option>
+                  <option>Выборка 2</option>
+                </select>
+            </div>
+            <div class="form-group mb-2">
+                <input type="textarea" readonly id="datasetMeta" />
+            </div>
 
-              <div class="form-group mb-2">
-                <label for="inputId">ID прибора</label>
-                <input type="number" class="form-control" id="inputId">
-              </div>
-              <div class="form-group mb-2">
-                <label for="inputTimeStart">Время начала измерений</label>
-                <input type="datetime-local" class="form-control" id="inputTimeStart">
-              </div>
-              <div class="form-group mb-2">
-                <label for="inputTimeFinish">Время конца измерений</label>
-                <input type="datetime-local" class="form-control" id="inputTimeFinish">
-              </div>
-              <button type="submit" class="btn btn-primary">Получить набор данных</button>
-            </form>
+
         </td>
         <td>
             <div class="alert alert-primary" role="alert">
@@ -44,13 +40,16 @@
 
             <form>
 
-               <div class="form-group mb-2">
+              <div class="form-group mb-2">
                 <label for="modelSelect">Обученные модели</label>
                 <select multiple class="form-control" id="modelSelect">
                   <option>Модель 1 (метод: Random forest)</option>
                   <option>Модель 2 (метод: какой-то)</option>
                   <option>3</option>
                 </select>
+              </div>
+              <div class="form-group mb-2">
+                <input type="textarea" readonly id="modelMeta" />
               </div>
 
             </form>
