@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'data_set',
     'management',
     'ml_core',
+    'statistic_core',
 ]
 
 MIDDLEWARE = [

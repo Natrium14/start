@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import sample_web_interface.start_web.ml_core.main as ml_core
+import sample_web_interface.start_web.statistic_core as stat_core
 
 
 def index(request):
