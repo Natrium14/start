@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'management',
     'ml_core',
     'statistic_core',
+    'visualization_core',
 ]
 
 MIDDLEWARE = [

@@ -6,7 +6,13 @@ import urllib, base64
 
 def get_plot(data_x, data_y):
     fig, ax = plt.subplots()
-    ax.scatter(data_x, data_y)
+    data_x = [1, 2, 3, 4,5,6,7,8,9]
+    data_y = [1, 2, 3, 4,3,3,4,2,1]
+    ax.set_xlabel('ax1')
+    ax.set_ylabel('ax2')
+    plt.plot(data_x, data_y)
+    return fig
+
 
     """
     fig = plt.gcf()
