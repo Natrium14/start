@@ -1,9 +1,19 @@
 import statistics
 
 
+# Минимальное значение
+def get_min(data):
+    return data.min()
+
+
+# Максимальное значение
+def get_max(data):
+    return data.max()
+
+
 # Среднее значение
 def get_mean(data):
-    return statistics.mean(data)
+    return data.mean()
 
 
 # Мода - наиболее встречающееся

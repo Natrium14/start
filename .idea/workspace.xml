@@ -2,12 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c28c5129-f4b9-4196-b663-ed4f1ace01e7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/sample_web_interface/start_web/data/data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_web_interface/start_web/data_set/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_web_interface/start_web/templates/data_set/statistic.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sample_web_interface/start_web/data_set/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample_web_interface/start_web/data_set/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample_web_interface/start_web/data_set/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample_web_interface/start_web/data_set/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample_web_interface/start_web/data_set/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample_web_interface/start_web/data_set/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample_web_interface/start_web/start_web/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample_web_interface/start_web/start_web/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sample_web_interface/start_web/start_web/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample_web_interface/start_web/start_web/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sample_web_interface/start_web/statistic_core/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample_web_interface/start_web/statistic_core/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample_web_interface/start_web/templates/data_set/model_training.html" beforeDir="false" afterPath="$PROJECT_DIR$/sample_web_interface/start_web/templates/data_set/model_training.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sample_web_interface/start_web/visualization_core/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample_web_interface/start_web/visualization_core/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +40,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -42,13 +48,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1WH9punVqKMKdVDmwD4UBGSlYn8" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/sample_web_interface/start_web/manage.py" />
@@ -106,7 +116,9 @@
       <workItem from="1578833998213" duration="121000" />
       <workItem from="1579494845910" duration="591000" />
       <workItem from="1579495590380" duration="523000" />
-      <workItem from="1579621896467" duration="1742000" />
+      <workItem from="1579621896467" duration="2015000" />
+      <workItem from="1579687066555" duration="1209000" />
+      <workItem from="1580384870930" duration="13970000" />
     </task>
     <task id="LOCAL-00001" summary="Изменен вид страницы тестирования модели.">
       <created>1578797846266</created>
@@ -136,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579496103854</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Настроил взаимодействие модуля визуализации (visualization_core) с бэк-ендом data_set. График появляется на отдельной странице.">
+      <created>1579623898160</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1579623898160</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,11 +175,13 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Изменен вид страницы тестирования модели." />
     <MESSAGE value="Добавлен пакет для обучения модели" />
     <MESSAGE value="Добавлен пакет для стат. обработки данных" />
     <MESSAGE value="Добавлен пакет для визуализации (используется matplotlib)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавлен пакет для визуализации (используется matplotlib)" />
+    <MESSAGE value="Настроил взаимодействие модуля визуализации (visualization_core) с бэк-ендом data_set. График появляется на отдельной странице." />
+    <option name="LAST_COMMIT_MESSAGE" value="Настроил взаимодействие модуля визуализации (visualization_core) с бэк-ендом data_set. График появляется на отдельной странице." />
   </component>
   <component name="WindowStateProjectService">
     <state x="555" y="215" width="800" height="684" key="#Notifications" timestamp="1578820099873">
@@ -171,10 +192,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="418" y="211" width="1084" height="740" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1578796398066" />
-    <state x="533" y="148" width="844" height="816" key="CommitChangelistDialog2" timestamp="1579496103726">
+    <state x="533" y="148" width="844" height="816" key="CommitChangelistDialog2" timestamp="1579623897813">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="533" y="148" width="844" height="816" key="CommitChangelistDialog2/0.27.1920.1053@0.27.1920.1053" timestamp="1579496103726" />
+    <state x="533" y="148" width="844" height="816" key="CommitChangelistDialog2/0.27.1920.1053@0.27.1920.1053" timestamp="1579623897813" />
     <state x="697" y="339" width="515" height="490" key="EnvironmentVariablesDialog" timestamp="1578796264808">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -183,52 +204,53 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="743" y="324" width="424" height="521" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1578796371384" />
-    <state width="1068" height="235" key="GridCell.Tab.0.bottom" timestamp="1579623808102">
+    <state width="1874" height="202" key="GridCell.Tab.0.bottom" timestamp="1580398475750">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1068" height="235" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1579623808102" />
-    <state width="1068" height="235" key="GridCell.Tab.0.center" timestamp="1579623808101">
+    <state width="1874" height="202" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1580398475750" />
+    <state width="1874" height="202" key="GridCell.Tab.0.center" timestamp="1580398475749">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1068" height="235" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1579623808101" />
-    <state width="1068" height="235" key="GridCell.Tab.0.left" timestamp="1579623808101">
+    <state width="1874" height="202" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1580398475749" />
+    <state width="1874" height="202" key="GridCell.Tab.0.left" timestamp="1580398475748">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1068" height="235" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1579623808101" />
-    <state width="1068" height="235" key="GridCell.Tab.0.right" timestamp="1579623808102">
+    <state width="1874" height="202" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1580398475748" />
+    <state width="1874" height="202" key="GridCell.Tab.0.right" timestamp="1580398475750">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1068" height="235" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1579623808102" />
-    <state width="1068" height="292" key="GridCell.Tab.1.bottom" timestamp="1579622963091">
+    <state width="1874" height="202" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1580398475750" />
+    <state width="1068" height="292" key="GridCell.Tab.1.bottom" timestamp="1579623911589">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1068" height="292" key="GridCell.Tab.1.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1579622963091" />
-    <state width="1068" height="292" key="GridCell.Tab.1.center" timestamp="1579622963090">
+    <state width="1068" height="292" key="GridCell.Tab.1.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1579623911589" />
+    <state width="1068" height="292" key="GridCell.Tab.1.center" timestamp="1579623911588">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1068" height="292" key="GridCell.Tab.1.center/0.27.1920.1053@0.27.1920.1053" timestamp="1579622963090" />
-    <state width="1068" height="292" key="GridCell.Tab.1.left" timestamp="1579622963090">
+    <state width="1068" height="292" key="GridCell.Tab.1.center/0.27.1920.1053@0.27.1920.1053" timestamp="1579623911588" />
+    <state width="1068" height="292" key="GridCell.Tab.1.left" timestamp="1579623911587">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1068" height="292" key="GridCell.Tab.1.left/0.27.1920.1053@0.27.1920.1053" timestamp="1579622963090" />
-    <state width="1068" height="292" key="GridCell.Tab.1.right" timestamp="1579622963091">
+    <state width="1068" height="292" key="GridCell.Tab.1.left/0.27.1920.1053@0.27.1920.1053" timestamp="1579623911587" />
+    <state width="1068" height="292" key="GridCell.Tab.1.right" timestamp="1579623911588">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1068" height="292" key="GridCell.Tab.1.right/0.27.1920.1053@0.27.1920.1053" timestamp="1579622963091" />
-    <state x="449" y="216" width="1022" height="737" key="SettingsEditor" timestamp="1579495958256">
+    <state width="1068" height="292" key="GridCell.Tab.1.right/0.27.1920.1053@0.27.1920.1053" timestamp="1579623911588" />
+    <state x="449" y="216" width="1022" height="737" key="SettingsEditor" timestamp="1580390383277">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="449" y="216" width="1022" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1579495958256" />
-    <state x="555" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1579496105949">
+    <state x="449" y="216" width="1022" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1580390383277" />
+    <state x="555" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1579623900983">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="555" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1579496105949" />
-    <state x="620" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1579621902979">
+    <state x="555" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1579623900983" />
+    <state x="620" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1580384880452">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="620" y="380" key="com.intellij.ide.util.TipDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1579621902979" />
+    <state x="600" y="360" key="com.intellij.ide.util.TipDialog/0.27.1858.997@0.27.1858.997" timestamp="1579700133735" />
+    <state x="620" y="380" key="com.intellij.ide.util.TipDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1580384880452" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/start$Start_Django.coverage" NAME="Start_Django Coverage Results" MODIFIED="1579623808090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sample_web_interface/start_web" />
+    <SUITE FILE_PATH="coverage/start$Start_Django.coverage" NAME="Start_Django Coverage Results" MODIFIED="1580398475741" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sample_web_interface/start_web" />
   </component>
 </project>
