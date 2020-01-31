@@ -83,15 +83,13 @@
                 <p>
                     {{ dataset_description }}
                 </p>
+                <hr>
                 <a href="{% url 'show_dataset' %}" target="_blank" class="btn btn-primary">Показать выборку данных</a>
-            </div>
+                <hr>
+                <a href="{% url 'stat_index' %}" target="_blank" class="btn btn-primary">Получить статистические данные о значениях тока</a>
+                <hr>
+                <a class="nav-link" href="{% url 'make_plot' %}">График (ток от времени)</a>
 
-            <div class="form-group mb-2">
-                <form method="POST" action="stat_index" enctype="multipart/form-data">
-                    {% csrf_token %}
-
-                    <button type="submit" class="btn btn-warning">Получить статистические данные о значениях тока</button>
-                </form>
             </div>
         </td>
         <td>
@@ -99,11 +97,11 @@
                 Шаг 2: Выбор метода
             </div>
 
-            <form>
+            <form action="model_train">
                <div class="form-group mb-2">
                 <label for="modelSelect">Методы машинного обучения</label>
                 <select multiple class="form-control" id="modelSelect">
-                  <option>Random forest</option>
+                  <option value="random_forest">Random forest</option>
                   <option>2</option>
                   <option>3</option>
                 </select>
@@ -115,6 +113,5 @@
     </tr>
 </table>
 
-<a class="nav-link" href="{% url 'make_plot' %}">График</a>
 
 {% endblock %}
