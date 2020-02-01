@@ -15,7 +15,7 @@
 
 <table class="table table-sm">
     <tr>
-        <td>
+        <td style="width: 50%">
 
             <div class="accordion" id="accordionExample">
               <div class="card">
@@ -92,7 +92,7 @@
 
             </div>
         </td>
-        <td>
+        <td style="width: 50%">
             <div class="alert alert-primary" role="alert">
                 Шаг 2: Выбор метода
             </div>
@@ -109,6 +109,15 @@
               <input type="hidden" value={{ dataset }}>
               <button type="submit" class="btn btn-success">Обучить модель</button>
             </form>
+
+            <div class="form-group mb-2">
+                <b>Детали модели:</b>
+                <br>
+                {{ model_description }}
+                <br>
+                <b>Время обучения:</b>
+                <span>{{ time_to_train }} сек.</span>
+            </div>
         </td>
     </tr>
 </table>

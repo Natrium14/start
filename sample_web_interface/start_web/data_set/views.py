@@ -1,4 +1,5 @@
 import io
+import time
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -17,9 +18,8 @@ data = None
 # Стартовая страница для получения выборки и обучения модели
 def index(request):
     if data is not None:
-        dataset_description = 'Количество записей: ' + str(data.count())
         context = {
-            'dataset_description': dataset_description
+            'dataset_description': str(data.count())
         }
         return render(request, "data_set/model_training.html", context)
     else:
@@ -52,13 +52,12 @@ def upload_data(request):
         file = request.FILES.get('data_file')
         global data
 
-        data = pd.read_csv(file, names=['time', 'temp_env', 'temp_stator', 'current_stator', 'freq', 'load'])
-        dataset_description = 'Количество записей: ' + str(data.count())
-        data.to_html(classes='my_class')
+        data = pd.read_csv(file, names=['time', 'temp_env', 'temp_stator', 'current_stator', 'freq', 'load', 'state'])
         context = {
             'dataset': data.head(),
-            'dataset_description': dataset_description
+            'dataset_description': str(data.count())
         }
+        print(data.head())
         return render(request, "data_set/model_training.html", context)
     else:
         return render(request, "data_set/model_training.html")
@@ -83,11 +82,15 @@ def make_plot(request):
     return response
 
 
-
-# Метод обучения модели по выборке и получения метрик
+# Метод обучения модели по выборке
 def model_train(request):
-    metrics = ml_core.model_train(data)
+    timestamp1 = int(time.time())
+    model = ml_core.model_train(data)
+    timestamp2 = int(time.time())
     context = {
-        'metrics': metrics
+        'time_to_train': str(timestamp2-timestamp1),
+        'model_description': str(model)
     }
+    if data is not None:
+        context['dataset_description'] = str(data.count())
     return render(request, "data_set/model_training.html", context)
