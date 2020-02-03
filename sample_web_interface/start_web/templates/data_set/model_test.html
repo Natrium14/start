@@ -15,8 +15,10 @@
 
 <table class="table table-sm">
     <tr>
-        <td>
-            <div class="alert alert-warning" role="alert">
+        <form>
+        <td style="width: 50%">
+
+            <div class="alert alert-success" role="alert">
                 Выборка данных
             </div>
 
@@ -27,33 +29,40 @@
                   <option>Выборка 2</option>
                 </select>
             </div>
-            <div class="form-group mb-2">
-                <input type="textarea" readonly id="datasetMeta" />
+            <div class="form-group mb-4">
+                <input type="textarea" readonly id="datasetMeta" placeholder="Информация о выборке"/>
             </div>
 
 
         </td>
-        <td>
+        <td style="width: 50%">
             <div class="alert alert-primary" role="alert">
                 Выбор модели
             </div>
 
-            <form>
 
               <div class="form-group mb-2">
                 <label for="modelSelect">Обученные модели</label>
                 <select multiple class="form-control" id="modelSelect">
                   <option>Модель 1 (метод: Random forest)</option>
-                  <option>Модель 2 (метод: какой-то)</option>
+                  <option>Модель 2 (метод: Gradient boosting)</option>
                   <option>3</option>
                 </select>
               </div>
-              <div class="form-group mb-2">
-                <input type="textarea" readonly id="modelMeta" />
+              <div class="form-group mb-4">
+                <input type="textarea" readonly id="modelMeta" placeholder="Информация о модели"/>
               </div>
 
-            </form>
+            <button type="submit" class="btn btn-success">Тестирование модели</button>
+            <hr>
+
+            <div class="form-group mb-4">
+                <label>Результаты тестирования:</label>
+                <br>
+                <input type="textarea" readonly placeholder="Результат"/>
+            </div>
         </td>
+        </form>
     </tr>
 </table>
 
