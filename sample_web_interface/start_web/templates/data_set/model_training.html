@@ -97,13 +97,13 @@
                 Шаг 2: Выбор метода
             </div>
 
-            <form action="model_train">
+            <form method="POST" action="model_train">
+                {% csrf_token %}
                <div class="form-group mb-2">
-                <label for="modelSelect">Методы машинного обучения</label>
-                <select multiple class="form-control" id="modelSelect">
-                  <option value="random_forest">Random forest</option>
-                  <option>2</option>
-                  <option>3</option>
+                <label for="methodSelect">Методы машинного обучения</label>
+                <select multiple class="form-control" id="methodSelect" name="methodSelect">
+                  <option value="RandomForestClassifier">RandomForestClassifier</option>
+                  <option value="GradientBoostingClassifier">GradientBoostingClassifier</option>
                 </select>
               </div>
               <input type="hidden" value={{ dataset }}>

@@ -9,11 +9,9 @@ import sample_web_interface.start_web.ml_core.model_test.model_tester as tester
 
 # Метод создания и обучения модели в пакете ml_core;
 # Результат - получение объекта обученной модели
-def model_train(dataset):
-    model = generator.generate_model()
-    print("Переход к обучению модели")
+def model_train(dataset, method):
+    model = generator.generate_model(method)
     trainer.model_train(dataset, model)
-    print("Возврат модели из ml_core: " + str(model))
     return model
 
 

@@ -28,7 +28,7 @@ def index(request):
 
 # Метод получения таблицы статистических показателей выборки данных
 def stat_index(request):
-    min = stat_core.get_mean(data['current_stator'])
+    min = stat_core.get_min(data['current_stator'])
     mean = stat_core.get_mean(data['current_stator'])
     max = stat_core.get_max(data['current_stator'])
     median = stat_core.get_median(data['current_stator'])
@@ -84,13 +84,16 @@ def make_plot(request):
 
 # Метод обучения модели по выборке
 def model_train(request):
-    timestamp1 = int(time.time())
-    model = ml_core.model_train(data)
-    timestamp2 = int(time.time())
-    context = {
-        'time_to_train': str(timestamp2-timestamp1),
-        'model_description': str(model)
-    }
+    method = str(request.POST['methodSelect'])
+    context = { }
+    if method:
+        timestamp1 = int(time.time())
+        model = ml_core.model_train(data, method)
+        timestamp2 = int(time.time())
+        context['time_to_train'] = str(timestamp2-timestamp1)
+        context['model_description'] = str(model)
+    else:
+        context['model_description'] = 'error'
     if data is not None:
         context['dataset_description'] = str(data.count())
     return render(request, "data_set/model_training.html", context)
