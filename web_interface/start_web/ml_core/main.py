@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-import sample_web_interface.start_web.ml_core.model_generator.generator as generator
-import sample_web_interface.start_web.ml_core.model_training.model_train as trainer
-import sample_web_interface.start_web.ml_core.model_test.model_tester as tester
+import ml_core.model_generator.generator as generator
+import ml_core.model_training.model_train as trainer
+import ml_core.model_test.model_tester as tester
 
 
 # Метод создания и обучения модели в пакете ml_core;

@@ -7,13 +7,17 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
-import sample_web_interface.start_web.ml_core.main as ml_core
-import sample_web_interface.start_web.statistic_core.main as stat_core
-import sample_web_interface.start_web.visualization_core.main as vis_core
+import ml_core.main as ml_core
+import statistic_core.main as stat_core
+import visualization_core.main as vis_core
 
 
 data = None
 
+
+# Стартовая страница
+def main_page(request):
+    return render(request, "data_set/main_page.html")
 
 # Стартовая страница для получения выборки и обучения модели
 def index(request):

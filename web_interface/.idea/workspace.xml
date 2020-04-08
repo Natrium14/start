@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bf84d51d-14a1-4290-87a1-53bbeb189016" name="Default Changelist" comment="" />
+    <list default="true" id="bf84d51d-14a1-4290-87a1-53bbeb189016" name="Default Changelist" comment="Добавлены пакеты для создания моделей">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,43 +13,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/start_web/data_set/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="24" lean-forward="true" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/start_web/templates/data_set/model_test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="24" column="43" lean-forward="true" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
+            <state relative-caret-position="408">
+              <caret line="33" selection-start-line="33" selection-end-line="33" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/start_web/start_web/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="40" column="17" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/start_web/templates/main.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="49" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -65,9 +37,25 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/start_web/ml_core/model_test/model_tester.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/start_web/ml_core/model_training/model_train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/start_web/templates/data_set/model_training.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="697">
+            <state relative-caret-position="552">
               <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
@@ -100,14 +88,24 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/start_web/templates/management/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="43">
-              <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+            <state relative-caret-position="255">
+              <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
               <folding>
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/start_web/ml_core/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="20" selection-start-line="20" selection-end-line="20" />
             </state>
           </provider>
         </entry>
@@ -185,6 +183,33 @@
               <item name="sample_web_interface" type="b2602c69:ProjectViewProjectNode" />
               <item name="sample_web_interface" type="462c0819:PsiDirectoryNode" />
               <item name="start_web" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sample_web_interface" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sample_web_interface" type="462c0819:PsiDirectoryNode" />
+              <item name="start_web" type="462c0819:PsiDirectoryNode" />
+              <item name="ml_core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sample_web_interface" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sample_web_interface" type="462c0819:PsiDirectoryNode" />
+              <item name="start_web" type="462c0819:PsiDirectoryNode" />
+              <item name="ml_core" type="462c0819:PsiDirectoryNode" />
+              <item name="model_generator" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sample_web_interface" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sample_web_interface" type="462c0819:PsiDirectoryNode" />
+              <item name="start_web" type="462c0819:PsiDirectoryNode" />
+              <item name="ml_core" type="462c0819:PsiDirectoryNode" />
+              <item name="model_test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sample_web_interface" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sample_web_interface" type="462c0819:PsiDirectoryNode" />
+              <item name="start_web" type="462c0819:PsiDirectoryNode" />
+              <item name="ml_core" type="462c0819:PsiDirectoryNode" />
+              <item name="model_training" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sample_web_interface" type="b2602c69:ProjectViewProjectNode" />
@@ -311,7 +336,14 @@
       <option name="project" value="LOCAL" />
       <updated>1578307519240</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Добавлены пакеты для создания моделей">
+      <created>1578308375050</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1578308375051</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView">
@@ -337,7 +369,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32917964" />
-      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.54932505" />
+      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.33852544" />
       <window_info anchor="bottom" id="DB Execution Console" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32917964" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
@@ -346,6 +378,9 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+  </component>
+  <component name="UpdateCopyrightCheckinHandler">
+    <option name="UPDATE_COPYRIGHT" value="true" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="SHOW_OTHER_BRANCHES" value="true" />
@@ -402,7 +437,8 @@
     <MESSAGE value="Добавлены страницы тестирования и обучения модели" />
     <MESSAGE value="Добавлен пакет для создания моделей обучения" />
     <MESSAGE value="1" />
-    <option name="LAST_COMMIT_MESSAGE" value="1" />
+    <MESSAGE value="Добавлены пакеты для создания моделей" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавлены пакеты для создания моделей" />
     <option name="UPDATE_GROUP_BY_PACKAGES" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -425,23 +461,11 @@
     <entry file="file://$PROJECT_DIR$/start_web/start_web/__init__.py" />
     <entry file="file://$PROJECT_DIR$/start_web/start_web/wsgi.py" />
     <entry file="file://$PROJECT_DIR$/start_web/start_web/urls.py" />
-    <entry file="file://$PROJECT_DIR$/start_web/ml_core/model_generator/main.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/start_web/ml_core/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="19" lean-forward="true" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/start_web/ml_core/model_generator/main.py" />
     <entry file="file://$PROJECT_DIR$/start_web/data_set/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="24" lean-forward="true" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+        <state relative-caret-position="119">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
@@ -455,23 +479,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/start_web/templates/data_set/index.html">
+    <entry file="file://$PROJECT_DIR$/start_web/templates/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="16" selection-end-column="6" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/start_web/templates/data_set/model_training.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="799">
+          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="49" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -495,6 +506,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/start_web/templates/management/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/start_web/data_set/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -505,29 +527,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/start_web/templates/data_set/model_test.html">
+    <entry file="file://$PROJECT_DIR$/start_web/ml_core/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="24" column="43" lean-forward="true" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
+        <state relative-caret-position="238">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/start_web/templates/data_set/model_training.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/start_web/templates/main.html">
+    <entry file="file://$PROJECT_DIR$/start_web/templates/data_set/model_test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="49" selection-end-column="22" />
+        <state relative-caret-position="408">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/start_web/templates/management/index.html">
+    <entry file="file://$PROJECT_DIR$/start_web/templates/data_set/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="16" selection-end-column="6" />
           <folding>
-            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/start_web/ml_core/model_test/model_tester.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/start_web/ml_core/model_training/model_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>

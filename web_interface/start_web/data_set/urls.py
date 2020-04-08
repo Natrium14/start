@@ -1,9 +1,10 @@
 from django.urls import path, re_path
 
-from . import views
+from data_set import views
 
 urlpatterns = [
-    path('', views.index, name='index_dataset'),
+    path('', views.main_page, name='main_page'),
+    path('index', views.index, name='index_dataset'),
     path('upload_data', views.upload_data, name='upload_data'),
     path('stat_index', views.stat_index, name='stat_index'),
     path('show_dataset', views.show_dataset, name='show_dataset'),

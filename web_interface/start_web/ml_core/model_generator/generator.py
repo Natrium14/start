@@ -6,7 +6,6 @@ from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import StackingClassifier
 
 
 # Метод создания модели по выбранному методу из библиотеки sklearn
@@ -56,12 +55,6 @@ def generate_model(method):
     if method == "GradientBoostingRegressor":
         try:
             model = GradientBoostingRegressor(n_estimators=100, max_depth=5, random_state=1)
-            return model
-        except Exception:
-            return None
-    if method == "StackingClassifier":
-        try:
-            model = StackingClassifier(n_estimators=100, max_depth=5, random_state=1)
             return model
         except Exception:
             return None
