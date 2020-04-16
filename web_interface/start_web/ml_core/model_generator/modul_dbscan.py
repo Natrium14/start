@@ -66,5 +66,3 @@ print(scaler.inverse_transform(abnormal_data))
 plt.title('Estimated number of clusters: %d' % n_clusters_)
 plt.legend()
 plt.show()
-
-

@@ -18,7 +18,7 @@
         <td style="width: 50%">
 
             <div class="accordion" id="accordionExample">
-              <div class="card">
+              <!--<div class="card">
                 <div class="card-header alert alert-primary" id="headingOne">
                   <h2 class="mb-0">
                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -49,7 +49,7 @@
 
                      </div>
                 </div>
-              </div>
+              </div>-->
 
               <div class="card">
                 <div class="card-header alert alert-success" id="headingTwo">
@@ -98,8 +98,6 @@
                 <a href="{% url 'show_dataset' %}" target="_blank" class="btn btn-primary">Показать выборку данных</a>
                 <hr>
                 <a href="{% url 'stat_index' %}" target="_blank" class="btn btn-primary">Получить статистические данные о значениях тока</a>
-                <hr>
-                <a class="nav-link" href="{% url 'make_plot' %}">График (ток от времени)</a>
 
             </div>
         </td>
@@ -117,7 +115,17 @@
                   <option value="GradientBoostingClassifier">GradientBoostingClassifier</option>
                 </select>
               </div>
-              <input type="hidden" value={{ dataset }}>
+              <div>
+                  Выбор полей для обучения модели:
+                  <p>
+                    {% for column in dataset_description %}
+                        <input type="checkbox" name="model_columns" value="{{ column }}">
+                        {{ column }}
+                        <br>
+                    {% endfor %}
+                    </p>
+              </div>
+
               <button type="submit" class="btn btn-success">Обучить модель</button>
             </form>
 

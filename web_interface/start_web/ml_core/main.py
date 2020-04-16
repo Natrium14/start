@@ -9,9 +9,9 @@ import ml_core.model_test.model_tester as tester
 
 # Метод создания и обучения модели в пакете ml_core;
 # Результат - получение объекта обученной модели
-def model_train(dataset, method):
+def model_train(data, method):
     model = generator.generate_model(method)
-    trainer.model_train(dataset, model)
+    trainer.model_train(data, model)
     return model
 
 

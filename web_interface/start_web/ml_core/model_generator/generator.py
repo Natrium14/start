@@ -6,16 +6,24 @@ from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import GradientBoostingRegressor
-
+from sklearn.cluster import DBSCAN
 
 # Метод создания модели по выбранному методу из библиотеки sklearn
 def generate_model(method):
+    if method == "dbscan":
+        try:
+            model = DBSCAN(eps=0.5, min_samples=2)
+            return model
+        except Exception:
+            return None
+
     if method == "RandomForestClassifier":
         try:
             model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=1)
             return model
         except Exception:
             return None
+
     if method == "GradientBoostingClassifier":
         try:
             model = GradientBoostingClassifier(n_estimators=100, max_depth=5, random_state=1)

@@ -1,11 +1,16 @@
 import io
 import time
+import json
 import pandas as pd
 import matplotlib.pyplot as plt
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from joblib import dump, load
+from tkinter import *
+from tkinter import filedialog
+
 
 import ml_core.main as ml_core
 import statistic_core.main as stat_core
@@ -104,6 +109,8 @@ def make_plot(request):
 # Метод обучения модели по выборке
 def model_train(request):
     method = str(request.POST['methodSelect'])
+    columns = request.POST.getlist('model_columns')
+
     context = { }
     try:
         if method:
@@ -111,6 +118,11 @@ def model_train(request):
                 timestamp1 = int(time.time())
                 model = ml_core.model_train(data, method)
                 timestamp2 = int(time.time())
+                try:
+                    fileName = filedialog.asksaveasfile(mode='w').name
+                    dump(model, fileName + '.joblib')
+                except Exception:
+                    pass
                 context['time_to_train'] = str(timestamp2-timestamp1)
                 context['model_description'] = str(model)
             except Exception:
@@ -118,7 +130,7 @@ def model_train(request):
         else:
             context['model_description'] = 'error'
         if data is not None:
-            context['dataset_description'] = str(data.count())
+            context['dataset_description'] = data.columns
         return render(request, "data_set/model_training.html", context)
     except Exception:
         return render(request, "error/error404.html")
