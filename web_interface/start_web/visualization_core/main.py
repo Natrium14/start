@@ -6,11 +6,27 @@ import io
 import urllib, base64
 
 
-def get_plot(data_x, data_y):
-    fig, ax = plt.subplots()
-    ax.set_xlabel('Время')
-    ax.set_ylabel('Ток')
-    plt.plot(data_x, data_y, 'bo')
+def get_plot(data):
+    fig, ax = plt.subplots(figsize=(20,18))
+    columns_count = len(data.columns)
+
+    if columns_count < 2:
+        return None
+
+    if columns_count == 2:
+        x_label = data.columns.values[0]
+        y_label = data.columns.values[1]
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
+        plt.plot(data[x_label], data[y_label], 'bo')
+
+    if columns_count > 2:
+        mycolors = ['tab:red', 'tab:blue', 'tab:green', 'tab:orange', 'tab:grey', 'tab:cyan']
+        columns = data.columns[1:columns_count]
+        for i, column in enumerate(columns):
+            plt.plot(data["Time"].values, data[column].values, 'bo', lw=1.5, color=mycolors[i], label=column)
+        plt.legend(loc='upper left')
+
     return fig
 
 

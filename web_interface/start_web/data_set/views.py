@@ -60,10 +60,11 @@ def upload_data(request):
             file = request.FILES.get('data_file')
             global data
 
-            data = pd.read_csv(file, names=['time', 'temp_env', 'temp_stator', 'current_stator', 'freq', 'load', 'state'])
+            data = pd.read_csv(file)
+
             context = {
-                'dataset': data.head(),
-                'dataset_description': str(data.count())
+                'dataset_count': len(data[[data.columns[0]]]),
+                'dataset_description': data.columns
             }
 
             return render(request, "data_set/model_training.html", context)
@@ -88,10 +89,9 @@ def model_test(request):
 # Метод получения графика зависимости одного атрибута от другого
 def make_plot(request):
     try:
-        #field_x = request.GET.get('field_x')
-        #field_y = request.GET.get('field_y')
-        #chart_type = request.GET.get('chart_type')
-        fig = vis_core.get_plot(data['time'], data['current_stator'])
+        columns = request.POST.getlist('checkbox_columns')
+        vis_data = data[columns]
+        fig = vis_core.get_plot(vis_data)
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
         plt.close(fig)

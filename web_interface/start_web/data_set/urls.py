@@ -10,5 +10,5 @@ urlpatterns = [
     path('show_dataset', views.show_dataset, name='show_dataset'),
     path('model_train', views.model_train, name='model_train'),
     path('model_test', views.model_test, name='model_test'),
-    path('make_plot.png', views.make_plot, name='make_plot')
+    path('make_plot', views.make_plot, name='make_plot')
 ]

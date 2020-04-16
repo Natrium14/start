@@ -79,10 +79,21 @@
 
             <hr>
             <div class="form-group mb-2">
-                <p><b>Описание выборки: </b></p>
-                <p>
-                    {{ dataset_description }}
-                </p>
+
+                <form method="post" action="make_plot">
+                    {% csrf_token %}
+                   <p><b>Описание выборки: </b></p>
+                   <p>Количество записей: {{ dataset_count }}</p>
+                    <p>
+                    {% for column in dataset_description %}
+                        <input type="checkbox" name="checkbox_columns" value="{{ column }}">
+                        {{ column }}
+                        <br>
+                    {% endfor %}
+                    </p>
+                   <p><input type="submit" value="Построить график"></p>
+                </form>
+
                 <hr>
                 <a href="{% url 'show_dataset' %}" target="_blank" class="btn btn-primary">Показать выборку данных</a>
                 <hr>
@@ -102,7 +113,7 @@
                <div class="form-group mb-2">
                 <label for="methodSelect">Методы машинного обучения</label>
                 <select multiple class="form-control" id="methodSelect" name="methodSelect">
-                  <option value="RandomForestClassifier">RandomForestClassifier</option>
+                  <option value="dbscan">DBSCAN</option>
                   <option value="GradientBoostingClassifier">GradientBoostingClassifier</option>
                 </select>
               </div>
