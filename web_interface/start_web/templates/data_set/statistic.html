@@ -4,58 +4,57 @@
 
     <div style="margin-top: 10px">
         <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'index_dataset' %}">Обучение модели</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'model_test' %}">Тестирование модели</a>
-          </li>
-        </ul>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index_dataset' %}">Загрузка данных</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'model_training' %}">Обучение модели</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'model_test' %}">Тестирование модели</a>
+      </li>
+    </ul>
     </div>
 
-    <table class="table">
-        <tr>
-            <th>
-                Минимальное
-            </th>
-            <th>
-                Среднее
-            </th>
-            <th>
-                Медиана
-            </th>
-            <th>
-                Максимальное
-            </th>
-            <th>
-                Дисперсия
-            </th>
-            <th>
-                Стандартное отклонение
-            </th>
-        </tr>
-        <tr>
-            <td>
-                {{ min }}
-            </td>
-            <td>
-                {{ mean }}
-            </td>
-            <td>
-                {{ median }}
-            </td>
-            <td>
-                {{ max }}
-            </td>
-            <td>
-                {{ variance }}
-            </td>
-            <td>
-                {{ stdev }}
-            </td>
-        </tr>
 
-    </table>
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Измерение
+        </th>
+        <th>
+            Min
+        </th>
+        <th>
+            Mean
+        </th>
+        <th>
+            Max
+        </th>
+        <th>
+            Median
+        </th>
+        <th>
+            Variance
+        </th>
+        <th>
+            Stdev
+        </th>
+    </tr>
+
+    {% for col, value in array.items %}
+    <tr>
+        <td>{{ col }}</td>
+        {% for stat, stat_value in value.items %}
+        <td>
+            <span>{{ stat_value }}</span>
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
 
 
 {% endblock %}

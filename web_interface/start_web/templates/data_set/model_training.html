@@ -5,7 +5,10 @@
 <div style="margin-top: 10px">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link active" href="{% url 'index_dataset' %}">Обучение модели</a>
+        <a class="nav-link" href="{% url 'index_dataset' %}">Загрузка данных</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'model_training' %}">Обучение модели</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'model_test' %}">Тестирование модели</a>
@@ -13,133 +16,41 @@
     </ul>
 </div>
 
-<table class="table table-sm">
-    <tr>
-        <td style="width: 50%">
+<div class="alert alert-primary" role="alert">
+    Выбор метода
+</div>
 
-            <div class="accordion" id="accordionExample">
-              <!--<div class="card">
-                <div class="card-header alert alert-primary" id="headingOne">
-                  <h2 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                      Шаг 1: Получение выборки данных из базы
-                    </button>
-                  </h2>
-                </div>
+<form method="POST" action="model_train">
+    {% csrf_token %}
+   <div class="form-group mb-2">
+    <label for="methodSelect">Методы машинного обучения</label>
+    <select multiple class="form-control" id="methodSelect" name="methodSelect">
+      <option value="dbscan">DBSCAN</option>
+      <option value="GradientBoostingClassifier">GradientBoostingClassifier</option>
+    </select>
+  </div>
+  <div>
+      Выбор полей для обучения модели:
+      <p>
+        {% for column in dataset_description %}
+            <input type="checkbox" name="model_columns" value="{{ column }}">
+            {{ column }}
+            <br>
+        {% endfor %}
+        </p>
+  </div>
 
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                     <div class="card-body">
+  <button type="submit" class="btn btn-success">Обучить модель</button>
+</form>
 
-                      <form method="GET" action="get_data">
-                          {% csrf_token %}
-                          <div class="form-group mb-2">
-                            <label>ID прибора</label>
-                            <input type="number" class="form-control" name="inputId">
-                          </div>
-                          <div class="form-group mb-2">
-                            <label for="inputTimeStart">Индекс начала измерений</label>
-                            <input type="number" class="form-control" id="inputTimeStart">
-                          </div>
-                          <div class="form-group mb-2">
-                            <label for="inputTimeFinish">Индекс конца измерений</label>
-                            <input type="number" class="form-control" id="inputTimeFinish">
-                          </div>
-                          <button type="submit" class="btn btn-primary">Получить набор данных</button>
-                        </form>
-
-                     </div>
-                </div>
-              </div>-->
-
-              <div class="card">
-                <div class="card-header alert alert-success" id="headingTwo">
-                  <h2 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                      Шаг 1: Получение выборки данных из файла
-                    </button>
-                  </h2>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                  <div class="card-body">
-
-                    <form method="POST" action="upload_data" enctype="multipart/form-data">
-                      {% csrf_token %}
-                      <div class="form-group mb-2">
-                        <label>Загрузить файл (xls, csv)</label>
-                        <br>
-                        <input type="file" name="data_file" id="data_file">
-                      </div>
-                      <button type="submit" class="btn btn-primary">Получить данные из файла</button>
-                    </form>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <hr>
-            <div class="form-group mb-2">
-
-                <form method="post" action="make_plot">
-                    {% csrf_token %}
-                   <p><b>Описание выборки: </b></p>
-                   <p>Количество записей: {{ dataset_count }}</p>
-                    <p>
-                    {% for column in dataset_description %}
-                        <input type="checkbox" name="checkbox_columns" value="{{ column }}">
-                        {{ column }}
-                        <br>
-                    {% endfor %}
-                    </p>
-                   <p><input type="submit" value="Построить график"></p>
-                </form>
-
-                <hr>
-                <a href="{% url 'show_dataset' %}" target="_blank" class="btn btn-primary">Показать выборку данных</a>
-                <hr>
-                <a href="{% url 'stat_index' %}" target="_blank" class="btn btn-primary">Получить статистические данные о значениях тока</a>
-
-            </div>
-        </td>
-        <td style="width: 50%">
-            <div class="alert alert-primary" role="alert">
-                Шаг 2: Выбор метода
-            </div>
-
-            <form method="POST" action="model_train">
-                {% csrf_token %}
-               <div class="form-group mb-2">
-                <label for="methodSelect">Методы машинного обучения</label>
-                <select multiple class="form-control" id="methodSelect" name="methodSelect">
-                  <option value="dbscan">DBSCAN</option>
-                  <option value="GradientBoostingClassifier">GradientBoostingClassifier</option>
-                </select>
-              </div>
-              <div>
-                  Выбор полей для обучения модели:
-                  <p>
-                    {% for column in dataset_description %}
-                        <input type="checkbox" name="model_columns" value="{{ column }}">
-                        {{ column }}
-                        <br>
-                    {% endfor %}
-                    </p>
-              </div>
-
-              <button type="submit" class="btn btn-success">Обучить модель</button>
-            </form>
-
-            <div class="form-group mb-2">
-                <b>Детали модели:</b>
-                <br>
-                {{ model_description }}
-                <br>
-                <b>Время обучения:</b>
-                <span>{{ time_to_train }} сек.</span>
-            </div>
-        </td>
-    </tr>
-</table>
+<div class="form-group mb-2">
+    <b>Детали модели:</b>
+    <br>
+    {{ model_description }}
+    <br>
+    <b>Время обучения:</b>
+    <span>{{ time_to_train }} сек.</span>
+</div>
 
 
 {% endblock %}

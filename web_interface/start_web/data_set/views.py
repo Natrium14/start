@@ -2,7 +2,10 @@ import io
 import time
 import json
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -24,34 +27,44 @@ data = None
 def main_page(request):
     return render(request, "data_set/main_page.html")
 
+
 # Стартовая страница для получения выборки и обучения модели
 def index(request):
     if data is not None:
         context = {
-            'dataset_description': str(data.count())
+            'dataset_count': len(data[[data.columns[0]]]),
+            'dataset_description': data.columns
         }
-        return render(request, "data_set/model_training.html", context)
+        return render(request, "data_set/index_dataset.html", context)
     else:
-        return render(request, "data_set/model_training.html")
+        return render(request, "data_set/index_dataset.html")
 
 
 # Метод получения таблицы статистических показателей выборки данных
 def stat_index(request):
     try:
-        min = stat_core.get_min(data['current_stator'])
-        mean = stat_core.get_mean(data['current_stator'])
-        max = stat_core.get_max(data['current_stator'])
-        median = stat_core.get_median(data['current_stator'])
-        variance = stat_core.get_variance(data['current_stator'])
-        stdev = stat_core.get_stdev(data['current_stator'])
+        array = {}
+
+        for col in data.columns:
+            column = str(col)
+            if "current" in column.lower():
+                min = stat_core.get_min(data[column])
+                mean = stat_core.get_mean(data[column])
+                max = stat_core.get_max(data[column])
+                median = stat_core.get_median(data[column])
+                variance = stat_core.get_variance(data[column])
+                stdev = stat_core.get_stdev(data[column])
+                array[column] = {
+                    'min': min,
+                    'mean': mean,
+                    'max': max,
+                    'median': median,
+                    'variance': variance,
+                    'stdev': stdev
+                }
 
         context = {
-            'min': min,
-            'mean': mean,
-            'max': max,
-            'median': median,
-            'variance': variance,
-            'stdev': stdev
+            'array': array
         }
         return render(request, "data_set/statistic.html", context)
     except Exception:
@@ -72,11 +85,16 @@ def upload_data(request):
                 'dataset_description': data.columns
             }
 
-            return render(request, "data_set/model_training.html", context)
+            return render(request, "data_set/index_dataset.html", context)
         except Exception:
             return render(request, "error/error404.html")
     else:
-        return render(request, "data_set/model_training.html")
+        return render(request, "data_set/index_dataset.html")
+
+
+# Страница с обучением моделей
+def model_training(request):
+    return render(request, "data_set/model_training.html")
 
 
 # Вывод полученной выборки данных в отдельный html файл
@@ -104,7 +122,6 @@ def make_plot(request):
         return response
     except Exception:
         return render(request, "error/error404.html")
-
 
 # Метод обучения модели по выборке
 def model_train(request):

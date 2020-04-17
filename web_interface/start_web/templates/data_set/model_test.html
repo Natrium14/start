@@ -5,7 +5,10 @@
 <div style="margin-top: 10px">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'index_dataset' %}">Обучение модели</a>
+        <a class="nav-link" href="{% url 'index_dataset' %}">Загрузка данных</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'model_training' %}">Обучение модели</a>
       </li>
       <li class="nav-item">
         <a class="nav-link active" href="{% url 'model_test' %}">Тестирование модели</a>
