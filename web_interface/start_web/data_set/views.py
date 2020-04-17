@@ -98,10 +98,13 @@ def upload_data(request):
 
 # Страница с обучением моделей
 def model_training(request):
-    context = {
-        'dataset_description': data.columns
-    }
-    return render(request, "data_set/model_training.html", context)
+    try:
+        context = {
+            'dataset_description': data.columns
+        }
+        return render(request, "data_set/model_training.html", context)
+    except Exception:
+        return render(request, "error/error404.html")
 
 
 # Вывод полученной выборки данных в отдельный html файл
