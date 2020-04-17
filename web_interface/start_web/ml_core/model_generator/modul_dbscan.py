@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 
-df = pd.read_csv("input/17_02_part1.csv")
+df = pd.read_csv("17_02_part1.csv")
 #df = df.drop(['Time'], axis=1)
 df_work = df[['Time','AxisCurrent_1']]
 

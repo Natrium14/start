@@ -26,7 +26,6 @@
     <label for="methodSelect">Методы машинного обучения</label>
     <select multiple class="form-control" id="methodSelect" name="methodSelect">
       <option value="dbscan">DBSCAN</option>
-      <option value="GradientBoostingClassifier">GradientBoostingClassifier</option>
     </select>
   </div>
   <div>
@@ -43,6 +42,8 @@
   <button type="submit" class="btn btn-success">Обучить модель</button>
 </form>
 
+{% if model_description %}
+
 <div class="form-group mb-2">
     <b>Детали модели:</b>
     <br>
@@ -52,5 +53,7 @@
     <span>{{ time_to_train }} сек.</span>
 </div>
 
+<a href="{% url 'vis_dbscan' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
+{% endif %}
 
 {% endblock %}

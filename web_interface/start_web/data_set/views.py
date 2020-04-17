@@ -18,9 +18,13 @@ from tkinter import filedialog
 import ml_core.main as ml_core
 import statistic_core.main as stat_core
 import visualization_core.main as vis_core
+import visualization_core.vis_dbscan as v_dbscan
 
+from sklearn.cluster import DBSCAN
 
 data = None
+data_train = None
+model = None
 
 
 # Стартовая страница
@@ -94,7 +98,10 @@ def upload_data(request):
 
 # Страница с обучением моделей
 def model_training(request):
-    return render(request, "data_set/model_training.html")
+    context = {
+        'dataset_description': data.columns
+    }
+    return render(request, "data_set/model_training.html", context)
 
 
 # Вывод полученной выборки данных в отдельный html файл
@@ -123,6 +130,7 @@ def make_plot(request):
     except Exception:
         return render(request, "error/error404.html")
 
+
 # Метод обучения модели по выборке
 def model_train(request):
     method = str(request.POST['methodSelect'])
@@ -132,12 +140,20 @@ def model_train(request):
     try:
         if method:
             try:
+                global model
+                global data_train
+
+                data_train = data[columns]
                 timestamp1 = int(time.time())
-                model = ml_core.model_train(data, method)
+                model = ml_core.model_train(data_train, method)
+                print(set(model.labels_))
                 timestamp2 = int(time.time())
                 try:
-                    fileName = filedialog.asksaveasfile(mode='w').name
-                    dump(model, fileName + '.joblib')
+                    pass
+                    #save_file = filedialog.asksaveasfile(mode='w')
+                    #file_name = save_file.name
+                    #dump(model, file_name + '.joblib')
+                    #save_file.close()
                 except Exception:
                     pass
                 context['time_to_train'] = str(timestamp2-timestamp1)
@@ -145,9 +161,22 @@ def model_train(request):
             except Exception:
                 return render(request, "error/error404.html")
         else:
-            context['model_description'] = 'error'
+            context['model_description'] = None
         if data is not None:
             context['dataset_description'] = data.columns
         return render(request, "data_set/model_training.html", context)
+    except Exception:
+        return render(request, "error/error404.html")
+
+
+# Визуализация dbscan
+def vis_dbscan(request):
+    try:
+        fig = v_dbscan.get_plot(model, data_train)
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        plt.close(fig)
+        response = HttpResponse(buf.getvalue(), content_type='image/png')
+        return response
     except Exception:
         return render(request, "error/error404.html")

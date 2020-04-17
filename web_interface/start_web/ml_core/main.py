@@ -11,7 +11,7 @@ import ml_core.model_test.model_tester as tester
 # Результат - получение объекта обученной модели
 def model_train(data, method):
     model = generator.generate_model(method)
-    trainer.model_train(data, model)
+    model = trainer.model_train(model, data)
     return model
 
 
