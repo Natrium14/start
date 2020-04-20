@@ -99,10 +99,13 @@ def upload_data(request):
 # Страница с обучением моделей
 def model_training(request):
     try:
-        context = {
-            'dataset_description': data.columns
-        }
-        return render(request, "data_set/model_training.html", context)
+        if data is not None:
+            context = {
+                'dataset_description': data.columns
+            }
+            return render(request, "data_set/model_training.html", context)
+        else:
+            return render(request, "data_set/model_training.html")
     except Exception:
         return render(request, "error/error404.html")
 
