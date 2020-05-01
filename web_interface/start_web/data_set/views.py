@@ -2,6 +2,7 @@ import io
 import time
 import json
 import pandas as pd
+import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -142,18 +143,29 @@ def model_train(request):
     method = str(request.POST['methodSelect'])
     columns = request.POST.getlist('model_columns')
 
-    context = { }
+    params = {}
+    context = {}
     try:
         if method:
+            # method parameters
+            try:
+                params = {
+                    "eps": float(request.POST['eps']),
+                    "min_samples": int(request.POST['min_samples']),
+                }
+            except Exception:
+                pass
+            # create and train model
             try:
                 global model
                 global data_train
 
                 data_train = data[columns]
                 timestamp1 = int(time.time())
-                model = ml_core.model_train(data_train, method)
-                print(set(model.labels_))
+                model = ml_core.model_train(data_train, method, params)
                 timestamp2 = int(time.time())
+                print(set(model.labels_))
+                # save model to file
                 try:
                     pass
                     #save_file = filedialog.asksaveasfile(mode='w')
@@ -162,6 +174,7 @@ def model_train(request):
                     #save_file.close()
                 except Exception:
                     pass
+
                 context['time_to_train'] = str(timestamp2-timestamp1)
                 context['model_description'] = str(model)
             except Exception:
@@ -171,6 +184,35 @@ def model_train(request):
         if data is not None:
             context['dataset_description'] = data.columns
         return render(request, "data_set/model_training.html", context)
+    except Exception:
+        return render(request, "error/error404.html")
+
+
+# get abnormal values from dbscan
+def get_anomalies(request):
+    try:
+        abnormal_data = data.iloc[0]
+
+        core_samples_mask = np.zeros_like(model.labels_, dtype=bool)
+        core_samples_mask[model.core_sample_indices_] = True
+        labels = model.labels_
+        unique_labels = set(labels)
+
+        counts = np.bincount(labels[labels >= 0])
+
+        for k in unique_labels:
+            class_member_mask = (labels == k)
+            if k == -1:
+                abnormal_data = data[class_member_mask & ~core_samples_mask]
+
+        for k in unique_labels:
+            class_member_mask = (labels == k)
+            if counts[k] < (len(data[[data.columns[0]]])*0.1):
+                abnormal_data = abnormal_data.append(data[class_member_mask & core_samples_mask], ignore_index=True)
+
+        abnormal_data = abnormal_data.sort_values(by="Time")
+
+        return HttpResponse(abnormal_data.to_html())
     except Exception:
         return render(request, "error/error404.html")
 

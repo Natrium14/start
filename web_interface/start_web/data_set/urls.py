@@ -13,4 +13,5 @@ urlpatterns = [
     path('model_test', views.model_test, name='model_test'),
     path('make_plot', views.make_plot, name='make_plot'),
     path('vis_dbscan', views.vis_dbscan, name='vis_dbscan'),
+    path('get_anomalies', views.get_anomalies, name="get_anomalies")
 ]

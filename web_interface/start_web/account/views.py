@@ -20,7 +20,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 #logger.info("User :" + username + " login")
-                return render(request, "data_set/model_training.html")
+                return render(request, "data_set/index.html")
             else:
                 #logger.error("User :" + username + " try to login")
                 return render(request, "account/login.html")
@@ -28,7 +28,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "data_set/model_training.html")
+    return render(request, "data_set/index.html")
 
 
 def register(request):
@@ -40,8 +40,8 @@ def cabinet(request):
 
 
 def change_password(request):
-    return render(request, "data_set/model_training.html")
+    return render(request, "data_set/index.html")
 
 
 def change_info(request):
-    return render(request, "data_set/model_training.html")
+    return render(request, "data_set/index.html")

@@ -9,10 +9,19 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.cluster import DBSCAN
 
 # Метод создания модели по выбранному методу из библиотеки sklearn
-def generate_model(method):
+def generate_model(method, params):
     if method == "dbscan":
         try:
-            model = DBSCAN(eps=0.5, min_samples=2)
+            eps = 0.5
+            min_samples = 2
+
+            if bool(params):
+                if params["eps"]:
+                    eps = params["eps"]
+                if params["min_samples"]:
+                    min_samples = params["min_samples"]
+
+            model = DBSCAN(eps=eps, min_samples=min_samples)
             return model
         except Exception:
             return None
