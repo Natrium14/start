@@ -16,26 +16,88 @@
     </ul>
 </div>
 
+
 <form method="POST" action="model_train">
     {% csrf_token %}
-   <div class="form-group mb-2">
-    <label for="methodSelect">Методы машинного обучения</label>
-    <select multiple class="form-control" id="methodSelect" name="methodSelect">
-      <option value="dbscan" onclick="show_parameters('dbscan')">DBSCAN</option>
-      <option value="autoencoder" onclick="show_parameters('autoencoder')">Autoencoder</option>
-    </select>
-  </div>
 
-  <div class="input-group input-group-sm mb-3" id="dbscan_params">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroup-sizing-sm1">eps</span>
+
+    <div class="accordion" id="accordionExample">
+      <div class="card">
+        <div class="card-header alert alert-success" id="headingOne">
+          <h2 class="mb-0">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Обучение с учителем
+            </button>
+          </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body">
+
+              <div class="form-group mb-2">
+                <select multiple class="form-control" id="methodSelect1" name="methodSelect">
+                  <option value="dbscan" onclick="choose_method('dbscan')">DBSCAN</option>
+                  <option value="kmeans" onclick="choose_method('kmeans')">K-means</option>
+                </select>
+              </div>
+
+          </div>
+        </div>
       </div>
-      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm1" name="eps" placeholder="0.5">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroup-sizing-sm2">min_samples</span>
+
+      <div class="card">
+        <div class="card-header alert alert-success" id="headingTwo">
+          <h2 class="mb-0">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Обучение без учителя
+            </button>
+          </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+          <div class="card-body">
+
+              <div class="form-group mb-2">
+                <select multiple class="form-control" id="methodSelect2" name="methodSelect">
+                  <option value="autoencoder" onclick="choose_method('autoencoder')">Autoencoder</option>
+                  <option value="randomforest" onclick="choose_method('randomforest')">RandomForestClassifier</option>
+                </select>
+              </div>
+
+          </div>
+        </div>
       </div>
-      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm2" name="min_samples" placeholder="2">
-  </div>
+    </div>
+    <br>
+
+    <div  id="dbscan_params">
+        Параметры модели:
+        <br>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">eps</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Sizing example input" name="eps" placeholder="0.5">
+          <div class="input-group-prepend">
+            <span class="input-group-text">min_samples</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Sizing example input" name="min_samples" placeholder="2">
+        </div>
+    </div>
+
+    <div  id="kmeans_params">
+        Параметры модели:
+        <br>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">n_clusters</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Sizing example input" name="n_clusters" placeholder="20">
+          <div class="input-group-prepend">
+            <span class="input-group-text">n_init</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Sizing example input" name="n_init" placeholder="10">
+        </div>
+    </div>
 
 {% if dataset_description is not None %}
       <div>
@@ -48,7 +110,7 @@
             {% endfor %}
             </p>
       </div>
-
+        <input type="hidden" id="method_name" name="method_name"/>
       <button type="submit" class="btn btn-success">Обучить модель</button>
 {% endif %}
 
@@ -65,7 +127,7 @@
     <span>{{ time_to_train }} сек.</span>
 </div>
 
-<a href="{% url 'vis_dbscan' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
+<a href="{% url 'vis_model' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
 
 <a href="{% url 'get_anomalies' %}" target="_blank" class="btn btn-danger">Список аномалий</a>
 
@@ -76,12 +138,28 @@
 
     $(function(){$("#dbscan_params").hide();})
 
+    function choose_method(data){
+        show_parameters(data);
+        $("#method_name").val(data);
+    }
     function show_parameters(data){
         if (data == "dbscan") {
             $("#dbscan_params").show();
+            $("#kmeans_params").hide();
         }
 
         if (data == "autoencoder"){
+            $("#dbscan_params").hide();
+            $("#kmeans_params").hide();
+        }
+
+        if (data == "randomforest"){
+            $("#dbscan_params").hide();
+            $("#kmeans_params").hide();
+        }
+
+        if (data == "kmeans"){
+            $("#kmeans_params").show();
             $("#dbscan_params").hide();
         }
     }

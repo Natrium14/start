@@ -20,6 +20,8 @@ import ml_core.main as ml_core
 import statistic_core.main as stat_core
 import visualization_core.main as vis_core
 import visualization_core.vis_dbscan as v_dbscan
+import visualization_core.vis_kmeans as v_kmeans
+
 
 from sklearn.cluster import DBSCAN
 
@@ -140,7 +142,7 @@ def make_plot(request):
 
 # Метод обучения модели по выборке
 def model_train(request):
-    method = str(request.POST['methodSelect'])
+    method = str(request.POST['method_name'])
     columns = request.POST.getlist('model_columns')
 
     params = {}
@@ -149,10 +151,15 @@ def model_train(request):
         if method:
             # method parameters
             try:
-                params = {
-                    "eps": float(request.POST['eps']),
-                    "min_samples": int(request.POST['min_samples']),
-                }
+                if request.POST['eps']:
+                    params["eps"] = float(request.POST['eps'])
+                if request.POST['min_samples']:
+                    params["min_samples"] = int(request.POST['min_samples'])
+                if request.POST['n_clusters']:
+                    params["n_clusters"] = int(request.POST['n_clusters'])
+                if request.POST['n_init']:
+                    params["n_init"] = int(request.POST['n_init'])
+
             except Exception:
                 pass
             # create and train model
@@ -165,6 +172,7 @@ def model_train(request):
                 model = ml_core.model_train(data_train, method, params)
                 timestamp2 = int(time.time())
                 print(set(model.labels_))
+                print(type(model).__name__)
                 # save model to file
                 try:
                     pass
@@ -217,10 +225,36 @@ def get_anomalies(request):
         return render(request, "error/error404.html")
 
 
+# Метод визуализации
+def vis_model(request):
+    try:
+        global model
+        model_name = type(model).__name__
+        if model_name == "DBSCAN":
+            return vis_dbscan(request)
+        if model_name == "KMeans":
+            return vis_kmeans(request)
+    except Exception:
+        return render(request, "error/error404.html")
+
+
 # Визуализация dbscan
 def vis_dbscan(request):
     try:
         fig = v_dbscan.get_plot(model, data_train)
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        plt.close(fig)
+        response = HttpResponse(buf.getvalue(), content_type='image/png')
+        return response
+    except Exception:
+        return render(request, "error/error404.html")
+
+
+# Визуализация kmeans
+def vis_kmeans(request):
+    try:
+        fig = v_kmeans.get_plot(model, data_train)
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
         plt.close(fig)

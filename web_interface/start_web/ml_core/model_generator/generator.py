@@ -6,7 +6,9 @@ from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import GradientBoostingRegressor
+
 from sklearn.cluster import DBSCAN
+from sklearn.cluster import KMeans
 
 # Метод создания модели по выбранному методу из библиотеки sklearn
 def generate_model(method, params):
@@ -22,6 +24,22 @@ def generate_model(method, params):
                     min_samples = params["min_samples"]
 
             model = DBSCAN(eps=eps, min_samples=min_samples)
+            return model
+        except Exception:
+            return None
+
+    if method == "kmeans":
+        try:
+            n_clusters = 20
+            n_init = 10
+
+            if bool(params):
+                if params["n_clusters"]:
+                    n_clusters = params["n_clusters"]
+                if params["n_init"]:
+                    n_init = params["n_init"]
+
+            model = KMeans(n_clusters=n_clusters, n_init=n_init)
             return model
         except Exception:
             return None
