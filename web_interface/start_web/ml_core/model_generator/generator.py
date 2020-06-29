@@ -24,6 +24,7 @@ def generate_model(method, params):
                     min_samples = params["min_samples"]
 
             model = DBSCAN(eps=eps, min_samples=min_samples)
+            print('1')
             return model
         except Exception:
             return None

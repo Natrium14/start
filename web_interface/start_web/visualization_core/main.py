@@ -18,13 +18,18 @@ def get_plot(data):
         y_label = data.columns.values[1]
         ax.set_xlabel(x_label)
         ax.set_ylabel(y_label)
-        plt.plot(data[x_label], data[y_label], 'bo')
+        #plt.plot(data[x_label], data[y_label], 'bo')
+        plt.plot(data[x_label], data[y_label])
 
     if columns_count > 2:
+        print('1')
         mycolors = ['tab:red', 'tab:blue', 'tab:green', 'tab:orange', 'tab:grey', 'tab:cyan']
         columns = data.columns[1:columns_count]
+        date_column = data.columns[0:1][0]
         for i, column in enumerate(columns):
-            plt.plot(data["Time"].values, data[column].values, 'bo', lw=1.5, color=mycolors[i], label=column)
+            print(column)
+            #plt.plot(data[date_column].values, data[column].values, 'bo', lw=1.5, color=mycolors[i], label=column)
+            plt.plot(data[date_column].values, data[column].values, lw=1.5, color=mycolors[i], label=column)
         plt.legend(loc='upper left')
 
     return fig

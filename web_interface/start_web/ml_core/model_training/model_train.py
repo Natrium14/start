@@ -8,6 +8,7 @@ def model_train(model, data):
         scaler = StandardScaler()
         data = scaler.fit_transform(data)
         model = model.fit(data)
+        print('2')
         return model
     except Exception:
         return None

@@ -15,3 +15,5 @@ def model_train(data, method, params):
     return model
 
 
+def model_save(model):
+    return None

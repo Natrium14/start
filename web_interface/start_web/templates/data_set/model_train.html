@@ -26,7 +26,7 @@
         <div class="card-header alert alert-success" id="headingOne">
           <h2 class="mb-0">
             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              Обучение с учителем
+              Обучение без учителя
             </button>
           </h2>
         </div>
@@ -49,7 +49,7 @@
         <div class="card-header alert alert-success" id="headingTwo">
           <h2 class="mb-0">
             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              Обучение без учителя
+              Обучение с учителем
             </button>
           </h2>
         </div>
@@ -116,8 +116,8 @@
 
 </form>
 
-{% if model_description %}
 
+<!--{% if model_description %}
 <div class="form-group mb-2">
     <b>Детали модели:</b>
     <br>
@@ -131,8 +131,12 @@
 
 <a href="{% url 'get_anomalies' %}" target="_blank" class="btn btn-danger">Список аномалий</a>
 
-{% endif %}
+<a href="{% url 'save_model' %}" target="_blank" class="btn btn-warning">Сохранить модель</a>
+{% endif %}-->
 
+<a href="{% url 'vis_model' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
+
+<a href="{% url 'get_anomalies' %}" target="_blank" class="btn btn-danger">Список аномалий</a>
 
 <script>
 

@@ -54,21 +54,25 @@ def stat_index(request):
 
         for col in data.columns:
             column = str(col)
-            if "current" in column.lower():
-                min = stat_core.get_min(data[column])
-                mean = stat_core.get_mean(data[column])
-                max = stat_core.get_max(data[column])
-                median = stat_core.get_median(data[column])
-                variance = stat_core.get_variance(data[column])
-                stdev = stat_core.get_stdev(data[column])
-                array[column] = {
-                    'min': min,
-                    'mean': mean,
-                    'max': max,
-                    'median': median,
-                    'variance': variance,
-                    'stdev': stdev
-                }
+            try:
+                #if "cur" in column.lower():
+                if True:
+                    min = stat_core.get_min(data[column])
+                    mean = stat_core.get_mean(data[column])
+                    max = stat_core.get_max(data[column])
+                    median = stat_core.get_median(data[column])
+                    variance = stat_core.get_variance(data[column])
+                    stdev = stat_core.get_stdev(data[column])
+                    array[column] = {
+                        'min': min,
+                        'mean': mean,
+                        'max': max,
+                        'median': median,
+                        'variance': variance,
+                        'stdev': stdev
+                    }
+            except:
+                pass
 
         context = {
             'array': array
@@ -86,6 +90,14 @@ def upload_data(request):
             global data
 
             data = pd.read_csv(file)
+
+            # Костыль
+            try:
+                data = data.loc[data['_NumMotor_'] == "_1_"]
+                data['_DATE_'] = data.index
+            except:
+                pass
+
 
             context = {
                 'dataset_count': len(data[[data.columns[0]]]),
@@ -106,10 +118,11 @@ def model_training(request):
             context = {
                 'dataset_description': data.columns
             }
-            return render(request, "data_set/model_training.html", context)
+            return render(request, "data_set/model_train.html", context)
         else:
-            return render(request, "data_set/model_training.html")
+            return render(request, "data_set/model_train.html")
     except Exception:
+        print("Unexpected error:", sys.exc_info()[0])
         return render(request, "error/error404.html")
 
 
@@ -128,6 +141,7 @@ def model_test(request):
 # Метод получения графика зависимости одного атрибута от другого
 def make_plot(request):
     try:
+        timestamp1 = int(time.time())
         columns = request.POST.getlist('checkbox_columns')
         vis_data = data[columns]
         fig = vis_core.get_plot(vis_data)
@@ -135,6 +149,8 @@ def make_plot(request):
         plt.savefig(buf, format='png')
         plt.close(fig)
         response = HttpResponse(buf.getvalue(), content_type='image/png')
+        timestamp2 = int(time.time())
+        print(timestamp2 - timestamp1)
         return response
     except Exception:
         return render(request, "error/error404.html")
@@ -162,6 +178,7 @@ def model_train(request):
 
             except Exception:
                 pass
+
             # create and train model
             try:
                 global model
@@ -173,7 +190,9 @@ def model_train(request):
                 timestamp2 = int(time.time())
                 print(set(model.labels_))
                 print(type(model).__name__)
+                print("Время обучения:" + str(timestamp2-timestamp1))
                 # save model to file
+                '''
                 try:
                     pass
                     #save_file = filedialog.asksaveasfile(mode='w')
@@ -182,17 +201,21 @@ def model_train(request):
                     #save_file.close()
                 except Exception:
                     pass
-
-                context['time_to_train'] = str(timestamp2-timestamp1)
-                context['model_description'] = str(model)
-            except Exception:
+                '''
+                #context['time_to_train'] = str(timestamp2-timestamp1)
+                #context['model_description'] = str(model)
+            except:
                 return render(request, "error/error404.html")
         else:
             context['model_description'] = None
+            pass
         if data is not None:
             context['dataset_description'] = data.columns
-        return render(request, "data_set/model_training.html", context)
-    except Exception:
+            pass
+        print(context)
+        return render(request, "data_set/model_train.html", context)
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
         return render(request, "error/error404.html")
 
 
@@ -200,29 +223,35 @@ def model_train(request):
 def get_anomalies(request):
     try:
         abnormal_data = data.iloc[0]
-
+        print('1')
         core_samples_mask = np.zeros_like(model.labels_, dtype=bool)
         core_samples_mask[model.core_sample_indices_] = True
         labels = model.labels_
         unique_labels = set(labels)
-
+        print('1')
         counts = np.bincount(labels[labels >= 0])
 
         for k in unique_labels:
             class_member_mask = (labels == k)
             if k == -1:
                 abnormal_data = data[class_member_mask & ~core_samples_mask]
-
+        print('1')
         for k in unique_labels:
             class_member_mask = (labels == k)
             if counts[k] < (len(data[[data.columns[0]]])*0.1):
                 abnormal_data = abnormal_data.append(data[class_member_mask & core_samples_mask], ignore_index=True)
-
-        abnormal_data = abnormal_data.sort_values(by="Time")
+        print('1')
+        #abnormal_data = abnormal_data.sort_values(by="Time")
 
         return HttpResponse(abnormal_data.to_html())
     except Exception:
+        print("Unexpected error:", sys.exc_info()[0])
         return render(request, "error/error404.html")
+
+
+# save model function
+def save_model(request):
+    return None
 
 
 # Метод визуализации
@@ -231,9 +260,27 @@ def vis_model(request):
         global model
         model_name = type(model).__name__
         if model_name == "DBSCAN":
-            return vis_dbscan(request)
+            try:
+                fig = v_dbscan.get_plot(model, data_train)
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                plt.close(fig)
+                response = HttpResponse(buf.getvalue(), content_type='image/png')
+                return response
+            except Exception:
+                return render(request, "error/error404.html")
+            #return vis_dbscan(request)
         if model_name == "KMeans":
-            return vis_kmeans(request)
+            try:
+                fig = v_kmeans.get_plot(model, data_train)
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                plt.close(fig)
+                response = HttpResponse(buf.getvalue(), content_type='image/png')
+                return response
+            except Exception:
+                return render(request, "error/error404.html")
+            #return vis_kmeans(request)
     except Exception:
         return render(request, "error/error404.html")
 
