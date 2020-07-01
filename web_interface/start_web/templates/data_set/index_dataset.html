@@ -93,6 +93,12 @@
             <br>
         {% endfor %}
         </p>
+         <div class="form-group">
+            <label for="number_ot">От:</label>
+             <input type="number" name="number_ot" id="number_ot" min="0" value="0">
+             <label for="number_do">До:</label>
+             <input type="number" name="number_do" id="number_do" min="1" value="{{ dataset_count }}">
+         </div>
        <p><input type="submit" value="Построить график"></p>
     </form>
 

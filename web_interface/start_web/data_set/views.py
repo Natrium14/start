@@ -144,17 +144,22 @@ def model_test(request):
 # Метод получения графика зависимости одного атрибута от другого
 def make_plot(request):
     try:
-        timestamp1 = int(time.time())
+        ot = int(request.POST['number_ot'])
+        do = int(request.POST['number_do'])
+        #timestamp1 = int(time.time())
         columns = request.POST.getlist('checkbox_columns')
-        vis_data = data[columns]
-        fig = vis_core.get_plot(vis_data)
-        buf = io.BytesIO()
-        plt.savefig(buf, format='png')
-        plt.close(fig)
-        response = HttpResponse(buf.getvalue(), content_type='image/png')
-        timestamp2 = int(time.time())
-        print(timestamp2 - timestamp1)
-        return response
+        if do > ot:
+            vis_data = data[columns][ot:do]
+            fig = vis_core.get_plot(vis_data)
+            buf = io.BytesIO()
+            plt.savefig(buf, format='png')
+            plt.close(fig)
+            response = HttpResponse(buf.getvalue(), content_type='image/png')
+            #timestamp2 = int(time.time())
+            #print(timestamp2 - timestamp1)
+            return response
+        else:
+            return render(request, "error/error404.html")
     except Exception:
         return render(request, "error/error404.html")
 
