@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
+from web_interface.start_web.account.forms import RegisterForm
+
+
 def login_view(request):
     if not request.POST:
         return render(request, 'account/login.html')
@@ -31,8 +34,17 @@ def logout_view(request):
     return render(request, "data_set/index.html")
 
 
-def register(request):
-    return render(request, "account/register.html")
+def register(response):
+    if response.method == "POST":
+        form = RegisterForm(response.POST)
+        if form.is_valid():
+            form.save()
+
+        return redirect("/data_set/index_dataset")
+    else:
+        form = RegisterForm()
+
+    return render(response, "account/register.html", {"form":form})
 
 
 def cabinet(request):

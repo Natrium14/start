@@ -1,18 +1,18 @@
 {% extends 'main.html' %}
 
-{% block content %}
+<!--
     <br>
 <center>
 <div class="panel panel-default"  style="width: 300px">
     <div class="panel-body" style="width: 200px">
-    <form action="login" method="post" class="form-horizontal">
+    <form action="register" method="post" class="form-horizontal">
         {% csrf_token %}
         <div class="form-group">
             <input name="username" class="form-control" placeholder="Логин"/>
             <br>
             <input name="password" type="password" class="form-control" placeholder="Пароль"/>
             <br>
-            <input name="password" type="password" class="form-control" placeholder="Подтверждение пароля"/>
+            <input name="password2" type="password" class="form-control" placeholder="Подтверждение пароля"/>
             <br>
     <input type="submit" value="Регистрация" class="btn btn-primary"/>
             </div>
@@ -20,4 +20,14 @@
         </div>
     </div>
 </center>
+-->
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form method="POST" class="form-group">
+	{% csrf_token %}
+	{{ form|crispy }}
+	<button type="submit" class="btn btn-success">Регистрация</button>
+    </form>
 {% endblock %}

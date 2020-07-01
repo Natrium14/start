@@ -51,10 +51,11 @@ def index(request):
 def stat_index(request):
     try:
         array = {}
-
+        timestamp1 = int(time.time())
         for col in data.columns:
             column = str(col)
             try:
+
                 #if "cur" in column.lower():
                 if True:
                     min = stat_core.get_min(data[column])
@@ -71,9 +72,11 @@ def stat_index(request):
                         'variance': variance,
                         'stdev': stdev
                     }
+
             except:
                 pass
-
+        timestamp2 = int(time.time())
+        print("Стат. вычисления:", timestamp2 - timestamp1)
         context = {
             'array': array
         }
@@ -93,7 +96,7 @@ def upload_data(request):
 
             # Костыль
             try:
-                data = data.loc[data['_NumMotor_'] == "_1_"]
+                #data = data.loc[data['_NumMotor_'] == "_1_"]
                 data['_DATE_'] = data.index
             except:
                 pass
