@@ -24,6 +24,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('data_set/', include('data_set.urls')),
     path('management/', include('management.urls')),
+    path('', include('description.urls')),
 ]
 
 if settings.DEBUG:

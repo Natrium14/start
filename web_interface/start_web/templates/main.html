@@ -33,15 +33,17 @@
               </li>
                 {% endif %}
               <li class="nav-item">
-                <a class="nav-link" href="#">Контакты</a>
+                <a class="nav-link" href="{% url 'contact' %}">Контакты</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">О нас</a>
+                <a class="nav-link" href="{% url 'about' %}">О нас</a>
               </li>
                 {% if user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link" href="/admin">Админка</a>
-              </li>
+                    {% if user.is_superuser %}
+                      <li class="nav-item">
+                        <a class="nav-link" href="/admin">Админка</a>
+                      </li>
+                    {% endif %}
                 {% endif %}
             </ul>
             <ul class="navbar-nav">

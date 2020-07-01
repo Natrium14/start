@@ -35,16 +35,19 @@ def logout_view(request):
 
 
 def register(response):
-    if response.method == "POST":
-        form = RegisterForm(response.POST)
-        if form.is_valid():
-            form.save()
+    try:
+        if response.method == "POST":
+            form = RegisterForm(response.POST)
+            if form.is_valid():
+                form.save()
 
-        return redirect("/data_set/index_dataset")
-    else:
-        form = RegisterForm()
+            return redirect("/data_set/index")
+        else:
+            form = RegisterForm()
 
-    return render(response, "account/register.html", {"form":form})
+        return render(response, "account/register.html", {"form":form})
+    except:
+        return render("error/error404.html")
 
 
 def cabinet(request):

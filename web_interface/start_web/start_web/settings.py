@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'statistic_core',
     'account',
     'visualization_core',
+    'description',
 ]
 
 MIDDLEWARE = [
