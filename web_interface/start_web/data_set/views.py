@@ -165,7 +165,7 @@ def upload_data_db(request):
                 data['_DATE_'] = data.index
             except:
                 pass
-            
+            print(data.head(100))
             context['dataset_count'] = len(data[[data.columns[0]]])
             context['dataset_description'] = data.columns
 
@@ -209,11 +209,13 @@ def make_plot(request):
     try:
         ot = int(request.POST['number_ot'])
         do = int(request.POST['number_do'])
+        type = str(request.POST['type'])
+        draw = str(request.POST['draw'])
         #timestamp1 = int(time.time())
         columns = request.POST.getlist('checkbox_columns')
         if do > ot:
             vis_data = data[columns][ot:do]
-            fig = vis_core.get_plot(vis_data)
+            fig = vis_core.get_plot(vis_data, type, draw)
             buf = io.BytesIO()
             plt.savefig(buf, format='png')
             plt.close(fig)

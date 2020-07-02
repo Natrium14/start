@@ -26,7 +26,7 @@
       </h2>
     </div>
 
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 
         <div class="container">
   <div class="row">
@@ -111,6 +111,10 @@
 
     <form method="post" action="make_plot" target="_blank">
         {% csrf_token %}
+
+        <div class="row">
+    <div class="col-sm">
+
        <p><b>Описание выборки: </b></p>
        <p>Количество записей: {{ dataset_count }}</p>
         <p>
@@ -120,13 +124,44 @@
             <br>
         {% endfor %}
         </p>
+</div>
+        <div class="col-sm bg-light text-dark">
          <div class="form-group">
+             <h6>Визуализация данных:</h6>
             <label for="number_ot">От:</label>
              <input type="number" name="number_ot" id="number_ot" min="0" value="0">
              <label for="number_do">До:</label>
              <input type="number" name="number_do" id="number_do" min="1" value="{{ dataset_count }}">
+
+             <div class="form-group">
+                <label for="typeSelect">Тип диаграммы</label>
+                <select class="form-control" id="typeSelect" name="type" onchange="changeFunc(value);">
+                  <option value="plot">plot</option>
+                  <option value="hist">hist</option>
+                  <option value="heatmap">heatmap</option>
+                  <option>4</option>
+                </select>
+             </div>
+
+             <div class="form-group" id="plotOptions">
+                <label for="typeSelect">Тип графика</label>
+                <select class="form-control" id="drawSelect" name="draw">
+                  <option value="">линия</option>
+                  <option value="o">точки</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+             </div>
+
+             <div class="form-group" id="histOptions">
+                <label for="typeSelect">Кол-во столбцов</label>
+                 <input type="number" id="histSelect" min="2" value="2" name="bins">
+             </div>
+
          </div>
        <p><input type="submit" value="Построить график"></p>
+            </div>
+            </div>
     </form>
 
     <hr>
@@ -135,6 +170,35 @@
     <a href="{% url 'stat_index' %}" target="_blank" class="btn btn-primary">Получить статистические данные о значениях тока</a>
 
 </div>
+
 {% endif %}
+
+<script>
+
+    $(function(){
+        $("#histOptions").hide();
+        }
+    )
+
+    function changeFunc(value) {
+        value = value.toString();
+        if (value == "plot") {
+            $("#histOptions").hide();
+            $("#plotOptions").show();
+        }
+        if (value == "hist") {
+            $("#histOptions").show();
+            $("#plotOptions").hide();
+        }
+        if (value == "heatmap") {
+            $("#histOptions").hide();
+            $("#plotOptions").hide();
+
+        }
+   }
+
+
+</script>
+
 
 {% endblock %}
