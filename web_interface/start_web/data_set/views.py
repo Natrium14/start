@@ -144,14 +144,20 @@ def upload_data_db(request):
             id = request.POST["id"]
             ot = int(request.POST["number_ot"])
             do = int(request.POST["number_do"])
-            print("1")
-            cursor = collection.find({})
-            data = pd.DataFrame(list(cursor))
+
+            data = pd.DataFrame(list(collection.find()))
+            #data = pd.DataFrame(list(cursor))
             # if ot != -1 and do != -1 and do > ot:
             #     data = pd.DataFrame(list(cursor))[ot:do]
             # else:
             #     data = pd.DataFrame(list(cursor))
             del data['_id']
+
+            for col in data.columns[1:]:
+                try:
+                    data[col] = data[col].astype(float)
+                except:
+                    pass
 
             # Костыль
             try:
@@ -159,7 +165,7 @@ def upload_data_db(request):
                 data['_DATE_'] = data.index
             except:
                 pass
-            print(data.head())
+            
             context['dataset_count'] = len(data[[data.columns[0]]])
             context['dataset_description'] = data.columns
 
