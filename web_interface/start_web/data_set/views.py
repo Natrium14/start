@@ -21,6 +21,7 @@ import statistic_core.main as stat_core
 import visualization_core.main as vis_core
 import visualization_core.vis_dbscan as v_dbscan
 import visualization_core.vis_kmeans as v_kmeans
+import management.views as m_views
 
 
 from sklearn.cluster import DBSCAN
@@ -28,6 +29,7 @@ from sklearn.cluster import DBSCAN
 data = None
 data_train = None
 model = None
+db_client = None
 
 
 # Стартовая страница
@@ -37,14 +39,19 @@ def main_page(request):
 
 # Стартовая страница для получения выборки и обучения модели
 def index(request):
+    context = {}
+    try:
+        global db_client
+        if db_client is None:
+            db_client = m_views.get_client()
+        context['connection'] = db_client
+    except:
+        pass
+
     if data is not None:
-        context = {
-            'dataset_count': len(data[[data.columns[0]]]),
-            'dataset_description': data.columns
-        }
-        return render(request, "data_set/index_dataset.html", context)
-    else:
-        return render(request, "data_set/index_dataset.html")
+        context['dataset_count'] = len(data[[data.columns[0]]])
+        context['dataset_description'] = data.columns
+    return render(request, "data_set/index_dataset.html", context)
 
 
 # Метод получения таблицы статистических показателей выборки данных
@@ -87,6 +94,9 @@ def stat_index(request):
 
 # Метод получения выборки данных из файла
 def upload_data(request):
+    context = {}
+    if db_client is None:
+        context['connection'] = db_client
     if request.POST:
         try:
             file = request.FILES.get('data_file')
@@ -96,19 +106,66 @@ def upload_data(request):
 
             # Костыль
             try:
-                #data = data.loc[data['_NumMotor_'] == "_1_"]
+                data = data.loc[data['_NumMotor_'] == "_1_"]
                 data['_DATE_'] = data.index
             except:
                 pass
 
+            print(data.head())
 
-            context = {
-                'dataset_count': len(data[[data.columns[0]]]),
-                'dataset_description': data.columns
-            }
+            context['connection'] = db_client
+            context['dataset_count'] = len(data[[data.columns[0]]])
+            context['dataset_description'] = data.columns
 
             return render(request, "data_set/index_dataset.html", context)
         except Exception:
+            return render(request, "error/error404.html")
+    else:
+        return render(request, "data_set/index_dataset.html")
+
+
+# Метод получения выборки из БД
+def upload_data_db(request):
+    global db_client
+
+    context = {}
+
+    if db_client is None:
+        print("0")
+        return render(request, "error/error404.html")
+    if request.POST:
+        try:
+            global data
+
+            context['connection'] = db_client
+            db = db_client['start']
+            collection = db['dataset']
+
+            id = request.POST["id"]
+            ot = int(request.POST["number_ot"])
+            do = int(request.POST["number_do"])
+            print("1")
+            cursor = collection.find({})
+            data = pd.DataFrame(list(cursor))
+            # if ot != -1 and do != -1 and do > ot:
+            #     data = pd.DataFrame(list(cursor))[ot:do]
+            # else:
+            #     data = pd.DataFrame(list(cursor))
+            del data['_id']
+
+            # Костыль
+            try:
+                data = data.loc[data['_NumMotor_'] == "_1_"]
+                data['_DATE_'] = data.index
+            except:
+                pass
+            print(data.head())
+            context['dataset_count'] = len(data[[data.columns[0]]])
+            context['dataset_description'] = data.columns
+
+            return render(request, "data_set/index_dataset.html", context)
+        except Exception:
+            print("Unexpected error:", sys.exc_info()[0])
             return render(request, "error/error404.html")
     else:
         return render(request, "data_set/index_dataset.html")

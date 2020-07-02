@@ -20,33 +20,60 @@
   <div class="card">
     <div class="card-header alert alert-primary" id="headingOne">
       <h2 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           Получение выборки данных из базы
         </button>
       </h2>
     </div>
 
-    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-         <div class="card-body">
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 
-          <form method="GET" action="get_data">
+        <div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <form method="POST" action="upload_data_db">
               {% csrf_token %}
               <div class="form-group mb-2">
                 <label>ID прибора</label>
-                <input type="number" class="form-control" name="inputId">
+                <input type="number" min="0" value="1" class="form-control" name="id">
               </div>
               <div class="form-group mb-2">
                 <label for="inputTimeStart">Индекс начала измерений</label>
-                <input type="number" class="form-control" id="inputTimeStart">
+                <input type="number" class="form-control" id="inputTimeStart" name="number_ot" value="-1">
               </div>
               <div class="form-group mb-2">
                 <label for="inputTimeFinish">Индекс конца измерений</label>
-                <input type="number" class="form-control" id="inputTimeFinish">
+                <input type="number" class="form-control" id="inputTimeFinish" name="number_do" value="-1">
               </div>
               <button type="submit" class="btn btn-primary">Получить набор данных</button>
             </form>
+    </div>
+    <div class="col-sm">
 
-         </div>
+        {% if connection is None %}
+<br>
+<div class="alert alert-danger w-100 p-3" role="alert">
+    <h4 class="alert-heading">Подключение:</h4>
+  <span>
+    Отсутствует
+  </span>
+</div>
+{% endif %}
+
+      {% if connection is not None %}
+<br>
+<div class="alert alert-success w-100 p-3" role="alert">
+    <h4 class="alert-heading">Подключение:</h4>
+  <span>
+    {{ connection }}
+  </span>
+</div>
+{% endif %}
+    </div>
+  </div>
+</div>
+
+
     </div>
   </div>
 

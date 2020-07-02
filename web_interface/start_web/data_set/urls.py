@@ -13,5 +13,6 @@ urlpatterns = [
     path('model_test', views.model_test, name='model_test'),
     path('make_plot', views.make_plot, name='make_plot'),
     path('vis_model', views.vis_model, name='vis_model'),
-    path('get_anomalies', views.get_anomalies, name="get_anomalies")
+    path('get_anomalies', views.get_anomalies, name="get_anomalies"),
+    path('upload_data_db', views.upload_data_db, name="upload_data_db"),
 ]
