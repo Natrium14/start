@@ -45,7 +45,12 @@
                 <label for="inputTimeFinish">Индекс конца измерений</label>
                 <input type="number" class="form-control" id="inputTimeFinish" name="number_do" value="-1">
               </div>
+          {% if connection is None %}
+              <button type="submit" class="btn btn-primary" disabled>Получить набор данных</button>
+          {% endif %}
+          {% if connection is not None %}
               <button type="submit" class="btn btn-primary">Получить набор данных</button>
+          {% endif %}
             </form>
         <br>
     </div>
@@ -94,9 +99,9 @@
           <div class="form-group mb-2">
             <label>Загрузить файл (xls, csv)</label>
             <br>
-            <input type="file" name="data_file" id="data_file">
+            <input type="file" name="data_file" id="data_file" onchange="enable_file_button()">
           </div>
-          <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Загрузка данных в программу для последующей работы">
+          <button id="file_button" type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Загрузка данных в программу для последующей работы" disabled>
               Получить данные из файла
           </button>
         </form>
@@ -212,6 +217,10 @@
 
    function change_size(value){
     $("#plot_size").val(value);
+   }
+
+   function enable_file_button(){
+    $("#file_button").prop('disabled', false);
    }
 
 

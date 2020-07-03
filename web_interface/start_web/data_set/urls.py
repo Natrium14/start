@@ -15,4 +15,5 @@ urlpatterns = [
     path('vis_model', views.vis_model, name='vis_model'),
     path('get_anomalies', views.get_anomalies, name="get_anomalies"),
     path('upload_data_db', views.upload_data_db, name="upload_data_db"),
+    path('save_model', views.save_model, name="save_model"),
 ]

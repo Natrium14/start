@@ -244,6 +244,8 @@ def make_plot(request):
 
 # Метод обучения модели по выборке
 def model_train(request):
+    global db_client
+
     method = str(request.POST['method_name'])
     columns = request.POST.getlist('model_columns')
 
@@ -302,7 +304,7 @@ def model_train(request):
         if data is not None:
             context['dataset_description'] = data.columns
             pass
-        print(context)
+        context['connection'] = db_client
         return render(request, "data_set/model_train.html", context)
     except:
         print("Unexpected error:", sys.exc_info()[0])
@@ -341,7 +343,19 @@ def get_anomalies(request):
 
 # save model function
 def save_model(request):
-    return None
+    global db_client
+    global model
+
+    context = {'connection': db_client}
+    try:
+        print("1")
+        ml_core.model_save(model)
+        print("2")
+        context['dataset_description'] = data.columns
+        return render(request, "data_set/model_train.html", context)
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        return render(request, "error/error404.html")
 
 
 # Метод визуализации

@@ -162,6 +162,14 @@
 
 <a href="{% url 'get_anomalies' %}" target="_blank" class="btn btn-danger">Список аномалий</a>
 
+{% if connection is None %}
+<a href="{% url 'save_model' %}" target="_blank" class="btn btn-info disabled">Сохранить модель</a>
+{% endif %}
+
+{% if connection is not None %}
+<a href="{% url 'save_model' %}" target="_blank" class="btn btn-info">Сохранить модель</a>
+{% endif %}
+
 <script>
 
     $(function(){
