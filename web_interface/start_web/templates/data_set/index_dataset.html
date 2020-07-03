@@ -158,9 +158,20 @@
              </div>
 
          </div>
-       <p><input type="submit" value="Построить график"></p>
+            <input hidden value="medium" name="plot_size" id="plot_size">
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Построить график
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <button class="dropdown-item" type="submit" onmouseover="change_size('small')">Маленький</button>
+                <button class="dropdown-item" type="submit" onmouseover="change_size('medium')">Средний</button>
+                <button class="dropdown-item" type="submit" onmouseover="change_size('large')">Большой</button>
+              </div>
             </div>
             </div>
+       </div>
     </form>
 
     <hr>
@@ -197,6 +208,10 @@
             $("#histOptions").hide();
             $("#plotOptions").hide();
         }
+   }
+
+   function change_size(value){
+    $("#plot_size").val(value);
    }
 
 

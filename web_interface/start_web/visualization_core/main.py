@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,9 +9,10 @@ import io
 import urllib, base64
 
 
-def get_plot(data, draw):
-    fig, ax = plt.subplots(figsize=(22,16))
-    plt.grid(True)
+def get_plot(data, draw, plot_size):
+    width, height = get_plot_size(plot_size)
+    fig, ax = plt.subplots(figsize=(width, height))
+    #plt.grid(True)
     columns_count = len(data.columns)
 
     if columns_count < 2:
@@ -35,8 +38,9 @@ def get_plot(data, draw):
     return fig
 
 
-def get_hist(data, bins):
-    fig, ax = plt.subplots(figsize=(22, 16))
+def get_hist(data, bins, plot_size):
+    width, height = get_plot_size(plot_size)
+    fig, ax = plt.subplots(figsize=(width, height))
     try:
         plt.grid(True)
         x_label = data.columns.values[0]
@@ -47,8 +51,9 @@ def get_hist(data, bins):
         return fig
 
 
-def get_heatmap(data):
-    fig, ax = plt.subplots(figsize=(22, 16))
+def get_heatmap(data, plot_size):
+    width, height = get_plot_size(plot_size)
+    fig, ax = plt.subplots(figsize=(width, height))
     try:
         sns_plot = sns.heatmap(data.corr(), xticklabels=data.corr().columns,
                                yticklabels=data.corr().columns, cmap='RdYlGn', center=0, annot=True, square=True,
@@ -62,25 +67,45 @@ def get_heatmap(data):
         return fig
 
 
-def get_fill_between(data):
-    fig, ax = plt.subplots(figsize=(22, 16))
+def get_fill_between(data, plot_size):
+    width, height = get_plot_size(plot_size)
+    fig, ax = plt.subplots(figsize=(width, height))
     plt.grid(True)
     columns_count = len(data.columns)
     try:
         if columns_count == 2:
             x_label = data.columns.values[0]
             y_label = data.columns.values[1]
-            x = data[x_label]
+            x = data[x_label].astype('int32')
             y = data[y_label]
+            print(x.describe())
+            print(y.describe())
             ax.set_xlabel(x_label)
             ax.set_ylabel(y_label)
             a, b = np.polyfit(x, y, 1)
             y_est = a * x + b
             y_err = x.std() * np.sqrt(
                 1 / len(x) + (x - x.mean()) ** 2 / np.sum((x - x.mean()) ** 2))
+
             ax.plot(x, y_est, '-')
             ax.fill_between(x, y_est - y_err, y_est + y_err, alpha=0.2)
             ax.plot(x, y, 'o', color='tab:brown')
         return fig
     except:
+        print("Unexpected error:", sys.exc_info()[0])
         return fig
+
+
+def get_plot_size(plot_size):
+    width = 22
+    height = 16
+    if plot_size == "small":
+        width = 16
+        height = 10
+    if plot_size == "medium":
+        width = 22
+        height = 16
+    if plot_size == "large":
+        width = 28
+        height = 22
+    return width, height

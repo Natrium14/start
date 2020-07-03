@@ -8,7 +8,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from joblib import dump, load
@@ -110,7 +110,7 @@ def upload_data(request):
             except:
                 pass
 
-            print(data.head())
+            #print(data.head())
 
             context['connection'] = db_client
             context['dataset_count'] = len(data[[data.columns[0]]])
@@ -138,19 +138,21 @@ def upload_data_db(request):
 
             context['connection'] = db_client
             db = db_client['start']
-            collection = db['dataset']
+            collection = db['sample']
 
             id = request.POST["id"]
             ot = int(request.POST["number_ot"])
             do = int(request.POST["number_do"])
 
-            data = pd.DataFrame(list(collection.find()))
+            data = pd.DataFrame(list(collection.find())[0]["data"])
+            data = data.transpose()
+            #print(data)
             #data = pd.DataFrame(list(cursor))
             # if ot != -1 and do != -1 and do > ot:
             #     data = pd.DataFrame(list(cursor))[ot:do]
             # else:
             #     data = pd.DataFrame(list(cursor))
-            del data['_id']
+            #del data['_id']
 
             for col in data.columns[1:]:
                 try:
@@ -164,11 +166,12 @@ def upload_data_db(request):
                 data['_DATE_'] = data.index
             except:
                 pass
-            print(data.head(100))
+            #print(data.head(100))
             context['dataset_count'] = len(data[[data.columns[0]]])
             context['dataset_description'] = data.columns
 
-            return render(request, "data_set/index_dataset.html", context)
+            #return render(request, "data_set/index_dataset.html", context)
+            return redirect('/data_set/index', context)
         except Exception:
             print("Unexpected error:", sys.exc_info()[0])
             return render(request, "error/error404.html")
@@ -211,6 +214,7 @@ def make_plot(request):
         type = str(request.POST['type'])
         draw = str(request.POST['draw'])
         bins = int(request.POST['bins'])
+        plot_size = str(request.POST['plot_size'])
         #timestamp1 = int(time.time())
 
         columns = request.POST.getlist('checkbox_columns')
@@ -219,13 +223,13 @@ def make_plot(request):
         if do > ot:
             vis_data = data[columns][ot:do]
         if type == "plot":
-            fig = vis_core.get_plot(vis_data, draw)
+            fig = vis_core.get_plot(vis_data, draw, plot_size)
         if type == "hist":
-            fig = vis_core.get_hist(vis_data, bins)
+            fig = vis_core.get_hist(vis_data, bins, plot_size)
         if type == "heatmap":
-            fig = vis_core.get_heatmap(vis_data)
+            fig = vis_core.get_heatmap(vis_data, plot_size)
         if type == "fill_between":
-            fig = vis_core.get_fill_between(vis_data)
+            fig = vis_core.get_fill_between(vis_data, plot_size)
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
         plt.close(fig)
