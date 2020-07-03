@@ -23,7 +23,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 #logger.info("User :" + username + " login")
-                return render(request, "data_set/index.html")
+                return redirect("/data_set/index")
             else:
                 #logger.error("User :" + username + " try to login")
                 return render(request, "account/login.html")
@@ -31,7 +31,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "data_set/index.html")
+    return redirect("/")
 
 
 def register(response):

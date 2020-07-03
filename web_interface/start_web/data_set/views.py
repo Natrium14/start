@@ -21,6 +21,7 @@ import statistic_core.main as stat_core
 import visualization_core.main as vis_core
 import visualization_core.vis_dbscan as v_dbscan
 import visualization_core.vis_kmeans as v_kmeans
+import visualization_core.vis_aggcluster as v_aggcluster
 import management.views as m_views
 
 
@@ -262,6 +263,8 @@ def model_train(request):
                     params["n_init"] = int(request.POST['n_init'])
                 if request.POST['birch_clusters']:
                     params["birch_clusters"] = int(request.POST['birch_clusters'])
+                if request.POST['agg_clusters']:
+                    params["agg_clusters"] = int(request.POST['agg_clusters'])
 
             except Exception:
                 pass
@@ -370,6 +373,16 @@ def vis_model(request):
         if model_name == "Birch":
             try:
                 fig = v_kmeans.get_plot(model, data_train)
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                plt.close(fig)
+                response = HttpResponse(buf.getvalue(), content_type='image/png')
+                return response
+            except Exception:
+                return render(request, "error/error404.html")
+        if model_name == "AgglomerativeClustering":
+            try:
+                fig = v_aggcluster.get_plot(model, data_train)
                 buf = io.BytesIO()
                 plt.savefig(buf, format='png')
                 plt.close(fig)

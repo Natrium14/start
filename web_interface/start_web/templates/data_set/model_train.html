@@ -2,7 +2,7 @@
 
 {% block data_set_content %}
 
-<div style="margin-top: 10px">
+<div style="margin-top: 2px">
     <ul class="nav nav-tabs">
       <li class="nav-item">
         <a class="nav-link" href="{% url 'index_dataset' %}">Загрузка данных</a>
@@ -112,6 +112,17 @@
         </div>
     </div>
 
+    <div  id="agg_params">
+        Параметры модели:
+        <br>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">n_clusters</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Sizing example input" name="agg_clusters" placeholder="2">
+        </div>
+    </div>
+
 {% if dataset_description is not None %}
       <div>
           Выбор полей для обучения модели:
@@ -157,6 +168,7 @@
             $("#dbscan_params").hide();
             $("#kmeans_params").hide();
             $("#birch_params").hide();
+            $("#agg_params").hide();
     })
 
     function choose_method(data){
@@ -168,30 +180,42 @@
             $("#dbscan_params").show();
             $("#kmeans_params").hide();
             $("#birch_params").hide();
+            $("#agg_params").hide();
         }
 
         if (data == "autoencoder"){
             $("#dbscan_params").hide();
             $("#kmeans_params").hide();
             $("#birch_params").hide();
+            $("#agg_params").hide();
         }
 
         if (data == "randomforest"){
             $("#dbscan_params").hide();
             $("#kmeans_params").hide();
             $("#birch_params").hide();
+            $("#agg_params").hide();
         }
 
         if (data == "kmeans"){
             $("#kmeans_params").show();
             $("#dbscan_params").hide();
             $("#birch_params").hide();
+            $("#agg_params").hide();
         }
 
         if (data == "birch"){
             $("#kmeans_params").hide();
             $("#dbscan_params").hide();
             $("#birch_params").show();
+            $("#agg_params").hide();
+        }
+
+        if (data == "aggclust"){
+            $("#kmeans_params").hide();
+            $("#dbscan_params").hide();
+            $("#birch_params").hide();
+            $("#agg_params").show();
         }
     }
 

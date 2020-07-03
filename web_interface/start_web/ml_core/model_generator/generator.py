@@ -10,6 +10,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.cluster import DBSCAN
 from sklearn.cluster import KMeans
 from sklearn.cluster import Birch
+from sklearn.cluster import AgglomerativeClustering
 
 # Метод создания модели по выбранному методу из библиотеки sklearn
 def generate_model(method, params):
@@ -55,6 +56,19 @@ def generate_model(method, params):
                     n_clusters = params["birch_clusters"]
 
             model = Birch(n_clusters=n_clusters)
+            return model
+        except Exception:
+            return None
+
+    if method == "aggclust":
+        try:
+            n_clusters = 2
+
+            if bool(params):
+                if params["agg_clusters"]:
+                    n_clusters = params["agg_clusters"]
+
+            model = AgglomerativeClustering(n_clusters=n_clusters)
             return model
         except Exception:
             return None
