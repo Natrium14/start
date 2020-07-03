@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 
@@ -10,7 +10,7 @@ client = None
 
 def index(request):
     context = {
-        "connection": str(client)
+        "connection": client
     }
     return render(request, "management/index.html", context)
 
@@ -34,6 +34,16 @@ def create_connection(request):
             return render(request, "error/error404.html")
     else:
         return render(request, "management/index.html")
+
+
+def disconnect(request):
+    global client
+    if client is not None:
+        client = client.close()
+    context = {
+        "connection": str(client)
+    }
+    return redirect('/management/', context)
 
 
 def get_client():

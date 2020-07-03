@@ -47,6 +47,7 @@
               </div>
               <button type="submit" class="btn btn-primary">Получить набор данных</button>
             </form>
+        <br>
     </div>
     <div class="col-sm">
 
@@ -139,7 +140,7 @@
                   <option value="plot">plot</option>
                   <option value="hist">hist</option>
                   <option value="heatmap">heatmap</option>
-                  <option>4</option>
+                  <option value="fill_between">fill_between</option>
                 </select>
              </div>
 
@@ -148,8 +149,6 @@
                 <select class="form-control" id="drawSelect" name="draw">
                   <option value="">линия</option>
                   <option value="o">точки</option>
-                  <option>3</option>
-                  <option>4</option>
                 </select>
              </div>
 
@@ -167,7 +166,7 @@
     <hr>
     <a href="{% url 'show_dataset' %}" target="_blank" class="btn btn-primary">Показать выборку данных</a>
     <hr>
-    <a href="{% url 'stat_index' %}" target="_blank" class="btn btn-primary">Получить статистические данные о значениях тока</a>
+    <a href="{% url 'stat_index' %}" target="_blank" class="btn btn-primary">Получить статистические данные выборки</a>
 
 </div>
 
@@ -193,7 +192,10 @@
         if (value == "heatmap") {
             $("#histOptions").hide();
             $("#plotOptions").hide();
-
+        }
+        if (value == "fill_between") {
+            $("#histOptions").hide();
+            $("#plotOptions").hide();
         }
    }
 

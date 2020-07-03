@@ -9,6 +9,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 
 from sklearn.cluster import DBSCAN
 from sklearn.cluster import KMeans
+from sklearn.cluster import Birch
 
 # Метод создания модели по выбранному методу из библиотеки sklearn
 def generate_model(method, params):
@@ -41,6 +42,19 @@ def generate_model(method, params):
                     n_init = params["n_init"]
 
             model = KMeans(n_clusters=n_clusters, n_init=n_init)
+            return model
+        except Exception:
+            return None
+
+    if method == "birch":
+        try:
+            n_clusters = 3
+
+            if bool(params):
+                if params["birch_clusters"]:
+                    n_clusters = params["birch_clusters"]
+
+            model = Birch(n_clusters=n_clusters)
             return model
         except Exception:
             return None

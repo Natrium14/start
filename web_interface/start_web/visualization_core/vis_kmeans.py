@@ -10,6 +10,6 @@ def get_plot(model, data):
     fig, ax = plt.subplots(figsize=(20, 18))
     y_pred = model.predict(data)
     plt.scatter(data[:, 0], data[:, 1], c=y_pred, cmap='Paired')
-    plt.title("K-means")
+    plt.title(type(model).__name__)
     plt.legend()
     return fig

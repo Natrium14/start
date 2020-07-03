@@ -42,8 +42,7 @@ def index(request):
     context = {}
     try:
         global db_client
-        if db_client is None:
-            db_client = m_views.get_client()
+        db_client = m_views.get_client()
         context['connection'] = db_client
     except:
         pass
@@ -211,20 +210,29 @@ def make_plot(request):
         do = int(request.POST['number_do'])
         type = str(request.POST['type'])
         draw = str(request.POST['draw'])
+        bins = int(request.POST['bins'])
         #timestamp1 = int(time.time())
+
         columns = request.POST.getlist('checkbox_columns')
+        vis_data = data[columns]
+        fig = None
         if do > ot:
             vis_data = data[columns][ot:do]
-            fig = vis_core.get_plot(vis_data, type, draw)
-            buf = io.BytesIO()
-            plt.savefig(buf, format='png')
-            plt.close(fig)
-            response = HttpResponse(buf.getvalue(), content_type='image/png')
-            #timestamp2 = int(time.time())
-            #print(timestamp2 - timestamp1)
-            return response
-        else:
-            return render(request, "error/error404.html")
+        if type == "plot":
+            fig = vis_core.get_plot(vis_data, draw)
+        if type == "hist":
+            fig = vis_core.get_hist(vis_data, bins)
+        if type == "heatmap":
+            fig = vis_core.get_heatmap(vis_data)
+        if type == "fill_between":
+            fig = vis_core.get_fill_between(vis_data)
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        plt.close(fig)
+        response = HttpResponse(buf.getvalue(), content_type='image/png')
+        #timestamp2 = int(time.time())
+        #print(timestamp2 - timestamp1)
+        return response
     except Exception:
         return render(request, "error/error404.html")
 
@@ -248,6 +256,8 @@ def model_train(request):
                     params["n_clusters"] = int(request.POST['n_clusters'])
                 if request.POST['n_init']:
                     params["n_init"] = int(request.POST['n_init'])
+                if request.POST['birch_clusters']:
+                    params["birch_clusters"] = int(request.POST['birch_clusters'])
 
             except Exception:
                 pass
@@ -344,6 +354,16 @@ def vis_model(request):
                 return render(request, "error/error404.html")
             #return vis_dbscan(request)
         if model_name == "KMeans":
+            try:
+                fig = v_kmeans.get_plot(model, data_train)
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                plt.close(fig)
+                response = HttpResponse(buf.getvalue(), content_type='image/png')
+                return response
+            except Exception:
+                return render(request, "error/error404.html")
+        if model_name == "Birch":
             try:
                 fig = v_kmeans.get_plot(model, data_train)
                 buf = io.BytesIO()
