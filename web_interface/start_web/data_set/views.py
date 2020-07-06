@@ -39,7 +39,7 @@ def main_page(request):
     return render(request, "data_set/main_page.html")
 
 
-# Стартовая страница для получения выборки и обучения модели
+# Стартовая страница для получения выборки
 def index(request):
     context = {}
     timestamp1 = int(time.time())
@@ -93,7 +93,11 @@ def stat_index(request):
         }
         return render(request, "data_set/statistic.html", context)
     except Exception:
-        return render(request, "error/error404.html")
+        error_context = {
+            'error': sys.exc_info()[0],
+        }
+        print("Unexpected error:", sys.exc_info()[0])
+        return render(request, "error/error404.html", error_context)
 
 
 # Метод получения выборки данных из файла
@@ -126,7 +130,12 @@ def upload_data(request):
             print("Загрузка выборки из файла:", timestamp2 - timestamp1, " секунд")
             return render(request, "data_set/index_dataset.html", context)
         except Exception:
-            return render(request, "error/error404.html")
+            error_context = {
+                'error': str(sys.exc_info()[0]),
+                'reason': "Загруженный файл имеет отличный от CSV формат. Формат данных не соответствует табличной форме представления. Файл битый."
+            }
+            print("Unexpected error:", sys.exc_info()[0])
+            return render(request, "error/error404.html", error_context)
     else:
         return render(request, "data_set/index_dataset.html")
 
@@ -185,8 +194,12 @@ def upload_data_db(request):
             print("Загрузка выборки из БД:", timestamp2 - timestamp1, " секунд")
             return redirect('/data_set/index', context)
         except Exception:
+            error_context = {
+                'error': str(sys.exc_info()[0]),
+                'reason': "Отсутствует подключение к БД. Не найдено искомой таблицы/коллекции. Не найдено информации по заданному ID"
+            }
             print("Unexpected error:", sys.exc_info()[0])
-            return render(request, "error/error404.html")
+            return render(request, "error/error404.html", error_context)
     else:
         return render(request, "data_set/index_dataset.html")
 
@@ -206,8 +219,11 @@ def model_training(request):
         print("Загрузка страницы data_set/model_train:", timestamp2 - timestamp1, " секунд")
         return render(request, "data_set/model_train.html", context)
     except Exception:
+        error_context = {
+            'error': str(sys.exc_info()[0])
+        }
         print("Unexpected error:", sys.exc_info()[0])
-        return render(request, "error/error404.html")
+        return render(request, "error/error404.html", error_context)
 
 
 # Вывод полученной выборки данных в отдельный html файл
@@ -215,7 +231,11 @@ def show_dataset(request):
     if data is not None:
         return HttpResponse(data.to_html())
     else:
-        return render(request, "error/error404.html")
+        error_context = {
+            'error': str(sys.exc_info()[0])
+        }
+        print("Unexpected error:", sys.exc_info()[0])
+        return render(request, "error/error404.html", error_context)
 
 
 # метод получения обученных моделей из бд
@@ -256,7 +276,12 @@ def model_test_page(request):
         print("Получение выборок и моделей из БД:", timestamp2 - timestamp1, " секунд")
         return render(request, "data_set/model_test.html", context)
     except:
-        return render(request, "error/error404.html")
+        error_context = {
+            'error': str(sys.exc_info()[0]),
+            'reason': "Отсутствует подключение к БД. Не найдено искомой таблицы/коллекции."
+        }
+        print("Unexpected error:", sys.exc_info()[0])
+        return render(request, "error/error404.html", error_context)
 
 
 # Метод получения графика зависимости одного атрибута от другого
@@ -293,7 +318,12 @@ def make_plot(request):
         print("Построение графика:", timestamp2 - timestamp1, " секунд")
         return response
     except Exception:
-        return render(request, "error/error404.html")
+        error_context = {
+            'error': str(sys.exc_info()[0]),
+            'reason': "Формат данных непозволяет построить данный график. Не выбраны необходимые поля."
+        }
+        print("Unexpected error:", sys.exc_info()[0])
+        return render(request, "error/error404.html", error_context)
 
 
 # Метод обучения модели по выборке
@@ -359,8 +389,11 @@ def model_train(request):
         context['connection'] = db_client
         return render(request, "data_set/model_train.html", context)
     except:
+        error_context = {
+            'error': str(sys.exc_info()[0])
+        }
         print("Unexpected error:", sys.exc_info()[0])
-        return render(request, "error/error404.html")
+        return render(request, "error/error404.html", error_context)
 
 
 # get abnormal values from dbscan
@@ -388,8 +421,12 @@ def get_anomalies(request):
         print("Получение аномальных значений: ", str(timestamp2 - timestamp1), " секунд")
         return HttpResponse(abnormal_data.to_html())
     except Exception:
+        error_context = {
+            'error': str(sys.exc_info()[0]),
+            'reason': "Отсутствуют выявленные аномалии."
+        }
         print("Unexpected error:", sys.exc_info()[0])
-        return render(request, "error/error404.html")
+        return render(request, "error/error404.html", error_context)
 
 
 # save model function
@@ -406,8 +443,12 @@ def save_model(request):
         print("Сохранение модели в БД: ", str(timestamp2 - timestamp1), " секунд")
         return render(request, "data_set/model_train.html", context)
     except:
+        error_context = {
+            'error': str(sys.exc_info()[0]),
+            'reason': "Отсутствует подключение к БД."
+        }
         print("Unexpected error:", sys.exc_info()[0])
-        return render(request, "error/error404.html")
+        return render(request, "error/error404.html", error_context)
 
 
 # Метод визуализации
