@@ -1,3 +1,4 @@
+import datetime
 import io
 import time
 import json
@@ -145,6 +146,7 @@ def upload_data_db(request):
             ot = int(request.POST["number_ot"])
             do = int(request.POST["number_do"])
 
+            # [0] - для получения первого элемента
             data = pd.DataFrame(list(collection.find())[0]["data"])
             data = data.transpose()
             #print(data)
@@ -167,7 +169,7 @@ def upload_data_db(request):
                 data['_DATE_'] = data.index
             except:
                 pass
-            #print(data.head(100))
+            #print(len(data[[data.columns[0]]]))
             context['dataset_count'] = len(data[[data.columns[0]]])
             context['dataset_description'] = data.columns
 
@@ -203,8 +205,39 @@ def show_dataset(request):
         return render(request, "error/error404.html")
 
 
-def model_test(request):
-    return render(request, "data_set/model_test.html")
+# метод получения обученных моделей из бд
+def model_test_page(request):
+    global db_client
+
+    context = {}
+
+    context['connection'] = db_client
+    db = db_client['start']
+    collection = db['models']
+
+    # получение списка сохраненных моделей
+    models = list(collection.find())
+    model_view_array = []
+    for m in models:
+        model_view_dict = {}
+        model_view_dict["id"] = m["_id"]
+        model_view_dict["name"] = m["name"]
+        model_view_dict["created_time"] = datetime.datetime.fromtimestamp(m["created_time"]).strftime('%Y-%m-%d %H:%M:%S')
+        model_view_array.append(model_view_dict)
+    context["models"] = model_view_array
+
+    # получение сохраненных обучающих выборок
+    collection = db['sample']
+    samples = list(collection.find())
+    sample_view_array = []
+    for s in samples:
+        sample_view_dict = {}
+        sample_view_dict["id"] = s["_id"]
+        sample_view_dict["count"] = len(s["data"])
+        sample_view_array.append(sample_view_dict)
+    context["samples"] = sample_view_array
+
+    return render(request, "data_set/model_test.html", context)
 
 
 # Метод получения графика зависимости одного атрибута от другого

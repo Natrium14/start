@@ -11,7 +11,7 @@
         <a class="nav-link" href="{% url 'model_training' %}">Обучение модели</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="{% url 'model_test' %}">Тестирование модели</a>
+        <a class="nav-link active" href="{% url 'model_testing' %}">Тестирование модели</a>
       </li>
     </ul>
 </div>
@@ -19,7 +19,7 @@
 <table class="table table-sm">
     <tr>
         <form>
-        <td style="width: 50%">
+        <td style="width: 40%">
 
             <div class="alert alert-success" role="alert">
                 Выборка данных
@@ -28,17 +28,17 @@
             <div class="form-group mb-2">
                 <label for="datasetSelect">Выборки данных</label>
                 <select multiple class="form-control" id="datasetSelect">
-                  <option>Выборка 1</option>
-                  <option>Выборка 2</option>
+                  {% for sample in samples %}
+                        <option>
+                            <span>{{ sample.id }}: {{ sample.count }} строк</span>
+                        </option>
+                    {% endfor %}
                 </select>
-            </div>
-            <div class="form-group mb-4">
-                <input type="textarea" readonly id="datasetMeta" placeholder="Информация о выборке"/>
             </div>
 
 
         </td>
-        <td style="width: 50%">
+        <td style="width: 60%">
             <div class="alert alert-primary" role="alert">
                 Выбор модели
             </div>
@@ -47,13 +47,12 @@
               <div class="form-group mb-2">
                 <label for="modelSelect">Обученные модели</label>
                 <select multiple class="form-control" id="modelSelect">
-                  <option>Модель 1 (метод: Random forest)</option>
-                  <option>Модель 2 (метод: Gradient boosting)</option>
-                  <option>3</option>
+                    {% for model in models %}
+                        <option>
+                            <span>{{ model.id }}: метод {{ model.name }}, {{ model.created_time }}</span>
+                        </option>
+                    {% endfor %}
                 </select>
-              </div>
-              <div class="form-group mb-4">
-                <input type="textarea" readonly id="modelMeta" placeholder="Информация о модели"/>
               </div>
 
             <button type="submit" class="btn btn-success">Тестирование модели</button>
@@ -68,6 +67,7 @@
         </form>
     </tr>
 </table>
+
 
 
 {% endblock %}
