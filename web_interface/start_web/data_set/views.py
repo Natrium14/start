@@ -42,6 +42,7 @@ def main_page(request):
 # Стартовая страница для получения выборки и обучения модели
 def index(request):
     context = {}
+    timestamp1 = int(time.time())
     try:
         global db_client
         db_client = m_views.get_client()
@@ -52,6 +53,8 @@ def index(request):
     if data is not None:
         context['dataset_count'] = len(data[[data.columns[0]]])
         context['dataset_description'] = data.columns
+    timestamp2 = int(time.time())
+    print("Загрузка страницы data_set/index_dataset: ", timestamp2-timestamp1, " секунд")
     return render(request, "data_set/index_dataset.html", context)
 
 
@@ -84,7 +87,7 @@ def stat_index(request):
             except:
                 pass
         timestamp2 = int(time.time())
-        print("Стат. вычисления:", timestamp2 - timestamp1)
+        print("Загрузка страницы data_set/statistic:", timestamp2 - timestamp1, " секунд")
         context = {
             'array': array
         }
@@ -96,6 +99,7 @@ def stat_index(request):
 # Метод получения выборки данных из файла
 def upload_data(request):
     context = {}
+    timestamp1 = int(time.time())
     if db_client is None:
         context['connection'] = db_client
     if request.POST:
@@ -118,6 +122,8 @@ def upload_data(request):
             context['dataset_count'] = len(data[[data.columns[0]]])
             context['dataset_description'] = data.columns
 
+            timestamp2 = int(time.time())
+            print("Загрузка выборки из файла:", timestamp2 - timestamp1, " секунд")
             return render(request, "data_set/index_dataset.html", context)
         except Exception:
             return render(request, "error/error404.html")
@@ -130,6 +136,7 @@ def upload_data_db(request):
     global db_client
 
     context = {}
+    timestamp1 = int(time.time())
 
     if db_client is None:
         print("0")
@@ -174,6 +181,8 @@ def upload_data_db(request):
             context['dataset_description'] = data.columns
 
             #return render(request, "data_set/index_dataset.html", context)
+            timestamp2 = int(time.time())
+            print("Загрузка выборки из БД:", timestamp2 - timestamp1, " секунд")
             return redirect('/data_set/index', context)
         except Exception:
             print("Unexpected error:", sys.exc_info()[0])
@@ -184,14 +193,18 @@ def upload_data_db(request):
 
 # Страница с обучением моделей
 def model_training(request):
+    context = {}
+    timestamp1 = int(time.time())
     try:
         if data is not None:
-            context = {
-                'dataset_description': data.columns
-            }
-            return render(request, "data_set/model_train.html", context)
-        else:
-            return render(request, "data_set/model_train.html")
+            context['dataset_description'] = data.columns
+        if model is not None:
+            context['model_description'] = str(model)
+        if db_client is not None:
+            context['connection'] = db_client
+        timestamp2 = int(time.time())
+        print("Загрузка страницы data_set/model_train:", timestamp2 - timestamp1, " секунд")
+        return render(request, "data_set/model_train.html", context)
     except Exception:
         print("Unexpected error:", sys.exc_info()[0])
         return render(request, "error/error404.html")
@@ -210,46 +223,53 @@ def model_test_page(request):
     global db_client
 
     context = {}
+    timestamp1 = int(time.time())
 
-    context['connection'] = db_client
-    db = db_client['start']
-    collection = db['models']
+    try:
+        context['connection'] = db_client
+        db = db_client['start']
+        collection = db['models']
 
-    # получение списка сохраненных моделей
-    models = list(collection.find())
-    model_view_array = []
-    for m in models:
-        model_view_dict = {}
-        model_view_dict["id"] = m["_id"]
-        model_view_dict["name"] = m["name"]
-        model_view_dict["created_time"] = datetime.datetime.fromtimestamp(m["created_time"]).strftime('%Y-%m-%d %H:%M:%S')
-        model_view_array.append(model_view_dict)
-    context["models"] = model_view_array
+        # получение списка сохраненных моделей
+        models = list(collection.find())
+        model_view_array = []
+        for m in models:
+            model_view_dict = {}
+            model_view_dict["id"] = m["_id"]
+            model_view_dict["name"] = m["name"]
+            model_view_dict["created_time"] = datetime.datetime.fromtimestamp(m["created_time"]).strftime('%Y-%m-%d %H:%M:%S')
+            model_view_array.append(model_view_dict)
+        context["models"] = model_view_array
 
-    # получение сохраненных обучающих выборок
-    collection = db['sample']
-    samples = list(collection.find())
-    sample_view_array = []
-    for s in samples:
-        sample_view_dict = {}
-        sample_view_dict["id"] = s["_id"]
-        sample_view_dict["count"] = len(s["data"])
-        sample_view_array.append(sample_view_dict)
-    context["samples"] = sample_view_array
+        # получение сохраненных обучающих выборок
+        collection = db['sample']
+        samples = list(collection.find())
+        sample_view_array = []
+        for s in samples:
+            sample_view_dict = {}
+            sample_view_dict["id"] = s["_id"]
+            sample_view_dict["count"] = len(s["data"])
+            sample_view_array.append(sample_view_dict)
+        context["samples"] = sample_view_array
 
-    return render(request, "data_set/model_test.html", context)
+        timestamp2 = int(time.time())
+        print("Получение выборок и моделей из БД:", timestamp2 - timestamp1, " секунд")
+        return render(request, "data_set/model_test.html", context)
+    except:
+        return render(request, "error/error404.html")
 
 
 # Метод получения графика зависимости одного атрибута от другого
 def make_plot(request):
     try:
+        timestamp1 = int(time.time())
+
         ot = int(request.POST['number_ot'])
         do = int(request.POST['number_do'])
         type = str(request.POST['type'])
         draw = str(request.POST['draw'])
         bins = int(request.POST['bins'])
         plot_size = str(request.POST['plot_size'])
-        #timestamp1 = int(time.time())
 
         columns = request.POST.getlist('checkbox_columns')
         vis_data = data[columns]
@@ -268,8 +288,9 @@ def make_plot(request):
         plt.savefig(buf, format='png')
         plt.close(fig)
         response = HttpResponse(buf.getvalue(), content_type='image/png')
-        #timestamp2 = int(time.time())
-        #print(timestamp2 - timestamp1)
+
+        timestamp2 = int(time.time())
+        print("Построение графика:", timestamp2 - timestamp1, " секунд")
         return response
     except Exception:
         return render(request, "error/error404.html")
@@ -313,9 +334,7 @@ def model_train(request):
                 timestamp1 = int(time.time())
                 model = ml_core.model_train(data_train, method, params)
                 timestamp2 = int(time.time())
-                print(set(model.labels_))
-                print(type(model).__name__)
-                print("Время обучения:" + str(timestamp2-timestamp1))
+                print("Время обучения модели: ", str(timestamp2-timestamp1), " секунд")
                 # save model to file
                 '''
                 try:
@@ -327,8 +346,8 @@ def model_train(request):
                 except Exception:
                     pass
                 '''
-                #context['time_to_train'] = str(timestamp2-timestamp1)
-                #context['model_description'] = str(model)
+                context['time_to_train'] = str(timestamp2-timestamp1)
+                context['model_description'] = str(model)
             except:
                 return render(request, "error/error404.html")
         else:
@@ -346,28 +365,27 @@ def model_train(request):
 
 # get abnormal values from dbscan
 def get_anomalies(request):
+    timestamp1 = int(time.time())
     try:
         abnormal_data = data.iloc[0]
-        print('1')
         core_samples_mask = np.zeros_like(model.labels_, dtype=bool)
         core_samples_mask[model.core_sample_indices_] = True
         labels = model.labels_
         unique_labels = set(labels)
-        print('1')
         counts = np.bincount(labels[labels >= 0])
 
         for k in unique_labels:
             class_member_mask = (labels == k)
             if k == -1:
                 abnormal_data = data[class_member_mask & ~core_samples_mask]
-        print('1')
         for k in unique_labels:
             class_member_mask = (labels == k)
             if counts[k] < (len(data[[data.columns[0]]])*0.1):
                 abnormal_data = abnormal_data.append(data[class_member_mask & core_samples_mask], ignore_index=True)
-        print('1')
         #abnormal_data = abnormal_data.sort_values(by="Time")
 
+        timestamp2 = int(time.time())
+        print("Получение аномальных значений: ", str(timestamp2 - timestamp1), " секунд")
         return HttpResponse(abnormal_data.to_html())
     except Exception:
         print("Unexpected error:", sys.exc_info()[0])
@@ -380,11 +398,12 @@ def save_model(request):
     global model
 
     context = {'connection': db_client}
+    timestamp1 = int(time.time())
     try:
-        print("1")
         ml_core.model_save(model)
-        print("2")
         context['dataset_description'] = data.columns
+        timestamp2 = int(time.time())
+        print("Сохранение модели в БД: ", str(timestamp2 - timestamp1), " секунд")
         return render(request, "data_set/model_train.html", context)
     except:
         print("Unexpected error:", sys.exc_info()[0])
@@ -393,76 +412,21 @@ def save_model(request):
 
 # Метод визуализации
 def vis_model(request):
-    try:
-        global model
-        model_name = type(model).__name__
-        if model_name == "DBSCAN":
-            try:
-                fig = v_dbscan.get_plot(model, data_train)
-                buf = io.BytesIO()
-                plt.savefig(buf, format='png')
-                plt.close(fig)
-                response = HttpResponse(buf.getvalue(), content_type='image/png')
-                return response
-            except Exception:
-                return render(request, "error/error404.html")
-            #return vis_dbscan(request)
-        if model_name == "KMeans":
-            try:
-                fig = v_kmeans.get_plot(model, data_train)
-                buf = io.BytesIO()
-                plt.savefig(buf, format='png')
-                plt.close(fig)
-                response = HttpResponse(buf.getvalue(), content_type='image/png')
-                return response
-            except Exception:
-                return render(request, "error/error404.html")
-        if model_name == "Birch":
-            try:
-                fig = v_kmeans.get_plot(model, data_train)
-                buf = io.BytesIO()
-                plt.savefig(buf, format='png')
-                plt.close(fig)
-                response = HttpResponse(buf.getvalue(), content_type='image/png')
-                return response
-            except Exception:
-                return render(request, "error/error404.html")
-        if model_name == "AgglomerativeClustering":
-            try:
-                fig = v_aggcluster.get_plot(model, data_train)
-                buf = io.BytesIO()
-                plt.savefig(buf, format='png')
-                plt.close(fig)
-                response = HttpResponse(buf.getvalue(), content_type='image/png')
-                return response
-            except Exception:
-                return render(request, "error/error404.html")
-            #return vis_kmeans(request)
-    except Exception:
-        return render(request, "error/error404.html")
+    global model
 
-
-# Визуализация dbscan
-def vis_dbscan(request):
-    try:
+    timestamp1 = int(time.time())
+    model_name = type(model).__name__
+    fig = None
+    if model_name == "DBSCAN":
         fig = v_dbscan.get_plot(model, data_train)
-        buf = io.BytesIO()
-        plt.savefig(buf, format='png')
-        plt.close(fig)
-        response = HttpResponse(buf.getvalue(), content_type='image/png')
-        return response
-    except Exception:
-        return render(request, "error/error404.html")
-
-
-# Визуализация kmeans
-def vis_kmeans(request):
-    try:
+    if model_name == "KMeans":
         fig = v_kmeans.get_plot(model, data_train)
-        buf = io.BytesIO()
-        plt.savefig(buf, format='png')
-        plt.close(fig)
-        response = HttpResponse(buf.getvalue(), content_type='image/png')
-        return response
-    except Exception:
-        return render(request, "error/error404.html")
+    if model_name == "Birch":
+        fig = v_kmeans.get_plot(model, data_train)
+    if model_name == "AgglomerativeClustering":
+        fig = v_aggcluster.get_plot(model, data_train)
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    response = HttpResponse(buf.getvalue(), content_type='image/png')
+    return response

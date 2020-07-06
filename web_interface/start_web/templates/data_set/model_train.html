@@ -71,104 +71,130 @@
     </div>
     <br>
 
-    <div  id="dbscan_params">
-        Параметры модели:
-        <br>
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">eps</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Sizing example input" name="eps" placeholder="0.5">
-          <div class="input-group-prepend">
-            <span class="input-group-text">min_samples</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Sizing example input" name="min_samples" placeholder="2">
-        </div>
-    </div>
+    <table class="table">
+        <tr>
+            <td>
 
-    <div  id="kmeans_params">
-        Параметры модели:
-        <br>
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">n_clusters</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Sizing example input" name="n_clusters" placeholder="20">
-          <div class="input-group-prepend">
-            <span class="input-group-text">n_init</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Sizing example input" name="n_init" placeholder="10">
-        </div>
-    </div>
+                <div  id="dbscan_params">
+                     <div class="alert alert-info " role="alert">
+                         <h6>Параметры модели:</h6>
+                        <br>
+                        <div class="input-group input-group-sm mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">eps</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="eps" placeholder="0.5">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">min_samples</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="min_samples" placeholder="2">
+                        </div>
+                    </div>
+                </div>
 
-    <div  id="birch_params">
-        Параметры модели:
-        <br>
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">n_clusters</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Sizing example input" name="birch_clusters" placeholder="3">
-        </div>
-    </div>
+                <div  id="kmeans_params">
+                    <div class="alert alert-info " role="alert">
+                        <h6>Параметры модели:</h6>
+                        <br>
+                        <div class="input-group input-group-sm mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">n_clusters</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="n_clusters" placeholder="20">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">n_init</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="n_init" placeholder="10">
+                        </div>
+                    </div>
+                 </div>
 
-    <div  id="agg_params">
-        Параметры модели:
-        <br>
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">n_clusters</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Sizing example input" name="agg_clusters" placeholder="2">
-        </div>
-    </div>
+                <div  id="birch_params">
+                    <div class="alert alert-info " role="alert">
+                        <h6>Параметры модели:</h6>
+                        <br>
+                        <div class="input-group input-group-sm mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">n_clusters</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="birch_clusters" placeholder="3">
+                        </div>
+                    </div>
+                </div>
 
-{% if dataset_description is not None %}
-      <div>
-          Выбор полей для обучения модели:
-          <p>
-            {% for column in dataset_description %}
-                <input type="checkbox" name="model_columns" value="{{ column }}">
-                {{ column }}
-                <br>
-            {% endfor %}
-            </p>
-      </div>
-        <input type="hidden" id="method_name" name="method_name"/>
-      <button type="submit" class="btn btn-success">Обучить модель</button>
-{% endif %}
+                <div  id="agg_params">
+                    <div class="alert alert-info " role="alert">
+                        <h6>Параметры модели:</h6>
+                        <br>
+                        <div class="input-group input-group-sm mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">n_clusters</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="agg_clusters" placeholder="2">
+                        </div>
+                    </div>
+                </div>
+
+            {% if dataset_description is not None %}
+                  <div>
+                      Выбор полей для обучения модели:
+                      <p>
+                        {% for column in dataset_description %}
+                            <input type="checkbox" name="model_columns" value="{{ column }}">
+                            {{ column }}
+                            <br>
+                        {% endfor %}
+                        </p>
+                  </div>
+                    <input type="hidden" id="method_name" name="method_name"/>
+                  <button type="submit" class="btn btn-success">Обучить модель</button>
+            {% endif %}
+            </td>
+            <Td style="width: 50%">
+
+                {% if model_description is None %}
+
+                    <div class="alert alert-warning" role="alert">
+                        <h5 class="alert-heading">Модель еще не создана...</h5>
+                    </div>
+
+                {% endif %}
+
+                {% if model_description is not None %}
+
+                <div class="alert alert-success" role="alert">
+                    <h5 class="alert-heading">Модель создана и обучена</h5>
+                    <p>
+                        {{ model_description }}
+                    </p>
+                    <p>
+                        Время обучения: {{ time_to_train }}
+                    </p>
+                    <hr>
+                    <a href="{% url 'vis_model' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
+
+                    {% if "DBSCAN" in model_description %}
+                        <a href="{% url 'get_anomalies' %}" target="_blank" class="btn btn-danger">Список аномалий</a>
+                    {% endif %}
+
+                    <hr>
+
+                    {% if connection is None %}
+                        <a href="{% url 'save_model' %}" target="_blank" class="btn btn-info disabled">Сохранить модель</a>
+                    {% endif %}
+
+                    {% if connection is not None %}
+                        <a href="{% url 'save_model' %}" target="_blank" class="btn btn-info">Сохранить модель</a>
+                    {% endif %}
+                </div>
+
+            {% endif %}
+            </Td>
+        </tr>
+    </table>
 
 </form>
 
-
-<!--{% if model_description %}
-<div class="form-group mb-2">
-    <b>Детали модели:</b>
-    <br>
-    {{ model_description }}
-    <br>
-    <b>Время обучения:</b>
-    <span>{{ time_to_train }} сек.</span>
-</div>
-
-<a href="{% url 'vis_model' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
-
-<a href="{% url 'get_anomalies' %}" target="_blank" class="btn btn-danger">Список аномалий</a>
-
-<a href="{% url 'save_model' %}" target="_blank" class="btn btn-warning">Сохранить модель</a>
-{% endif %}-->
-
-<a href="{% url 'vis_model' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
-
-<a href="{% url 'get_anomalies' %}" target="_blank" class="btn btn-danger">Список аномалий</a>
-
-{% if connection is None %}
-<a href="{% url 'save_model' %}" target="_blank" class="btn btn-info disabled">Сохранить модель</a>
-{% endif %}
-
-{% if connection is not None %}
-<a href="{% url 'save_model' %}" target="_blank" class="btn btn-info">Сохранить модель</a>
-{% endif %}
 
 <script>
 
