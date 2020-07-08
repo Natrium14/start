@@ -17,43 +17,55 @@
 </div>
 
 <br>
-<div class="w-50 p-3">
 
-    <div class="alert alert-success" role="alert">
-        Подключение к базе данных
+<div class="container">
+  <div class="row justify-content-start">
+    <div class="col-6">
+
+        <div class="alert alert-success" role="alert">
+            Подключение к базе данных
+        </div>
+
+        <form action="create_connection" method="post" >
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="inputUrl">URL базы данных</label>
+            <input type="text" class="form-control input-sm" id="inputUrl" >
+            <small id="urlHelp" class="form-text text-muted">Введите IP адрес базы данных</small>
+          </div>
+          <div class="form-group">
+            <label for="inputLogin">Логин</label>
+            <input type="text" class="form-control input-sm" id="inputLogin" >
+            <small id="loginHelp" class="form-text text-muted">Введите логин пользователя базы данных</small>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Пароль</label>
+            <input type="password" class="form-control input-sm" id="inputPassword">
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">Подключиться</button>
+        </form>
+
     </div>
-
-    <form action="create_connection" method="post" >
-        {% csrf_token %}
-      <div class="form-group">
-        <label for="inputUrl">URL базы данных</label>
-        <input type="text" class="form-control" id="inputUrl" >
-        <small id="urlHelp" class="form-text text-muted">Введите IP адрес базы данных</small>
-      </div>
-      <div class="form-group">
-        <label for="inputLogin">Логин</label>
-        <input type="text" class="form-control" id="inputLogin" >
-        <small id="loginHelp" class="form-text text-muted">Введите логин пользователя базы данных</small>
-      </div>
-      <div class="form-group">
-        <label for="inputPassword">Пароль</label>
-        <input type="password" class="form-control" id="inputPassword">
-      </div>
-      <button type="submit" class="btn btn-primary">Подключиться</button>
-    </form>
-
+    <div class="col-6">
+      {% if connection is not None %}
+        <br>
+        <div class="alert alert-success w-75 p-3" role="alert">
+            <h4 class="alert-heading">Подключение:</h4>
+          <span>
+            {{ connection }}
+          </span>
+            <hr>
+            <a href="{% url 'disconnect' %}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Завершить подключение</a>
+        </div>
+        {% endif %}
+    </div>
+  </div>
 </div>
 
-{% if connection is not None %}
-<br>
-<div class="alert alert-success w-75 p-3" role="alert">
-    <h4 class="alert-heading">Подключение:</h4>
-  <span>
-    {{ connection }}
-  </span>
-    <hr>
-    <a href="{% url 'disconnect' %}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Завершить подключение</a>
-</div>
-{% endif %}
+
+
+
+
+
 
 {% endblock %}

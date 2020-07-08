@@ -6,6 +6,7 @@ from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor
 
 from sklearn.cluster import DBSCAN
 from sklearn.cluster import KMeans
@@ -26,7 +27,6 @@ def generate_model(method, params):
                     min_samples = params["min_samples"]
 
             model = DBSCAN(eps=eps, min_samples=min_samples)
-            print('1')
             return model
         except Exception:
             return None
@@ -73,9 +73,10 @@ def generate_model(method, params):
         except Exception:
             return None
 
-    if method == "RandomForestClassifier":
+    if method == "RandomForestRegressor":
         try:
-            model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=1)
+            model = RandomForestRegressor(n_estimators=30, max_depth=15, random_state=0)
+            print("2")
             return model
         except Exception:
             return None

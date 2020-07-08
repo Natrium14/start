@@ -55,13 +55,14 @@
             </button>
           </h2>
         </div>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
           <div class="card-body">
 
               <div class="form-group mb-2">
                 <select multiple class="form-control" id="methodSelect2" name="methodSelect">
                   <option value="autoencoder" onclick="choose_method('autoencoder')">Autoencoder</option>
                   <option value="randomforest" onclick="choose_method('randomforest')">RandomForestClassifier</option>
+                  <option value="RandomForestRegressor" onclick="choose_method('RandomForestRegressor')">RandomForestRegressor</option>
                 </select>
               </div>
 
@@ -163,7 +164,7 @@
                 {% if model_description is not None %}
 
                 <div class="alert alert-success" role="alert">
-                    <h5 class="alert-heading">Модель создана и обучена</h5>
+                    <h5 class="alert-heading">Модель создана и обучена:</h5>
                     <p>
                         {{ model_description }}
                     </p>

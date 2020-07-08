@@ -23,6 +23,7 @@ import visualization_core.main as vis_core
 import visualization_core.vis_dbscan as v_dbscan
 import visualization_core.vis_kmeans as v_kmeans
 import visualization_core.vis_aggcluster as v_aggcluster
+import visualization_core.vis_RFregressor as v_RFregressor
 import management.views as m_views
 
 
@@ -165,7 +166,8 @@ def upload_data_db(request):
             # [0] - для получения первого элемента
             data = pd.DataFrame(list(collection.find())[0]["data"])
             data = data.transpose()
-            #print(data)
+            data = data.drop(['null'],axis=1)
+
             #data = pd.DataFrame(list(cursor))
             # if ot != -1 and do != -1 and do > ot:
             #     data = pd.DataFrame(list(cursor))[ot:do]
@@ -362,7 +364,9 @@ def model_train(request):
 
                 data_train = data[columns]
                 timestamp1 = int(time.time())
+                print("1")
                 model = ml_core.model_train(data_train, method, params)
+                print(type(model).__name__)
                 timestamp2 = int(time.time())
                 print("Время обучения модели: ", str(timestamp2-timestamp1), " секунд")
                 # save model to file
@@ -454,9 +458,13 @@ def save_model(request):
 # Метод визуализации
 def vis_model(request):
     global model
+    global data
+    global data_train
 
     timestamp1 = int(time.time())
+    print("66")
     model_name = type(model).__name__
+    print("77")
     fig = None
     if model_name == "DBSCAN":
         fig = v_dbscan.get_plot(model, data_train)
@@ -466,6 +474,8 @@ def vis_model(request):
         fig = v_kmeans.get_plot(model, data_train)
     if model_name == "AgglomerativeClustering":
         fig = v_aggcluster.get_plot(model, data_train)
+    if model_name == "RandomForestRegressor":
+        fig = v_RFregressor.get_plot(model, data)
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close(fig)
