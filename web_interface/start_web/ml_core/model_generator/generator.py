@@ -7,6 +7,9 @@ from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.gaussian_process import GaussianProcessRegressor
+
+from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C
 
 from sklearn.cluster import DBSCAN
 from sklearn.cluster import KMeans
@@ -76,7 +79,14 @@ def generate_model(method, params):
     if method == "RandomForestRegressor":
         try:
             model = RandomForestRegressor(n_estimators=30, max_depth=15, random_state=0)
-            print("2")
+            return model
+        except Exception:
+            return None
+
+    if method == "GaussianProcessRegressor":
+        try:
+            kernel = RBF() + C(constant_value=1)
+            model = GaussianProcessRegressor(kernel=kernel, n_restarts_optimizer=1)
             return model
         except Exception:
             return None

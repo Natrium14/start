@@ -61,7 +61,7 @@
               <div class="form-group mb-2">
                 <select multiple class="form-control" id="methodSelect2" name="methodSelect">
                   <option value="autoencoder" onclick="choose_method('autoencoder')">Autoencoder</option>
-                  <option value="randomforest" onclick="choose_method('randomforest')">RandomForestClassifier</option>
+                  <option value="GaussianProcessRegressor" onclick="choose_method('GaussianProcessRegressor')">GaussianProcessRegressor</option>
                   <option value="RandomForestRegressor" onclick="choose_method('RandomForestRegressor')">RandomForestRegressor</option>
                 </select>
               </div>
@@ -148,7 +148,7 @@
                         </p>
                   </div>
                     <input type="hidden" id="method_name" name="method_name"/>
-                  <button type="submit" class="btn btn-success">Обучить модель</button>
+                  <button type="submit" class="btn btn-success" onclick="show_modal()">Обучить модель</button>
             {% endif %}
             </td>
             <Td style="width: 50%">
@@ -196,6 +196,24 @@
 
 </form>
 
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Создание и обучение модели</h5>
+      </div>
+      <div class="modal-body">
+          <center>
+            <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+              <span class="sr-only"></span>
+            </div>
+          </center>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 
@@ -210,6 +228,7 @@
         show_parameters(data);
         $("#method_name").val(data);
     }
+
     function show_parameters(data){
         if (data == "dbscan") {
             $("#dbscan_params").show();
@@ -252,6 +271,24 @@
             $("#birch_params").hide();
             $("#agg_params").show();
         }
+
+        if (data == "GaussianProcessRegressor"){
+            $("#kmeans_params").hide();
+            $("#dbscan_params").hide();
+            $("#birch_params").hide();
+            $("#agg_params").hide();
+        }
+
+        if (data == "RandomForestRegressor"){
+            $("#kmeans_params").hide();
+            $("#dbscan_params").hide();
+            $("#birch_params").hide();
+            $("#agg_params").hide();
+        }
+    }
+
+    function show_modal(){
+        $('#staticBackdrop').modal('show')
     }
 
 </script>

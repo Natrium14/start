@@ -24,6 +24,7 @@ import visualization_core.vis_dbscan as v_dbscan
 import visualization_core.vis_kmeans as v_kmeans
 import visualization_core.vis_aggcluster as v_aggcluster
 import visualization_core.vis_RFregressor as v_RFregressor
+import visualization_core.vis_GPregressor as v_GPregressor
 import management.views as m_views
 
 
@@ -476,6 +477,8 @@ def vis_model(request):
         fig = v_aggcluster.get_plot(model, data_train)
     if model_name == "RandomForestRegressor":
         fig = v_RFregressor.get_plot(model, data)
+    if model_name == "GaussianProcessRegressor":
+        fig = v_GPregressor.get_plot(model, data)
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close(fig)
