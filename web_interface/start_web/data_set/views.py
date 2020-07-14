@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from joblib import dump, load
 from tkinter import *
 from tkinter import filedialog
+from plotly import io as plotly_io
 
 
 import ml_core.main as ml_core
@@ -312,6 +313,7 @@ def make_plot(request):
             fig = vis_core.get_heatmap(vis_data, plot_size)
         if type == "fill_between":
             fig = vis_core.get_fill_between(vis_data, plot_size)
+
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
         plt.close(fig)
@@ -463,9 +465,7 @@ def vis_model(request):
     global data_train
 
     timestamp1 = int(time.time())
-    print("66")
     model_name = type(model).__name__
-    print("77")
     fig = None
     if model_name == "DBSCAN":
         fig = v_dbscan.get_plot(model, data_train)

@@ -3,10 +3,16 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from vispy import plot as vp
+
+import plotly.express as px
+import plotly.graph_objects as go
+
 import numpy as np
 
 import io
 import urllib, base64
+
 
 
 def get_plot(data, draw, plot_size):
@@ -26,16 +32,48 @@ def get_plot(data, draw, plot_size):
         plt.plot(data[x_label], data[y_label], draw)
 
     if columns_count > 2:
-        print('1')
+        whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+        x_label = data.columns.values[0]
+        ax.set_xlabel(x_label)
         mycolors = ['tab:red', 'tab:blue', 'tab:green', 'tab:orange', 'tab:grey', 'tab:cyan']
         columns = data.columns[1:columns_count]
         date_column = data.columns[0:1][0]
         for i, column in enumerate(columns):
-            print(column)
-            plt.plot(data[date_column].values, data[column].values, draw, lw=1.5, color=mycolors[i], label=column)
+            label = ''.join(filter(whitelist.__contains__, column))
+            plt.plot(data[date_column].values, data[column].values, draw, lw=1.5, color=mycolors[i], label=label)
         plt.legend(loc='upper left')
 
     return fig
+
+
+def get_plot1(data, draw, plot_size):
+    #fig = px.line(data, x=data.columns.values[0], y=data.columns.values[1], title='Зависимость 1')
+    #fig.show()
+
+    fig = go.Figure()
+    columns_count = len(data.columns)
+
+    if columns_count < 2:
+        return fig
+
+    if columns_count == 2:
+        x_label = data.columns.values[0]
+        y_label = data.columns.values[1]
+        print("x")
+        fig.add_trace(go.Scatter(x=data[x_label], y=data[y_label],
+                                 mode='lines',
+                                 name='lines'))
+        #fig.show()
+        return fig
+
+    if columns_count > 2:
+        columns = data.columns[1:columns_count]
+        date_column = data.columns[0:1][0]
+        for i, column in enumerate(columns):
+            fig.add_trace(go.Scatter(x=data[date_column].values, y=data[column].values,
+                                     mode='lines',
+                                     name='lines'))
+        return fig
 
 
 def get_hist(data, bins, plot_size):

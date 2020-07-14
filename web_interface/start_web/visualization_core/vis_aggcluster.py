@@ -12,7 +12,7 @@ def get_plot(model, data):
         scaler = StandardScaler()
         data = scaler.fit_transform(data)
         y_pred = model.fit_predict(data)
-        plt.scatter(data[:, 0], data[:, 1], c=y_pred, cmap='Paired')
+        plt.scatter(data[:, 0], data[:, 1], c=y_pred, cmap='Paired', edgecolors="black")
         plt.title(type(model).__name__)
         plt.legend()
         return fig

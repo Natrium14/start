@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
-from web_interface.start_web.account.forms import RegisterForm
+from account.forms import RegisterForm
 
 
 def login_view(request):

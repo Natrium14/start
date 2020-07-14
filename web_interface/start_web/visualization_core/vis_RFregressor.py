@@ -22,8 +22,9 @@ def get_plot(model, data):
     moving_average_window = 20
 
     #X_plot = data.drop(['_CURR_ACT_', '_VEL_AXIS_', '_MOT_TEMP_'], axis=1).loc[data['_VEL_AXIS_'] == profile_id].values
-    X_plot = data.drop(['_MOT_TEMP_'], axis=1).loc[data['_VEL_AXIS_'] == profile_id].values
+    X_plot = data.drop(['_MOT_TEMP_','_VEL_AXIS_'], axis=1).loc[data['_VEL_AXIS_'] == profile_id].values
     y_plot = data.loc[data['_VEL_AXIS_'] == profile_id, output_value].values
+    print(X_plot)
     y_pred_plot = model.predict(X_plot)
     y_pred_plot_smooth = move_mean(y_pred_plot, moving_average_window, 1)
     time = np.linspace(0, y_plot.shape[0], num=y_plot.shape[0])
