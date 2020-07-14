@@ -11,18 +11,13 @@ from sklearn.preprocessing import StandardScaler
 def model_train(model, data):
     try:
         if type(model).__name__ == "RandomForestRegressor":
-            print("3")
             data = data.drop(['_DATE_', '_NumMotor_'], axis=1)
-            print("4")
             #profile_id_list = data._VEL_AXIS_.unique()
             #X = data.drop(['_CURR_ACT_', '_VEL_AXIS_', '_MOT_TEMP_'], axis=1).values
             X = data.drop(['_MOT_TEMP_', '_VEL_AXIS_'], axis=1).values
-            print(X)
             y = data.loc[:, '_MOT_TEMP_'].values
-            print(y)
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
             model.fit(X_train, y_train)
-            print("7")
             y_pred = model.predict(X_test)
             RFR_MSE = mean_squared_error(y_test, y_pred)
             RFR_MAE = mean_absolute_error(y_test, y_pred)

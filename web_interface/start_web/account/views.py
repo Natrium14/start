@@ -55,7 +55,13 @@ def cabinet(request):
 
 
 def change_password(request):
-    return render(request, "data_set/index.html")
+    if request.POST:
+        current_user = request.user
+        print(request.user)
+        current_user.set_password(request.POST['password'])
+        current_user.save()
+        return render(request, "account/cabinet.html")
+    return render(request, "account/cabinet.html")
 
 
 def change_info(request):
