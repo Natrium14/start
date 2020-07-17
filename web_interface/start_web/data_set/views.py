@@ -120,6 +120,7 @@ def upload_data(request):
             try:
                 data = data.loc[data['_NumMotor_'] == "_1_"]
                 data['_DATE_'] = data.index
+                data = data.drop(['null'], axis=1)
             except:
                 pass
 
@@ -168,7 +169,6 @@ def upload_data_db(request):
             # [0] - для получения первого элемента
             data = pd.DataFrame(list(collection.find())[0]["data"])
             data = data.transpose()
-            data = data.drop(['null'],axis=1)
 
             #data = pd.DataFrame(list(cursor))
             # if ot != -1 and do != -1 and do > ot:
@@ -187,6 +187,7 @@ def upload_data_db(request):
             try:
                 data = data.loc[data['_NumMotor_'] == "_1_"]
                 data['_DATE_'] = data.index
+                data = data.drop(['null'],axis=1)
             except:
                 pass
             #print(len(data[[data.columns[0]]]))
@@ -334,9 +335,9 @@ def make_plot(request):
 # Метод обучения модели по выборке
 def model_train(request):
     global db_client
+    global data
 
     method = str(request.POST['method_name'])
-    columns = request.POST.getlist('model_columns')
 
     params = {}
     context = {}
@@ -357,18 +358,22 @@ def model_train(request):
                 if request.POST['agg_clusters']:
                     params["agg_clusters"] = int(request.POST['agg_clusters'])
 
+                if request.POST.getlist('model_columns'):
+                    global data_train
+                    columns = request.POST.getlist('model_columns')
+                    data_train = data[columns]
+                    params["model_columns"] = columns
+                if request.POST.getlist('model_column_train'):
+                    params["column_train"] = str(request.POST.getlist('model_column_train')[0])
             except Exception:
                 pass
 
             # create and train model
             try:
                 global model
-                global data_train
 
-                data_train = data[columns]
                 timestamp1 = int(time.time())
-                print("1")
-                model = ml_core.model_train(data_train, method, params)
+                model = ml_core.model_train(data, method, params)
                 print(type(model).__name__)
                 timestamp2 = int(time.time())
                 print("Время обучения модели: ", str(timestamp2-timestamp1), " секунд")

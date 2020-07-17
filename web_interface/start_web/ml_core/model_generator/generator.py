@@ -19,20 +19,20 @@ from sklearn.cluster import AgglomerativeClustering
 # Метод создания модели по выбранному методу из библиотеки sklearn
 def generate_model(method, params):
     if method == "dbscan":
+        eps = 0.5
+        min_samples = 2
+
         try:
-            eps = 0.5
-            min_samples = 2
+            if params["eps"]:
+                eps = params["eps"]
+            if params["min_samples"]:
+                min_samples = params["min_samples"]
+        except:
+            pass
 
-            if bool(params):
-                if params["eps"]:
-                    eps = params["eps"]
-                if params["min_samples"]:
-                    min_samples = params["min_samples"]
+        model = DBSCAN(eps=eps, min_samples=min_samples)
+        return model
 
-            model = DBSCAN(eps=eps, min_samples=min_samples)
-            return model
-        except Exception:
-            return None
 
     if method == "kmeans":
         try:

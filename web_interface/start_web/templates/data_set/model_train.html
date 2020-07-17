@@ -83,11 +83,11 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text">eps</span>
                           </div>
-                          <input type="text" class="form-control" aria-label="Sizing example input" name="eps" placeholder="0.5">
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="eps" placeholder="0.5" value="0.5">
                           <div class="input-group-prepend">
                             <span class="input-group-text">min_samples</span>
                           </div>
-                          <input type="text" class="form-control" aria-label="Sizing example input" name="min_samples" placeholder="2">
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="min_samples" placeholder="2" value="2">
                         </div>
                     </div>
                 </div>
@@ -100,11 +100,11 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text">n_clusters</span>
                           </div>
-                          <input type="text" class="form-control" aria-label="Sizing example input" name="n_clusters" placeholder="20">
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="n_clusters" placeholder="20" value="20">
                           <div class="input-group-prepend">
                             <span class="input-group-text">n_init</span>
                           </div>
-                          <input type="text" class="form-control" aria-label="Sizing example input" name="n_init" placeholder="10">
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="n_init" placeholder="10" value="10">
                         </div>
                     </div>
                  </div>
@@ -117,7 +117,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text">n_clusters</span>
                           </div>
-                          <input type="text" class="form-control" aria-label="Sizing example input" name="birch_clusters" placeholder="3">
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="birch_clusters" placeholder="3" value="3">
                         </div>
                     </div>
                 </div>
@@ -130,27 +130,49 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text">n_clusters</span>
                           </div>
-                          <input type="text" class="form-control" aria-label="Sizing example input" name="agg_clusters" placeholder="2">
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="agg_clusters" placeholder="2" value="2">
                         </div>
                     </div>
                 </div>
 
-            {% if dataset_description is not None %}
-                  <div>
-                      Выбор полей для обучения модели:
-                      <p>
-                        {% for column in dataset_description %}
-                            <input type="checkbox" name="model_columns" value="{{ column }}">
-                            {{ column }}
-                            <br>
-                        {% endfor %}
-                        </p>
+
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                        {% if dataset_description is not None %}
+                        <span>Выбор полей для обучения модели:</span>
+                              <p>
+                                {% for column in dataset_description %}
+                                    <input type="checkbox" name="model_columns" value="{{ column }}">
+                                    {{ column }}
+                                    <br>
+                                {% endfor %}
+                              </p>
+                            <input type="hidden" id="method_name" name="method_name"/>
+                            <button type="submit" class="btn btn-success" onclick="show_modal()">Обучить модель</button>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm"  id="column_train">
+                      {% if dataset_description is not None %}
+
+                        <span>Выбор обучающего поля (1 шт.):</span>
+                              <p>
+                                {% for column in dataset_description %}
+                                    <input type="checkbox" name="model_column_train" value="{{ column }}">
+                                    {{ column }}
+                                    <br>
+                                {% endfor %}
+                              </p>
+
+                      {% endif %}
+                    </div>
                   </div>
-                    <input type="hidden" id="method_name" name="method_name"/>
-                  <button type="submit" class="btn btn-success" onclick="show_modal()">Обучить модель</button>
-            {% endif %}
+                </div>
+
             </td>
             <Td style="width: 50%">
+
 
                 {% if model_description is None %}
 
@@ -234,6 +256,7 @@
             $("#kmeans_params").hide();
             $("#birch_params").hide();
             $("#agg_params").hide();
+            $("#column_train").hide();
         }
 
         if (data == "autoencoder"){
@@ -241,6 +264,7 @@
             $("#kmeans_params").hide();
             $("#birch_params").hide();
             $("#agg_params").hide();
+            $("#column_train").hide();
         }
 
         if (data == "randomforest"){
@@ -248,6 +272,7 @@
             $("#kmeans_params").hide();
             $("#birch_params").hide();
             $("#agg_params").hide();
+            $("#column_train").hide();
         }
 
         if (data == "kmeans"){
@@ -255,6 +280,7 @@
             $("#dbscan_params").hide();
             $("#birch_params").hide();
             $("#agg_params").hide();
+            $("#column_train").hide();
         }
 
         if (data == "birch"){
@@ -262,6 +288,7 @@
             $("#dbscan_params").hide();
             $("#birch_params").show();
             $("#agg_params").hide();
+            $("#column_train").hide();
         }
 
         if (data == "aggclust"){
@@ -269,6 +296,7 @@
             $("#dbscan_params").hide();
             $("#birch_params").hide();
             $("#agg_params").show();
+            $("#column_train").hide();
         }
 
         if (data == "GaussianProcessRegressor"){
@@ -276,6 +304,7 @@
             $("#dbscan_params").hide();
             $("#birch_params").hide();
             $("#agg_params").hide();
+            $("#column_train").show();
         }
 
         if (data == "RandomForestRegressor"){
@@ -283,6 +312,7 @@
             $("#dbscan_params").hide();
             $("#birch_params").hide();
             $("#agg_params").hide();
+            $("#column_train").show();
         }
     }
 
