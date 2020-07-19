@@ -31,6 +31,7 @@ def generate_model(method, params):
             pass
 
         model = DBSCAN(eps=eps, min_samples=min_samples)
+        print("1")
         return model
 
 

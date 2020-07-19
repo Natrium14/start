@@ -222,14 +222,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Создание и обучение модели</h5>
-      </div>
-      <div class="modal-body">
-          <center>
-            <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+        <h5 class="modal-title" id="staticBackdropLabel">Создание и обучение модели <span id="modal_method"></span></h5>
+<div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
               <span class="sr-only"></span>
             </div>
-          </center>
       </div>
     </div>
   </div>
@@ -317,7 +313,8 @@
     }
 
     function show_modal(){
-        $('#staticBackdrop').modal('show')
+        $('#modal_method').text($('#method_name').val());
+        $('#staticBackdrop').modal('show');
     }
 
 </script>

@@ -1,29 +1,46 @@
 import numpy as np
+import pandas as pd
 
 from matplotlib import pyplot as plt
 import seaborn as sns
 
-def get_plot(model, data):
-    data=data[:3000] # костыль
-    time = data.loc[:, '_DATE_'].values
-    data = data.drop(['_DATE_', '_NumMotor_'], axis=1)
-    X = data.drop(['_MOT_TEMP_', '_VEL_AXIS_'], axis=1).values
+
+# used for moving average (instead bottleneck)
+def move_mean(y_pred_plot,moving_average_window,min_periods):
+    numbers_series = pd.Series(y_pred_plot)
+    windows = numbers_series.rolling(moving_average_window, min_periods=min_periods)
+    moving_averages = windows.mean()
+    moving_averages_list = moving_averages.tolist()
+    return moving_averages_list
+
+
+def get_plot(model, data, model_columns, train_column):
+    data = data[:3000]  # костыль
+    moving_average_window = 20
+
+    X = data.loc[:, model_columns].values
     X = np.atleast_2d(X)
     x = X
-    y = data.loc[:, '_MOT_TEMP_'].values
-
+    y = data.loc[:, train_column].values
     time = np.linspace(0, y.shape[0], num=y.shape[0])
-
     y_pred, sigma = model.predict(x, return_std=True)
 
-    with sns.axes_style("whitegrid"):
-        fig = plt.figure(figsize=(20, 10))
+    y_pred_plot_smooth = move_mean(y_pred, moving_average_window, 1)
 
-        ax1 = fig.add_subplot(111)
+    with sns.axes_style("whitegrid"):
+        fig = plt.figure(figsize=(30, 20))
+
+        ax1 = fig.add_subplot(211)
         ax1.plot(time, y_pred, 'bo', label='prediction', color='red', alpha=0.4, markersize=10)
         ax1.plot(time, y, 'ro', label='True', color='black', markersize=5)
         ax1.legend(loc='best')
         ax1.set_title("Прогнозирование температуры")
+
+        ax2 = fig.add_subplot(212)
+        ax2.plot(time, y_pred_plot_smooth, 'bo', label='prediction', color='red', alpha=0.4, markersize=10)
+        ax2.plot(time, y, 'ro', label='True', color='black', markersize=5)
+        ax2.legend(loc='best')
+        ax2.set_title("Прогнозирование температуры со сглаживанием")
 
         #plt.plot(time, y, 'ro', markersize=10, label='Observations')
         #plt.plot(time, y_pred, 'bo', markersize=5, label='Prediction')

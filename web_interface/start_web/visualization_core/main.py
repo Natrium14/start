@@ -59,7 +59,6 @@ def get_plot1(data, draw, plot_size):
     if columns_count == 2:
         x_label = data.columns.values[0]
         y_label = data.columns.values[1]
-        print("x")
         fig.add_trace(go.Scatter(x=data[x_label], y=data[y_label],
                                  mode='lines',
                                  name='lines'))
@@ -116,8 +115,6 @@ def get_fill_between(data, plot_size):
             y_label = data.columns.values[1]
             x = data[x_label].astype('int32')
             y = data[y_label]
-            print(x.describe())
-            print(y.describe())
             ax.set_xlabel(x_label)
             ax.set_ylabel(y_label)
             a, b = np.polyfit(x, y, 1)

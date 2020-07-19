@@ -32,9 +32,11 @@ import management.views as m_views
 from sklearn.cluster import DBSCAN
 
 data = None
-data_train = None
+#data_train = None
 model = None
 db_client = None
+model_columns = None
+train_column = None
 
 
 # Стартовая страница
@@ -118,8 +120,8 @@ def upload_data(request):
 
             # Костыль
             try:
+                data[data.columns[0]] = data.index
                 data = data.loc[data['_NumMotor_'] == "_1_"]
-                data['_DATE_'] = data.index
                 data = data.drop(['null'], axis=1)
             except:
                 pass
@@ -185,8 +187,8 @@ def upload_data_db(request):
 
             # Костыль
             try:
+                data[data.columns[0]] = data.index
                 data = data.loc[data['_NumMotor_'] == "_1_"]
-                data['_DATE_'] = data.index
                 data = data.drop(['null'],axis=1)
             except:
                 pass
@@ -359,12 +361,13 @@ def model_train(request):
                     params["agg_clusters"] = int(request.POST['agg_clusters'])
 
                 if request.POST.getlist('model_columns'):
-                    global data_train
-                    columns = request.POST.getlist('model_columns')
-                    data_train = data[columns]
-                    params["model_columns"] = columns
+                    global model_columns
+                    model_columns = request.POST.getlist('model_columns')
+                    params["model_columns"] = model_columns
                 if request.POST.getlist('model_column_train'):
-                    params["column_train"] = str(request.POST.getlist('model_column_train')[0])
+                    global train_column
+                    train_column = str(request.POST.getlist('model_column_train')[0])
+                    params["column_train"] = train_column
             except Exception:
                 pass
 
@@ -467,23 +470,24 @@ def save_model(request):
 def vis_model(request):
     global model
     global data
-    global data_train
+    global model_columns
+    global train_column
 
     timestamp1 = int(time.time())
     model_name = type(model).__name__
     fig = None
     if model_name == "DBSCAN":
-        fig = v_dbscan.get_plot(model, data_train)
+        fig = v_dbscan.get_plot(model, data[model_columns])
     if model_name == "KMeans":
-        fig = v_kmeans.get_plot(model, data_train)
+        fig = v_kmeans.get_plot(model, data[model_columns])
     if model_name == "Birch":
-        fig = v_kmeans.get_plot(model, data_train)
+        fig = v_kmeans.get_plot(model, data[model_columns])
     if model_name == "AgglomerativeClustering":
-        fig = v_aggcluster.get_plot(model, data_train)
+        fig = v_aggcluster.get_plot(model, data[model_columns])
     if model_name == "RandomForestRegressor":
-        fig = v_RFregressor.get_plot(model, data)
+        fig = v_RFregressor.get_plot(model, data, model_columns, train_column)
     if model_name == "GaussianProcessRegressor":
-        fig = v_GPregressor.get_plot(model, data)
+        fig = v_GPregressor.get_plot(model, data, model_columns, train_column)
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close(fig)
