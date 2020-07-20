@@ -21,11 +21,6 @@ from plotly import io as plotly_io
 import ml_core.main as ml_core
 import statistic_core.main as stat_core
 import visualization_core.main as vis_core
-import visualization_core.vis_dbscan as v_dbscan
-import visualization_core.vis_kmeans as v_kmeans
-import visualization_core.vis_aggcluster as v_aggcluster
-import visualization_core.vis_RFregressor as v_RFregressor
-import visualization_core.vis_GPregressor as v_GPregressor
 import management.views as m_views
 
 
@@ -296,27 +291,20 @@ def make_plot(request):
     try:
         timestamp1 = int(time.time())
 
-        ot = int(request.POST['number_ot'])
-        do = int(request.POST['number_do'])
-        type = str(request.POST['type'])
-        draw = str(request.POST['draw'])
-        bins = int(request.POST['bins'])
-        plot_size = str(request.POST['plot_size'])
+        params = {}
+        params["ot"] = ot = int(request.POST['number_ot'])
+        params["do"] = do = int(request.POST['number_do'])
+        params["type"] = str(request.POST['type'])
+        params["draw"] = str(request.POST['draw'])
+        params["bins"] = int(request.POST['bins'])
+        params["plot_size"] = str(request.POST['plot_size'])
 
         columns = request.POST.getlist('checkbox_columns')
         vis_data = data[columns]
-        fig = None
         if do > ot:
             vis_data = data[columns][ot:do]
-        if type == "plot":
-            fig = vis_core.get_plot(vis_data, draw, plot_size)
-        if type == "hist":
-            fig = vis_core.get_hist(vis_data, bins, plot_size)
-        if type == "heatmap":
-            fig = vis_core.get_heatmap(vis_data, plot_size)
-        if type == "fill_between":
-            fig = vis_core.get_fill_between(vis_data, plot_size)
 
+        fig = vis_core.data_plot(vis_data, params)
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
         plt.close(fig)
@@ -474,22 +462,14 @@ def vis_model(request):
     global train_column
 
     timestamp1 = int(time.time())
-    model_name = type(model).__name__
-    fig = None
-    if model_name == "DBSCAN":
-        fig = v_dbscan.get_plot(model, data[model_columns])
-    if model_name == "KMeans":
-        fig = v_kmeans.get_plot(model, data[model_columns])
-    if model_name == "Birch":
-        fig = v_kmeans.get_plot(model, data[model_columns])
-    if model_name == "AgglomerativeClustering":
-        fig = v_aggcluster.get_plot(model, data[model_columns])
-    if model_name == "RandomForestRegressor":
-        fig = v_RFregressor.get_plot(model, data, model_columns, train_column)
-    if model_name == "GaussianProcessRegressor":
-        fig = v_GPregressor.get_plot(model, data, model_columns, train_column)
+
+    fig = vis_core.model_plot(model, data, model_columns, train_column)
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close(fig)
+
+    timestamp2 = int(time.time())
+    print("Визуализация модели: ", str(timestamp2 - timestamp1), " секунд")
+
     response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response

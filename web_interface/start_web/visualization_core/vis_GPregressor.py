@@ -33,12 +33,16 @@ def get_plot(model, data, model_columns, train_column):
         ax1 = fig.add_subplot(211)
         ax1.plot(time, y_pred, 'bo', label='prediction', color='red', alpha=0.4, markersize=10)
         ax1.plot(time, y, 'ro', label='True', color='black', markersize=5)
+        #ax1.plot(time[:2000], y[:2000], 'ro', label='True', color='black', markersize=5)
+        #ax1.plot(time[2000:], y[2000:], 'ro', label='True', color='black', alpha=0.0, markersize=5)
         ax1.legend(loc='best')
         ax1.set_title("Прогнозирование температуры")
 
         ax2 = fig.add_subplot(212)
         ax2.plot(time, y_pred_plot_smooth, 'bo', label='prediction', color='red', alpha=0.4, markersize=10)
         ax2.plot(time, y, 'ro', label='True', color='black', markersize=5)
+        #ax2.plot(time[:2000], y[:2000], 'ro', label='True', color='black', markersize=5)
+        #ax2.plot(time[2000:], y[2000:], 'ro', label='True', color='black', alpha=0.0,markersize=5)
         ax2.legend(loc='best')
         ax2.set_title("Прогнозирование температуры со сглаживанием")
 

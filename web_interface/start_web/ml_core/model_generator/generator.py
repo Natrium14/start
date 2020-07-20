@@ -31,7 +31,6 @@ def generate_model(method, params):
             pass
 
         model = DBSCAN(eps=eps, min_samples=min_samples)
-        print("1")
         return model
 
 
@@ -88,7 +87,6 @@ def generate_model(method, params):
         try:
             kernel = RBF() + C(constant_value=1)
             model = GaussianProcessRegressor(kernel=kernel, n_restarts_optimizer=1)
-            print("2")
             return model
         except Exception:
             return None

@@ -13,12 +13,30 @@ import numpy as np
 import io
 import urllib, base64
 
+import visualization_core.vis_dbscan as v_dbscan
+import visualization_core.vis_kmeans as v_kmeans
+import visualization_core.vis_aggcluster as v_aggcluster
+import visualization_core.vis_RFregressor as v_RFregressor
+import visualization_core.vis_GPregressor as v_GPregressor
+
+
+def data_plot(data, params):
+    type = params["type"]
+    if type == "plot":
+        return get_plot(data, params["draw"], params["plot_size"])
+    if type == "hist":
+        return get_hist(data, params["bins"], params["plot_size"])
+    if type == "heatmap":
+        return get_heatmap(data, params["plot_size"])
+    if type == "fill_between":
+        return get_fill_between(data, params["plot_size"])
+    return None
 
 
 def get_plot(data, draw, plot_size):
     width, height = get_plot_size(plot_size)
     fig, ax = plt.subplots(figsize=(width, height))
-    #plt.grid(True)
+    # plt.grid(True)
     columns_count = len(data.columns)
 
     if columns_count < 2:
@@ -44,35 +62,6 @@ def get_plot(data, draw, plot_size):
         plt.legend(loc='upper left')
 
     return fig
-
-
-def get_plot1(data, draw, plot_size):
-    #fig = px.line(data, x=data.columns.values[0], y=data.columns.values[1], title='Зависимость 1')
-    #fig.show()
-
-    fig = go.Figure()
-    columns_count = len(data.columns)
-
-    if columns_count < 2:
-        return fig
-
-    if columns_count == 2:
-        x_label = data.columns.values[0]
-        y_label = data.columns.values[1]
-        fig.add_trace(go.Scatter(x=data[x_label], y=data[y_label],
-                                 mode='lines',
-                                 name='lines'))
-        #fig.show()
-        return fig
-
-    if columns_count > 2:
-        columns = data.columns[1:columns_count]
-        date_column = data.columns[0:1][0]
-        for i, column in enumerate(columns):
-            fig.add_trace(go.Scatter(x=data[date_column].values, y=data[column].values,
-                                     mode='lines',
-                                     name='lines'))
-        return fig
 
 
 def get_hist(data, bins, plot_size):
@@ -144,3 +133,20 @@ def get_plot_size(plot_size):
         width = 28
         height = 22
     return width, height
+
+
+def model_plot(model, data, model_columns, train_column):
+    model_name = type(model).__name__
+    if model_name == "DBSCAN":
+        return v_dbscan.get_plot(model, data[model_columns])
+    if model_name == "KMeans":
+        return v_kmeans.get_plot(model, data[model_columns])
+    if model_name == "Birch":
+        return v_kmeans.get_plot(model, data[model_columns])
+    if model_name == "AgglomerativeClustering":
+        return v_aggcluster.get_plot(model, data[model_columns])
+    if model_name == "RandomForestRegressor":
+        return v_RFregressor.get_plot(model, data, model_columns, train_column)
+    if model_name == "GaussianProcessRegressor":
+        return v_GPregressor.get_plot(model, data, model_columns, train_column)
+    return None
