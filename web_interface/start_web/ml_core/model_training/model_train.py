@@ -2,7 +2,8 @@ import numpy as np
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error,max_error, explained_variance_score
+from sklearn.metrics.cluster import homogeneity_score, adjusted_rand_score
 from sklearn.preprocessing import StandardScaler
 
 
@@ -20,6 +21,8 @@ def model_train(model, data, params):
         y_pred = model.predict(X_test)
         RFR_MSE = mean_squared_error(y_test, y_pred)
         RFR_MAE = mean_absolute_error(y_test, y_pred)
+        print("MAX ERROR: " + str(max_error(y_test, y_pred)))
+        print("explained_variance_score: " + str(explained_variance_score(y_test, y_pred)))
         print("MSE: {0}".format(RFR_MSE))
         print("MAE: {0}".format(RFR_MAE))
         return model

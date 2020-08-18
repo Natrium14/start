@@ -78,7 +78,7 @@ def generate_model(method, params):
 
     if method == "RandomForestRegressor":
         try:
-            model = RandomForestRegressor(n_estimators=30, max_depth=15, random_state=0)
+            model = RandomForestRegressor(n_estimators=40, max_depth=20, random_state=0)
             return model
         except Exception:
             return None

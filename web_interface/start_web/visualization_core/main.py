@@ -150,3 +150,35 @@ def model_plot(model, data, model_columns, train_column):
     if model_name == "GaussianProcessRegressor":
         return v_GPregressor.get_plot(model, data, model_columns, train_column)
     return None
+
+
+# used for moving average (instead bottleneck)
+def move_mean(y_pred_plot,moving_average_window,min_periods):
+    numbers_series = pd.Series(y_pred_plot)
+    windows = numbers_series.rolling(moving_average_window, min_periods=min_periods)
+    moving_averages = windows.mean()
+    moving_averages_list = moving_averages.tolist()
+    return moving_averages_list
+
+def get_plot_normal_values(data, draw, plot_size):
+    data1 = data[300:700]
+    data2 = data[300:700]
+    moving_average_window = 5
+    width, height = get_plot_size(plot_size)
+    fig, ax = plt.subplots(figsize=(width, height))
+    # plt.grid(True)
+
+    x_label = data1.columns.values[0]
+    y_label = data1.columns.values[3]
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    plt.plot(data2[x_label], data2[y_label], "", color="tab:blue")
+
+    y1 = move_mean(data1[y_label] * 1.05, moving_average_window, 1)
+    y2 = move_mean(data1[y_label] * 0.95, moving_average_window, 1)
+    plt.plot(data2[x_label], y1, draw, lw=1.5, color='tab:red', alpha=0.75)
+    plt.plot(data2[x_label], y2, draw, lw=1.5, color='tab:red', alpha=0.75)
+
+    #print(max(data2[y_label])/max(data1[y_label]))
+
+    return fig

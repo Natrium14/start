@@ -24,16 +24,7 @@ import visualization_core.main as vis_core
 import management.views as m_views
 import data_set.data_entity as data11
 
-
-from sklearn.cluster import DBSCAN
-
 data = None
-#data = None
-#model = None
-#db_client = None
-#model_columns = None
-#train_column = None
-
 
 # Стартовая страница
 def main_page(request):
@@ -69,19 +60,19 @@ def stat_index(request):
     try:
         array = {}
         timestamp1 = int(time.time())
-        data = data.get_data()
-        for col in data.columns:
+        data1 = data.get_data()
+        for col in data1.columns:
             column = str(col)
             try:
 
                 #if "cur" in column.lower():
                 if True:
-                    min = stat_core.get_min(data[column])
-                    mean = stat_core.get_mean(data[column])
-                    max = stat_core.get_max(data[column])
-                    median = stat_core.get_median(data[column])
-                    variance = stat_core.get_variance(data[column])
-                    stdev = stat_core.get_stdev(data[column])
+                    min = stat_core.get_min(data1[column])
+                    mean = stat_core.get_mean(data1[column])
+                    max = stat_core.get_max(data1[column])
+                    median = stat_core.get_median(data1[column])
+                    variance = stat_core.get_variance(data1[column])
+                    stdev = stat_core.get_stdev(data1[column])
                     array[column] = {
                         'min': min,
                         'mean': mean,
@@ -106,6 +97,44 @@ def stat_index(request):
         return render(request, "error/error404.html", error_context)
 
 
+def normal_values(request):
+    global data
+
+    array = {}
+    data1 = data.get_data()
+    for col in data1.columns:
+        column = str(col)
+        try:
+            min = stat_core.get_min(data1[column])
+            max = stat_core.get_max(data1[column])
+            normal_value = str(round(min, 4)) + " .. " + str(round(max, 4)) + "; допуск: " + str(abs(round(max, 4)-round(min, 4))*0.05)
+
+            array[column] = {
+                "normal_value": normal_value
+            }
+        except:
+            pass
+    context = {
+        'array': array
+    }
+    print(array)
+    return render(request, "data_set/normal_values.html", context)
+
+
+def vis_normal_values(request):
+    global data
+
+    data1 = data.get_data()
+    print(data1)
+    fig = vis_core.get_plot_normal_values(data1, "", "medium")
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+
+    response = HttpResponse(buf.getvalue(), content_type='image/png')
+    return response
+
+
 # Метод получения выборки данных из файла
 def upload_data(request):
     global data
@@ -116,19 +145,19 @@ def upload_data(request):
         try:
             file = request.FILES.get('data_file')
 
-            data = pd.read_csv(file)
-            dataset_count = len(data[[data.columns[0]]])
-            dataset_description = data.columns
+            data1 = pd.read_csv(file)
+            dataset_count = len(data1[[data1.columns[0]]])
+            dataset_description = data1.columns
 
             # Костыль
             try:
-                data[data.columns[0]] = data.index
-                data = data.drop(['null'], axis=1)
-                data = data.loc[data['_NumMotor_'] == "_1_"]
+                data1[data1.columns[0]] = data1.index
+                data1 = data1.drop(['null'], axis=1)
+                data1 = data1.loc[data1['_NumMotor_'] == "_1_"]
             except:
                 pass
 
-            data.set_data(data)
+            data.set_data(data1)
 
             context['connection'] = data.get_db_client()
             context['dataset_count'] = dataset_count
@@ -166,8 +195,8 @@ def upload_data_db(request):
             do = int(request.POST["number_do"])
 
             # [0] - для получения первого элемента
-            data = pd.DataFrame(list(collection.find())[0]["data"])
-            data = data.transpose()
+            data1 = pd.DataFrame(list(collection.find())[0]["data"])
+            data1 = data1.transpose()
 
             #data = pd.DataFrame(list(cursor))
             # if ot != -1 and do != -1 and do > ot:
@@ -176,21 +205,21 @@ def upload_data_db(request):
             #     data = pd.DataFrame(list(cursor))
             #del data['_id']
 
-            for col in data.columns[1:]:
+            for col in data1.columns[1:]:
                 try:
-                    data[col] = data[col].astype(float)
+                    data1[col] = data1[col].astype(float)
                 except:
                     pass
 
             # Костыль
             try:
-                data[data.columns[0]] = data.index
-                data = data.drop(['null'], axis=1)
-                data = data.loc[data['_NumMotor_'] == "_1_"]
+                data1[data1.columns[0]] = data1.index
+                data1 = data1.drop(['null'], axis=1)
+                data1 = data1.loc[data1['_NumMotor_'] == "_1_"]
             except:
                 pass
 
-            data.set_data(data)
+            data.set_data(data1)
 
             context['dataset_count'] = len(data.get_data()[[data.get_data().columns[0]]])
             context['dataset_description'] = data.get_data().columns
@@ -374,7 +403,7 @@ def model_train(request):
             # create and train model
             try:
                 timestamp1 = int(time.time())
-                model = ml_core.model_train(data, method, params)
+                model = ml_core.model_train(data.get_data(), method, params)
                 print(type(model).__name__)
                 timestamp2 = int(time.time())
                 data.set_model(model)
@@ -414,11 +443,11 @@ def model_train(request):
 def get_anomalies(request):
     global data
 
-    data = data.get_data()
+    data1 = data.get_data()
     model = data.get_model()
     timestamp1 = int(time.time())
     try:
-        abnormal_data = data.iloc[0]
+        abnormal_data = data1.iloc[0]
         core_samples_mask = np.zeros_like(model.labels_, dtype=bool)
         core_samples_mask[model.core_sample_indices_] = True
         labels = model.labels_
@@ -428,11 +457,11 @@ def get_anomalies(request):
         for k in unique_labels:
             class_member_mask = (labels == k)
             if k == -1:
-                abnormal_data = data[class_member_mask & ~core_samples_mask]
+                abnormal_data = data1[class_member_mask & ~core_samples_mask]
         for k in unique_labels:
             class_member_mask = (labels == k)
-            if counts[k] < (len(data[[data.columns[0]]])*0.1):
-                abnormal_data = abnormal_data.append(data[class_member_mask & core_samples_mask], ignore_index=True)
+            if counts[k] < (len(data1[[data1.columns[0]]])*0.1):
+                abnormal_data = abnormal_data.append(data1[class_member_mask & core_samples_mask], ignore_index=True)
         #abnormal_data = abnormal_data.sort_values(by="Time")
 
         timestamp2 = int(time.time())

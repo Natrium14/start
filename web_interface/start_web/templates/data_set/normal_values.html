@@ -1,0 +1,47 @@
+{% extends "data_set/index.html" %}
+
+{% block data_set_content %}
+
+    <div style="margin-top: 2px">
+        <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index_dataset' %}">Загрузка данных</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'model_training' %}">Обучение модели</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'model_testing' %}">Тестирование модели</a>
+      </li>
+    </ul>
+    </div>
+
+
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Измерение
+        </th>
+        <th>
+            Диапазон значений
+        </th>
+    </tr>
+
+    {% for col, value in array.items %}
+    <tr>
+        <td>{{ col }}</td>
+        {% for stat, stat_value in value.items %}
+        <td>
+            <span>{{ stat_value }}</span>
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'vis_normal_values' %}" target="_blank" class="btn btn-primary">Визуализация диапазона нормальных величин (для тока)</a>
+
+
+
+{% endblock %}
