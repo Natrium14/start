@@ -60,19 +60,19 @@ def stat_index(request):
     try:
         array = {}
         timestamp1 = int(time.time())
-        data1 = data.get_data()
-        for col in data1.columns:
+        data_current = data.get_data()
+        for col in data_current.columns:
             column = str(col)
             try:
 
                 #if "cur" in column.lower():
                 if True:
-                    min = stat_core.get_min(data1[column])
-                    mean = stat_core.get_mean(data1[column])
-                    max = stat_core.get_max(data1[column])
-                    median = stat_core.get_median(data1[column])
-                    variance = stat_core.get_variance(data1[column])
-                    stdev = stat_core.get_stdev(data1[column])
+                    min = stat_core.get_min(data_current[column])
+                    mean = stat_core.get_mean(data_current[column])
+                    max = stat_core.get_max(data_current[column])
+                    median = stat_core.get_median(data_current[column])
+                    variance = stat_core.get_variance(data_current[column])
+                    stdev = stat_core.get_stdev(data_current[column])
                     array[column] = {
                         'min': min,
                         'mean': mean,
@@ -101,12 +101,12 @@ def normal_values(request):
     global data
 
     array = {}
-    data1 = data.get_data()
-    for col in data1.columns:
+    data_current = data.get_data()
+    for col in data_current.columns:
         column = str(col)
         try:
-            min = stat_core.get_min(data1[column])
-            max = stat_core.get_max(data1[column])
+            min = stat_core.get_min(data_current[column])
+            max = stat_core.get_max(data_current[column])
             normal_value = str(round(min, 4)) + " .. " + str(round(max, 4)) + "; допуск: " + str(abs(round(max, 4)-round(min, 4))*0.05)
 
             array[column] = {
@@ -124,13 +124,11 @@ def normal_values(request):
 def vis_normal_values(request):
     global data
 
-    data1 = data.get_data()
-    print(data1)
-    fig = vis_core.get_plot_normal_values(data1, "", "medium")
+    data_current = data.get_data()
+    fig = vis_core.get_plot_normal_values(data_current, "", "medium")
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close(fig)
-
     response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response
 
@@ -145,19 +143,19 @@ def upload_data(request):
         try:
             file = request.FILES.get('data_file')
 
-            data1 = pd.read_csv(file)
-            dataset_count = len(data1[[data1.columns[0]]])
-            dataset_description = data1.columns
+            data_current = pd.read_csv(file)
+            dataset_count = len(data_current[[data_current.columns[0]]])
+            dataset_description = data_current.columns
 
             # Костыль
             try:
-                data1[data1.columns[0]] = data1.index
-                data1 = data1.drop(['null'], axis=1)
-                data1 = data1.loc[data1['_NumMotor_'] == "_1_"]
+                data_current[data_current.columns[0]] = data_current.index
+                data_current = data_current.drop(['null'], axis=1)
+                data_current = data_current.loc[data_current['_NumMotor_'] == "_1_"]
             except:
                 pass
 
-            data.set_data(data1)
+            data.set_data(data_current)
 
             context['connection'] = data.get_db_client()
             context['dataset_count'] = dataset_count
@@ -195,8 +193,8 @@ def upload_data_db(request):
             do = int(request.POST["number_do"])
 
             # [0] - для получения первого элемента
-            data1 = pd.DataFrame(list(collection.find())[0]["data"])
-            data1 = data1.transpose()
+            data_current = pd.DataFrame(list(collection.find())[0]["data"])
+            data_current = data_current.transpose()
 
             #data = pd.DataFrame(list(cursor))
             # if ot != -1 and do != -1 and do > ot:
@@ -205,21 +203,21 @@ def upload_data_db(request):
             #     data = pd.DataFrame(list(cursor))
             #del data['_id']
 
-            for col in data1.columns[1:]:
+            for col in data_current.columns[1:]:
                 try:
-                    data1[col] = data1[col].astype(float)
+                    data_current[col] = data_current[col].astype(float)
                 except:
                     pass
 
             # Костыль
             try:
-                data1[data1.columns[0]] = data1.index
-                data1 = data1.drop(['null'], axis=1)
-                data1 = data1.loc[data1['_NumMotor_'] == "_1_"]
+                data_current[data_current.columns[0]] = data_current.index
+                data_current = data_current.drop(['null'], axis=1)
+                data_current = data_current.loc[data_current['_NumMotor_'] == "_1_"]
             except:
                 pass
 
-            data.set_data(data1)
+            data.set_data(data_current)
 
             context['dataset_count'] = len(data.get_data()[[data.get_data().columns[0]]])
             context['dataset_description'] = data.get_data().columns
@@ -443,11 +441,11 @@ def model_train(request):
 def get_anomalies(request):
     global data
 
-    data1 = data.get_data()
+    data_current = data.get_data()
     model = data.get_model()
     timestamp1 = int(time.time())
     try:
-        abnormal_data = data1.iloc[0]
+        abnormal_data = data_current.iloc[0]
         core_samples_mask = np.zeros_like(model.labels_, dtype=bool)
         core_samples_mask[model.core_sample_indices_] = True
         labels = model.labels_
@@ -457,11 +455,11 @@ def get_anomalies(request):
         for k in unique_labels:
             class_member_mask = (labels == k)
             if k == -1:
-                abnormal_data = data1[class_member_mask & ~core_samples_mask]
+                abnormal_data = data_current[class_member_mask & ~core_samples_mask]
         for k in unique_labels:
             class_member_mask = (labels == k)
-            if counts[k] < (len(data1[[data1.columns[0]]])*0.1):
-                abnormal_data = abnormal_data.append(data1[class_member_mask & core_samples_mask], ignore_index=True)
+            if counts[k] < (len(data_current[[data_current.columns[0]]])*0.1):
+                abnormal_data = abnormal_data.append(data_current[class_member_mask & core_samples_mask], ignore_index=True)
         #abnormal_data = abnormal_data.sort_values(by="Time")
 
         timestamp2 = int(time.time())
