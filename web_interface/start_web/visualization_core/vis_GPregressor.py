@@ -15,7 +15,6 @@ def move_mean(y_pred_plot,moving_average_window,min_periods):
 
 
 def get_plot(model, data, model_columns, train_column):
-    data = data  # костыль
     moving_average_window = 20
 
     X = data.loc[:, model_columns].values

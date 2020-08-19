@@ -150,8 +150,8 @@ def upload_data(request):
             # Костыль
             try:
                 data_current[data_current.columns[0]] = data_current.index
-                data_current = data_current.drop(['null'], axis=1)
                 data_current = data_current.loc[data_current['_NumMotor_'] == "_1_"]
+                data_current = data_current.drop(['null'], axis=1)
             except:
                 pass
 
@@ -248,6 +248,7 @@ def model_training(request):
 
         if data.get_model() is not None:
             context['model_description'] = str(data.get_model())
+            context['metrics'] = data.get_metrics()
 
         if data.get_db_client() is not None:
             context['connection'] = data.get_db_client()
@@ -386,6 +387,10 @@ def model_train(request):
                     params["birch_clusters"] = int(request.POST['birch_clusters'])
                 if request.POST['agg_clusters']:
                     params["agg_clusters"] = int(request.POST['agg_clusters'])
+                if request.POST['n_estimators']:
+                    params["n_estimators"] = int(request.POST['n_estimators'])
+                if request.POST['max_depth']:
+                    params["max_depth"] = int(request.POST['max_depth'])
 
                 if request.POST.getlist('model_columns'):
                     model_columns = request.POST.getlist('model_columns')
@@ -401,10 +406,11 @@ def model_train(request):
             # create and train model
             try:
                 timestamp1 = int(time.time())
-                model = ml_core.model_train(data.get_data(), method, params)
+                model, metrics = ml_core.model_train(data.get_data(), method, params)
                 print(type(model).__name__)
                 timestamp2 = int(time.time())
                 data.set_model(model)
+                data.set_metrics(metrics)
                 print("Время обучения модели: ", str(timestamp2-timestamp1), " секунд")
                 # save model to file
                 '''
@@ -419,7 +425,9 @@ def model_train(request):
                 '''
                 context['time_to_train'] = str(timestamp2-timestamp1)
                 context['model_description'] = str(model)
+                context['metrics'] = metrics
             except:
+                print("Unexpected error:", sys.exc_info()[0])
                 return render(request, "error/error404.html")
         else:
             context['model_description'] = None

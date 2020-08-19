@@ -33,11 +33,11 @@ def get_plot(model, data, model_columns, train_column):
 
         ax2 = fig.add_subplot(212)
         ax2.plot(time, y_pred_plot_smooth, label='predict with smoothing', color='red', alpha=0.8, linewidth=0.8)
-        #ax2.plot(time, y, label='True', color='black', linewidth=1)
-        ax2.plot(time[:3500], y[:3500], label='True', color='black', linewidth=1)
-        ax2.plot(time[3500:4500], y[3500:4500], color='black', linewidth=1, alpha=0.0)
-        ax2.plot(time[4500:6500], y[4500:6500], color='black', linewidth=1)
-        ax2.plot(time[6500:], y[6500:], color='black', linewidth=1, alpha=0.0)
+        ax2.plot(time, y, label='True', color='black', linewidth=1)
+        #ax2.plot(time[:3500], y[:3500], label='True', color='black', linewidth=1)
+        #ax2.plot(time[3500:4500], y[3500:4500], color='black', linewidth=1, alpha=0.0)
+        #ax2.plot(time[4500:6500], y[4500:6500], color='black', linewidth=1)
+        #ax2.plot(time[6500:], y[6500:], color='black', linewidth=1, alpha=0.0)
         ax2.legend(loc='best')
         ax2.set_title("with smoothing")
 

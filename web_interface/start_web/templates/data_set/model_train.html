@@ -135,6 +135,25 @@
                     </div>
                 </div>
 
+                <div  id="rforest_params">
+                    <div class="alert alert-info " role="alert">
+                        <h6>Параметры модели:</h6>
+                        <br>
+                        <div class="input-group input-group-sm mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">n_estimators</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="n_estimators" placeholder="10" value="10">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">max_depth</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Sizing example input" name="max_depth" placeholder="5" value="5">
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <div class="container">
@@ -189,6 +208,16 @@
                     <p>
                         {{ model_description }}
                     </p>
+                    <hr>
+                    {% if metrics is not None %}
+                        {% for metric in metrics %}
+                            {% for name,value in metric.items %}
+                                <span><strong>{{ name }}</strong> : {{ value }}</span>
+                                <br>
+                            {% endfor %}
+                        {% endfor %}
+                    <hr>
+                    {% endif %}
                     <p>
                         Время обучения: {{ time_to_train }}
                     </p>
@@ -234,80 +263,42 @@
 
 <script>
 
-    $(function(){
-            $("#dbscan_params").hide();
-            $("#kmeans_params").hide();
-            $("#birch_params").hide();
-            $("#agg_params").hide();
-    })
+    $(function(){ hide_params(); })
 
     function choose_method(data){
         show_parameters(data);
         $("#method_name").val(data);
     }
 
+    function hide_params(){
+            $("#dbscan_params").hide();
+            $("#kmeans_params").hide();
+            $("#birch_params").hide();
+            $("#agg_params").hide();
+            $("#column_train").hide();
+            $("#rforest_params").hide();
+    }
+
     function show_parameters(data){
+        hide_params();
+
         if (data == "dbscan") {
             $("#dbscan_params").show();
-            $("#kmeans_params").hide();
-            $("#birch_params").hide();
-            $("#agg_params").hide();
-            $("#column_train").hide();
         }
-
-        if (data == "autoencoder"){
-            $("#dbscan_params").hide();
-            $("#kmeans_params").hide();
-            $("#birch_params").hide();
-            $("#agg_params").hide();
-            $("#column_train").hide();
-        }
-
-        if (data == "randomforest"){
-            $("#dbscan_params").hide();
-            $("#kmeans_params").hide();
-            $("#birch_params").hide();
-            $("#agg_params").hide();
-            $("#column_train").hide();
-        }
-
         if (data == "kmeans"){
             $("#kmeans_params").show();
-            $("#dbscan_params").hide();
-            $("#birch_params").hide();
-            $("#agg_params").hide();
-            $("#column_train").hide();
         }
-
         if (data == "birch"){
-            $("#kmeans_params").hide();
-            $("#dbscan_params").hide();
             $("#birch_params").show();
-            $("#agg_params").hide();
-            $("#column_train").hide();
         }
-
         if (data == "aggclust"){
-            $("#kmeans_params").hide();
-            $("#dbscan_params").hide();
-            $("#birch_params").hide();
             $("#agg_params").show();
-            $("#column_train").hide();
         }
-
-        if (data == "GaussianProcessRegressor"){
-            $("#kmeans_params").hide();
-            $("#dbscan_params").hide();
-            $("#birch_params").hide();
-            $("#agg_params").hide();
-            $("#column_train").show();
-        }
-
         if (data == "RandomForestRegressor"){
-            $("#kmeans_params").hide();
-            $("#dbscan_params").hide();
-            $("#birch_params").hide();
-            $("#agg_params").hide();
+            $("#column_train").show();
+            $("#rforest_params").show();
+        }
+        if (data == "GaussianProcessRegressor"){
             $("#column_train").show();
         }
     }

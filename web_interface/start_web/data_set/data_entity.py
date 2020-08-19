@@ -8,6 +8,7 @@ class Data:
         self.db_client = None
         self.model_columns = None
         self.train_column = None
+        self.metrics = None
 
     def set_data(self, data1):
         self.data = data1
@@ -20,6 +21,12 @@ class Data:
 
     def get_model(self):
         return self.model
+
+    def set_metrics(self, metrics):
+        self.metrics = metrics
+
+    def get_metrics(self):
+        return self.metrics
 
     def set_db_client(self, db_client):
         self.db_client = db_client
