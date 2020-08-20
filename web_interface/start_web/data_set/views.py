@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
+import plotly.offline as opy
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -144,8 +144,6 @@ def upload_data(request):
             file = request.FILES.get('data_file')
 
             data_current = pd.read_csv(file)
-            dataset_count = len(data_current[[data_current.columns[0]]])
-            dataset_description = data_current.columns
 
             # Костыль
             try:
@@ -156,6 +154,8 @@ def upload_data(request):
                 pass
 
             data.set_data(data_current)
+            dataset_count = len(data_current[[data_current.columns[0]]])
+            dataset_description = data_current.columns
 
             context['connection'] = data.get_db_client()
             context['dataset_count'] = dataset_count
@@ -219,8 +219,8 @@ def upload_data_db(request):
 
             data.set_data(data_current)
 
-            context['dataset_count'] = len(data.get_data()[[data.get_data().columns[0]]])
-            context['dataset_description'] = data.get_data().columns
+            context['dataset_count'] = len(data_current[[data_current.columns[0]]])
+            context['dataset_description'] = data_current.columns
 
             timestamp2 = int(time.time())
             print("Загрузка выборки из БД:", timestamp2 - timestamp1, " секунд")
@@ -524,3 +524,20 @@ def vis_model(request):
 
     response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response
+
+
+def vis_model_plotly(request):
+    global data
+
+    fig = vis_core.model_plotly(
+        data.get_model(),
+        data.get_data(),
+        data.get_model_columns(),
+        data.get_train_column()
+    )
+
+    div = opy.plot(fig, auto_open=False, output_type='div')
+    context = {
+        'graph': div
+    }
+    return render(request, "data_set/plotly_test.html", context)

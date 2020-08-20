@@ -1,6 +1,9 @@
 import numpy as np
 import pandas as pd
 
+import plotly.express as px
+import plotly.graph_objects as go
+
 from matplotlib import pyplot as plt
 import seaborn as sns
 
@@ -48,4 +51,15 @@ def get_plot(model, data, model_columns, train_column):
         #plt.plot(time, y, 'ro', markersize=10, label='Observations')
         #plt.plot(time, y_pred, 'bo', markersize=5, label='Prediction')
         #plt.legend(loc='upper left')
+    return fig
+
+
+def get_plot_2(model, data, model_columns, train_column):
+    X = data.loc[:, model_columns].values
+    X = np.atleast_2d(X)
+    time = data.iloc[:, 0].values.reshape(-1)
+    y_pred = model.predict(X)
+
+    fig = px.scatter(data, x=data.columns[0], y=train_column, opacity=0.3)
+    fig.add_traces(go.Scatter(x=time, y=y_pred, name='GaussianProcess Regression', mode='markers'))
     return fig

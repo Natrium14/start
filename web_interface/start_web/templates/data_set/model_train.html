@@ -62,6 +62,7 @@
                 <select multiple class="form-control" id="methodSelect2" name="methodSelect">
                   <option value="GaussianProcessRegressor" onclick="choose_method('GaussianProcessRegressor')">GaussianProcessRegressor</option>
                   <option value="RandomForestRegressor" onclick="choose_method('RandomForestRegressor')">RandomForestRegressor</option>
+                  <option value="LinearRegression" onclick="choose_method('LinearRegression')">LinearRegression</option>
                 </select>
               </div>
 
@@ -222,7 +223,16 @@
                         Время обучения: {{ time_to_train }}
                     </p>
                     <hr>
-                    <a href="{% url 'vis_model' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
+
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Визуализация результата
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{% url 'vis_model' %}" target="_blank">Matplotlib</a>
+                        <a class="dropdown-item" href="{% url 'vis_model_plotly' %}" target="_blank">Plotly</a>
+                      </div>
+                    </div>
 
                     {% if "DBSCAN" in model_description %}
                         <a href="{% url 'get_anomalies' %}" target="_blank" class="btn btn-danger">Список аномалий</a>
@@ -299,6 +309,9 @@
             $("#rforest_params").show();
         }
         if (data == "GaussianProcessRegressor"){
+            $("#column_train").show();
+        }
+        if (data == "LinearRegression"){
             $("#column_train").show();
         }
     }

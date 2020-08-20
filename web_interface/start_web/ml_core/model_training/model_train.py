@@ -67,6 +67,16 @@ def model_train(model, data, params):
         metrics.append({"explained_variance_score": exp_var_score})
 
         return model, metrics
+
+    if type(model).__name__ == "LinearRegression":
+        columns = params["model_columns"]
+        column_train = str(params["column_train"])
+
+        X = data.loc[:, columns].values
+        y = data.loc[:, column_train].values
+
+        model.fit(X, y)
+        return model, metrics
     else:
         scaler = StandardScaler()
         columns = list(params["model_columns"])

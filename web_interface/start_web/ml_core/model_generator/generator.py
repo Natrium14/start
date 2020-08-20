@@ -8,6 +8,7 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.linear_model import LinearRegression
 
 from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C
 
@@ -100,12 +101,13 @@ def generate_model(method, params):
         except Exception:
             return None
 
-    if method == "GradientBoostingClassifier":
+    if method == "LinearRegression":
         try:
-            model = GradientBoostingClassifier(n_estimators=100, max_depth=5, random_state=1)
+            model = LinearRegression(n_jobs=2)
             return model
         except Exception:
             return None
+
     if method == "AdaBoostClassifier":
         try:
             model = AdaBoostClassifier(n_estimators=100, max_depth=5, random_state=1)

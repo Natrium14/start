@@ -18,6 +18,7 @@ import visualization_core.vis_kmeans as v_kmeans
 import visualization_core.vis_aggcluster as v_aggcluster
 import visualization_core.vis_RFregressor as v_RFregressor
 import visualization_core.vis_GPregressor as v_GPregressor
+import visualization_core.vis_LinRegression as v_Lregressor
 
 
 def data_plot(data, params):
@@ -149,6 +150,27 @@ def model_plot(model, data, model_columns, train_column):
         return v_RFregressor.get_plot(model, data, model_columns, train_column)
     if model_name == "GaussianProcessRegressor":
         return v_GPregressor.get_plot(model, data, model_columns, train_column)
+    if model_name == "LinearRegression":
+        return v_Lregressor.get_plot(model, data, model_columns, train_column)
+    return None
+
+
+def model_plotly(model, data, model_columns, train_column):
+    model_name = type(model).__name__
+    if model_name == "DBSCAN":
+        return v_dbscan.get_plot(model, data[model_columns])
+    if model_name == "KMeans":
+        return v_kmeans.get_plot(model, data[model_columns])
+    if model_name == "Birch":
+        return v_kmeans.get_plot(model, data[model_columns])
+    if model_name == "AgglomerativeClustering":
+        return v_aggcluster.get_plot(model, data[model_columns])
+    if model_name == "RandomForestRegressor":
+        return v_RFregressor.get_plot_2(model, data, model_columns, train_column)
+    if model_name == "GaussianProcessRegressor":
+        return v_GPregressor.get_plot_2(model, data, model_columns, train_column)
+    if model_name == "LinearRegression":
+        return v_Lregressor.get_plot_2(model, data, model_columns, train_column)
     return None
 
 
@@ -159,6 +181,7 @@ def move_mean(y_pred_plot,moving_average_window,min_periods):
     moving_averages = windows.mean()
     moving_averages_list = moving_averages.tolist()
     return moving_averages_list
+
 
 def get_plot_normal_values(data, draw, plot_size):
     data1 = data[300:700]
@@ -178,7 +201,5 @@ def get_plot_normal_values(data, draw, plot_size):
     y2 = move_mean(data1[y_label] * 0.95, moving_average_window, 1)
     plt.plot(data2[x_label], y1, draw, lw=1.5, color='tab:red', alpha=0.75)
     plt.plot(data2[x_label], y2, draw, lw=1.5, color='tab:red', alpha=0.75)
-
-    #print(max(data2[y_label])/max(data1[y_label]))
 
     return fig

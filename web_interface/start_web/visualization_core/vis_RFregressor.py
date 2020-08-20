@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
 
 
 # used for moving average (instead bottleneck)
@@ -41,4 +43,15 @@ def get_plot(model, data, model_columns, train_column):
         ax2.legend(loc='best')
         ax2.set_title("with smoothing")
 
+    return fig
+
+
+def get_plot_2(model, data, model_columns, train_column):
+    X = data.loc[:, model_columns].values
+
+    y_pred = model.predict(X)
+    time = data.iloc[:, 0].values.reshape(-1)
+
+    fig = px.scatter(data, x=data.columns[0], y=train_column, opacity=0.3)
+    fig.add_traces(go.Scatter(x=time, y=y_pred, name='RandomForest Regression', mode='markers'))
     return fig

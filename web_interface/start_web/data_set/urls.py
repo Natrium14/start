@@ -18,4 +18,5 @@ urlpatterns = [
     path('save_model', views.save_model, name="save_model"),
     path('normal_values', views.normal_values, name="normal_values"),
     path('vis_normal_values', views.vis_normal_values, name="vis_normal_values"),
+    path('vis_model_plotly', views.vis_model_plotly, name="vis_model_plotly"),
 ]
