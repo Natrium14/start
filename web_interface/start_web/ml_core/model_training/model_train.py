@@ -76,6 +76,23 @@ def model_train(model, data, params):
         y = data.loc[:, column_train].values
 
         model.fit(X, y)
+        y_pred = model.predict(X)
+
+        RFR_MSE = mean_squared_error(y, y_pred)
+        RFR_MAE = mean_absolute_error(y, y_pred)
+        MAX_ERROR = max_error(y, y_pred)
+        exp_var_score = explained_variance_score(y, y_pred)
+
+        print("MAX ERROR: " + str(MAX_ERROR))
+        print("explained_variance_score: " + str(exp_var_score))
+        print("MSE: {0}".format(RFR_MSE))
+        print("MAE: {0}".format(RFR_MAE))
+
+        metrics.append({"MSE": RFR_MSE})
+        metrics.append({"MAE": RFR_MAE})
+        metrics.append({"MAX_ERROR": MAX_ERROR})
+        metrics.append({"explained_variance_score": exp_var_score})
+
         return model, metrics
     else:
         scaler = StandardScaler()

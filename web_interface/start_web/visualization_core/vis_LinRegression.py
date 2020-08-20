@@ -9,6 +9,6 @@ def get_plot_2(model, data, model_columns, train_column):
     y_range = model.predict(X)
 
     fig = px.scatter(data, x=data.columns[0], y=train_column, opacity=0.5)
-    fig.add_traces(go.Scatter(x=date, y=y_range, name='Regression Fit'))
+    fig.add_traces(go.Scatter(x=date, y=y_range, name=train_column + " prediction"))
 
     return fig

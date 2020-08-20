@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+import plotly.express as px
+import plotly.graph_objects as go
 
 
 def get_plot(model, data):
@@ -35,4 +37,32 @@ def get_plot(model, data):
 
     plt.title('Estimated number of clusters: %d' % n_clusters_)
     plt.legend()
+    return fig
+
+
+def get_plot_2(model, data, model_columns):
+    core_samples_mask = np.zeros_like(model.labels_, dtype=bool)
+    core_samples_mask[model.core_sample_indices_] = True
+    labels = model.labels_
+
+    n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+    unique_labels = set(labels)
+
+    fig = go.Figure()
+    data = data[model_columns]
+
+    for k in unique_labels:
+
+        class_member_mask = (labels == k)
+
+        xy = data[class_member_mask & core_samples_mask]
+        X = xy.iloc[:, 0]
+        Y = xy.iloc[:, 1]
+        fig.add_traces(go.Scatter(x=X, y=Y, mode='markers'))
+
+        xy = data[class_member_mask & ~core_samples_mask]
+        X = xy.iloc[:, 0]
+        Y = xy.iloc[:, 1]
+        fig.add_traces(go.Scatter(x=X, y=Y, mode='markers'))
+
     return fig

@@ -61,5 +61,5 @@ def get_plot_2(model, data, model_columns, train_column):
     y_pred = model.predict(X)
 
     fig = px.scatter(data, x=data.columns[0], y=train_column, opacity=0.3)
-    fig.add_traces(go.Scatter(x=time, y=y_pred, name='GaussianProcess Regression', mode='markers'))
+    fig.add_traces(go.Scatter(x=time, y=y_pred, name=train_column + " prediction", mode='markers'))
     return fig

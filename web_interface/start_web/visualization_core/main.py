@@ -21,6 +21,7 @@ import visualization_core.vis_GPregressor as v_GPregressor
 import visualization_core.vis_LinRegression as v_Lregressor
 
 
+# Входная точка для визуализации данных
 def data_plot(data, params):
     type = params["type"]
     if type == "plot":
@@ -34,6 +35,7 @@ def data_plot(data, params):
     return None
 
 
+# Визуализация простого графика
 def get_plot(data, draw, plot_size):
     width, height = get_plot_size(plot_size)
     fig, ax = plt.subplots(figsize=(width, height))
@@ -65,6 +67,7 @@ def get_plot(data, draw, plot_size):
     return fig
 
 
+# Построение гистограммы
 def get_hist(data, bins, plot_size):
     width, height = get_plot_size(plot_size)
     fig, ax = plt.subplots(figsize=(width, height))
@@ -78,6 +81,7 @@ def get_hist(data, bins, plot_size):
         return fig
 
 
+# Построение диаграммы корреляции
 def get_heatmap(data, plot_size):
     width, height = get_plot_size(plot_size)
     fig, ax = plt.subplots(figsize=(width, height))
@@ -94,6 +98,7 @@ def get_heatmap(data, plot_size):
         return fig
 
 
+# Построение диаграммы доверительного интервала
 def get_fill_between(data, plot_size):
     width, height = get_plot_size(plot_size)
     fig, ax = plt.subplots(figsize=(width, height))
@@ -121,6 +126,7 @@ def get_fill_between(data, plot_size):
         return fig
 
 
+# Функция получения размеров полотна графика по ключевому слову
 def get_plot_size(plot_size):
     width = 22
     height = 16
@@ -136,6 +142,7 @@ def get_plot_size(plot_size):
     return width, height
 
 
+# Входная точка для построения графика визуализации результатов обучения модели (matplotlib)
 def model_plot(model, data, model_columns, train_column):
     model_name = type(model).__name__
     if model_name == "DBSCAN":
@@ -151,14 +158,15 @@ def model_plot(model, data, model_columns, train_column):
     if model_name == "GaussianProcessRegressor":
         return v_GPregressor.get_plot(model, data, model_columns, train_column)
     if model_name == "LinearRegression":
-        return v_Lregressor.get_plot(model, data, model_columns, train_column)
+        return v_Lregressor.get_plot_2(model, data, model_columns, train_column)
     return None
 
 
+# Входная точка для построения графика визуализации результатов обучения модели (plotly)
 def model_plotly(model, data, model_columns, train_column):
     model_name = type(model).__name__
     if model_name == "DBSCAN":
-        return v_dbscan.get_plot(model, data[model_columns])
+        return v_dbscan.get_plot_2(model, data, model_columns)
     if model_name == "KMeans":
         return v_kmeans.get_plot(model, data[model_columns])
     if model_name == "Birch":
