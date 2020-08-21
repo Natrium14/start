@@ -44,6 +44,12 @@ def data_plotly(data, params):
         return get_hist_2(data, params["bins"])
     if type == "heatmap":
         return get_heatmap_2(data)
+    if type == "boxplot":
+        return get_boxplot_2(data)
+    if type == "3D":
+        return get_chart_3d(data)
+    if type == "3Dsurface":
+        return get_chart_3dsurface(data)
     if type == "fill_between":
         return get_fill_between(data, params["plot_size"])
     return None
@@ -97,14 +103,11 @@ def get_plot_2(data, draw):
 def get_hist(data, bins, plot_size):
     width, height = get_plot_size(plot_size)
     fig, ax = plt.subplots(figsize=(width, height))
-    try:
-        plt.grid(True)
-        x_label = data.columns.values[0]
-        ax.set_xlabel(x_label)
-        plt.hist(data[x_label], bins=bins, facecolor='blue', alpha=0.75)
-        return fig
-    except:
-        return fig
+    plt.grid(True)
+    x_label = data.columns.values[0]
+    ax.set_xlabel(x_label)
+    plt.hist(data[x_label], bins=bins, facecolor='blue', alpha=0.75)
+    return fig
 
 
 # Построение гистограммы
@@ -118,22 +121,45 @@ def get_hist_2(data, bins):
 def get_heatmap(data, plot_size):
     width, height = get_plot_size(plot_size)
     fig, ax = plt.subplots(figsize=(width, height))
-    try:
-        sns_plot = sns.heatmap(data.corr(), xticklabels=data.corr().columns,
-                               yticklabels=data.corr().columns, cmap='RdYlGn', center=0, annot=True, square=True,
-                               linewidths=.5, ax=ax, robust=True)
-        plt.title('Корреляция', fontsize=20)
-        plt.xticks(fontsize=13)
-        plt.yticks(fontsize=13)
-        fig = sns_plot.get_figure()
-        return fig
-    except:
-        return fig
+    sns_plot = sns.heatmap(data.corr(), xticklabels=data.corr().columns,
+                           yticklabels=data.corr().columns, cmap='RdYlGn', center=0, annot=True, square=True,
+                           linewidths=.5, ax=ax, robust=True)
+    plt.title('Корреляция', fontsize=20)
+    plt.xticks(fontsize=13)
+    plt.yticks(fontsize=13)
+    fig = sns_plot.get_figure()
+    return fig
 
 
 # Построение диаграммы корреляции
 def get_heatmap_2(data):
     fig = px.imshow(data.values)
+    return fig
+
+
+# Построение диаграммы с усами
+def get_boxplot_2(data):
+    fig = px.box(data, y=data.columns[0], points="all")
+    return fig
+
+
+def get_chart_3d(data):
+    fig = go.Figure(data=[go.Mesh3d(x=data.iloc[:,0],
+                                    y=data.iloc[:,1],
+                                    z=data.iloc[:,2],
+                                    opacity=0.5,
+                                    color='rgba(244,22,100,0.6)'
+                                    )])
+    fig.update_layout(scene = dict(
+                    xaxis_title=data.columns[0],
+                    yaxis_title=data.columns[1],
+                    zaxis_title=data.columns[2]))
+    return fig
+
+
+def get_chart_3dsurface(data):
+    fig = go.Figure(data=[go.Surface(z=data.values)])
+    fig.update_layout(title=data.columns[0])
     return fig
 
 

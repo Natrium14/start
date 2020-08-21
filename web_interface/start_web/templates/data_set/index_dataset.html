@@ -216,7 +216,10 @@
                               <option value="plot">plot</option>
                               <option value="hist">hist</option>
                               <option value="heatmap">heatmap</option>
+                              <option value="boxplot">boxplot</option>
                               <option value="fill_between">fill_between</option>
+                              <option value="3D">3D</option>
+                              <option value="3Dsurface">3Dsurface</option>
                             </select>
                          </div>
                          <div class="form-group" id="plotOptions_2">
@@ -254,48 +257,48 @@
 <script>
 
     $(function(){
-        $("#histOptions").hide();
-        $("#histOptions_2").hide();
+        hide_options();
+        $("#plotOptions").show();
+        $("#plotOptions_2").show();
         }
     )
 
+    function hide_options(){
+        $("#histOptions").hide();
+        $("#histOptions_2").hide();
+        $("#plotOptions").hide();
+        $("#plotOptions_2").hide();
+    }
+
     function changeFunc(value) {
         value = value.toString();
+        hide_options();
         if (value == "plot") {
-            $("#histOptions").hide();
             $("#plotOptions").show();
         }
         if (value == "hist") {
             $("#histOptions").show();
-            $("#plotOptions").hide();
         }
         if (value == "heatmap") {
-            $("#histOptions").hide();
-            $("#plotOptions").hide();
         }
         if (value == "fill_between") {
-            $("#histOptions").hide();
-            $("#plotOptions").hide();
         }
    }
 
    function changeFunc_2(value) {
         value = value.toString();
+        hide_options();
         if (value == "plot") {
-            $("#histOptions_2").hide();
             $("#plotOptions_2").show();
         }
         if (value == "hist") {
             $("#histOptions_2").show();
-            $("#plotOptions_2").hide();
         }
         if (value == "heatmap") {
-            $("#histOptions_2").hide();
-            $("#plotOptions_2").hide();
         }
         if (value == "fill_between") {
-            $("#histOptions_2").hide();
-            $("#plotOptions_2").hide();
+        }
+        if (value == "boxplot") {
         }
    }
 
