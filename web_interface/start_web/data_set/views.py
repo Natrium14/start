@@ -363,6 +363,27 @@ def make_plot(request):
         return render(request, "error/error404.html", error_context)
 
 
+# Метод получения графика зависимости одного атрибута от другого
+def make_plotly(request):
+    global data
+
+    params = {}
+    params["type"] = str(request.POST['type'])
+    params["draw"] = str(request.POST['draw'])
+    params["bins"] = int(request.POST['bins'])
+
+    columns = request.POST.getlist('checkbox_columns')
+    vis_data = data.get_data()[columns]
+
+    fig = vis_core.data_plotly(vis_data, params)
+
+    div = opy.plot(fig, auto_open=False, output_type='div')
+    context = {
+        'graph': div
+    }
+    return render(request, "data_set/plotly_test.html", context)
+
+
 # Метод обучения модели по выборке
 def model_train(request):
     global data

@@ -12,6 +12,7 @@ urlpatterns = [
     path('model_train', views.model_train, name='model_train'),
     path('model_testing', views.model_test_page, name='model_testing'),
     path('make_plot', views.make_plot, name='make_plot'),
+    path('make_plotly', views.make_plotly, name='make_plotly'),
     path('vis_model', views.vis_model, name='vis_model'),
     path('get_anomalies', views.get_anomalies, name="get_anomalies"),
     path('upload_data_db', views.upload_data_db, name="upload_data_db"),

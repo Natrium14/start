@@ -35,6 +35,20 @@ def data_plot(data, params):
     return None
 
 
+# Входная точка для визуализации данных
+def data_plotly(data, params):
+    type = params["type"]
+    if type == "plot":
+        return get_plot_2(data, params["draw"])
+    if type == "hist":
+        return get_hist_2(data, params["bins"])
+    if type == "heatmap":
+        return get_heatmap_2(data)
+    if type == "fill_between":
+        return get_fill_between(data, params["plot_size"])
+    return None
+
+
 # Визуализация простого графика
 def get_plot(data, draw, plot_size):
     width, height = get_plot_size(plot_size)
@@ -67,6 +81,18 @@ def get_plot(data, draw, plot_size):
     return fig
 
 
+# Визуализация простого графика
+def get_plot_2(data, draw):
+    fig = go.Figure()
+    if len(data.columns) < 2:
+        return fig
+    date_column = data.columns[0]
+    for column in data.columns[1:]:
+        fig.add_traces(go.Scatter(x=data[date_column].values, y=data[column].values, name=column, mode=draw))
+
+    return fig
+
+
 # Построение гистограммы
 def get_hist(data, bins, plot_size):
     width, height = get_plot_size(plot_size)
@@ -79,6 +105,13 @@ def get_hist(data, bins, plot_size):
         return fig
     except:
         return fig
+
+
+# Построение гистограммы
+def get_hist_2(data, bins):
+    x_label = data.columns.values[0]
+    fig = px.histogram(data, x=x_label, nbins=bins)
+    return fig
 
 
 # Построение диаграммы корреляции
@@ -96,6 +129,12 @@ def get_heatmap(data, plot_size):
         return fig
     except:
         return fig
+
+
+# Построение диаграммы корреляции
+def get_heatmap_2(data):
+    fig = px.imshow(data.values)
+    return fig
 
 
 # Построение диаграммы доверительного интервала

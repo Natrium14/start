@@ -117,69 +117,128 @@
 {% if dataset_count %}
 <div class="form-group mb-2">
 
-    <form method="post" action="make_plot" target="_blank">
-        {% csrf_token %}
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="Matplotlib-tab" data-toggle="tab" href="#Matplotlib" role="tab" aria-controls="Matplotlib" aria-selected="true">Matplotlib</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="Plotly-tab" data-toggle="tab" href="#Plotly" role="tab" aria-controls="Plotly" aria-selected="false">Plotly</a>
+      </li>
+    </ul>
 
-        <div class="row">
-    <div class="col-sm">
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="Matplotlib" role="tabpanel" aria-labelledby="Matplotlib-tab">
+          <form method="post" action="make_plot" target="_blank">
+                {% csrf_token %}
 
-       <p><b>Описание выборки: </b></p>
-       <p>Количество записей: {{ dataset_count }}</p>
-        <p>
-        {% for column in dataset_description %}
-            <input type="checkbox" name="checkbox_columns" value="{{ column }}">
-            {{ column }}
-            <br>
-        {% endfor %}
-        </p>
-</div>
-        <div class="col-sm bg-light text-dark">
-         <div class="form-group">
-             <h6>Визуализация данных:</h6>
-            <label for="number_ot">От:</label>
-             <input type="number" name="number_ot" id="number_ot" min="0" value="0">
-             <label for="number_do">До:</label>
-             <input type="number" name="number_do" id="number_do" min="1" value="{{ dataset_count }}">
+                <div class="row">
+            <div class="col-sm">
 
-             <div class="form-group">
-                <label for="typeSelect">Тип диаграммы</label>
-                <select class="form-control" id="typeSelect" name="type" onchange="changeFunc(value);">
-                  <option value="plot">plot</option>
-                  <option value="hist">hist</option>
-                  <option value="heatmap">heatmap</option>
-                  <option value="fill_between">fill_between</option>
-                </select>
-             </div>
+               <p><b>Описание выборки: </b></p>
+               <p>Количество записей: {{ dataset_count }}</p>
+                <p>
+                {% for column in dataset_description %}
+                    <input type="checkbox" name="checkbox_columns" value="{{ column }}">
+                    {{ column }}
+                    <br>
+                {% endfor %}
+                </p>
+            </div>
+                <div class="col-sm bg-light text-dark">
+                 <div class="form-group">
+                     <h6>Визуализация данных:</h6>
+                    <label for="number_ot">От:</label>
+                     <input type="number" name="number_ot" id="number_ot" min="0" value="0">
+                     <label for="number_do">До:</label>
+                     <input type="number" name="number_do" id="number_do" min="1" value="{{ dataset_count }}">
 
-             <div class="form-group" id="plotOptions">
-                <label for="typeSelect">Тип графика</label>
-                <select class="form-control" id="drawSelect" name="draw">
-                  <option value="">линия</option>
-                  <option value="o">точки</option>
-                </select>
-             </div>
+                     <div class="form-group">
+                        <label for="typeSelect">Тип диаграммы</label>
+                        <select class="form-control" id="typeSelect" name="type" onchange="changeFunc(value);">
+                          <option value="plot">plot</option>
+                          <option value="hist">hist</option>
+                          <option value="heatmap">heatmap</option>
+                          <option value="fill_between">fill_between</option>
+                        </select>
+                     </div>
 
-             <div class="form-group" id="histOptions">
-                <label for="typeSelect">Кол-во столбцов</label>
-                 <input type="number" id="histSelect" min="2" value="2" name="bins">
-             </div>
+                     <div class="form-group" id="plotOptions">
+                        <label for="typeSelect">Тип графика</label>
+                        <select class="form-control" id="drawSelect" name="draw">
+                          <option value="">линия</option>
+                          <option value="o">точки</option>
+                        </select>
+                     </div>
 
-         </div>
-            <input hidden value="medium" name="plot_size" id="plot_size">
+                     <div class="form-group" id="histOptions">
+                        <label for="typeSelect">Кол-во столбцов</label>
+                         <input type="number" id="histSelect" min="2" value="2" name="bins">
+                     </div>
 
-            <div class="btn-group">
-              <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Построить график
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="submit" onmouseover="change_size('small')">Маленький</button>
-                <button class="dropdown-item" type="submit" onmouseover="change_size('medium')">Средний</button>
-                <button class="dropdown-item" type="submit" onmouseover="change_size('large')">Большой</button>
+                 </div>
+                    <input hidden value="medium" name="plot_size" id="plot_size">
+
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Построить график
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <button class="dropdown-item" type="submit" onmouseover="change_size('small')">Маленький</button>
+                        <button class="dropdown-item" type="submit" onmouseover="change_size('medium')">Средний</button>
+                        <button class="dropdown-item" type="submit" onmouseover="change_size('large')">Большой</button>
+                      </div>
+                    </div>
+                    </div>
+               </div>
+            </form>
+      </div>
+      <div class="tab-pane fade" id="Plotly" role="tabpanel" aria-labelledby="Plotly-tab">
+          <form method="post" action="make_plotly" target="_blank">
+               {% csrf_token %}
+
+              <div class="row">
+                  <div class="col-sm">
+                      <p><b>Описание выборки: </b></p>
+                      <p>Количество записей: {{ dataset_count }}</p>
+                      <p>
+                        {% for column in dataset_description %}
+                            <input type="checkbox" name="checkbox_columns" value="{{ column }}">
+                            {{ column }}
+                            <br>
+                        {% endfor %}
+                      </p>
+                  </div>
+                  <div class="col-sm bg-light text-dark">
+                      <div class="form-group">
+                          <div class="form-group">
+                            <label for="typeSelect">Тип диаграммы</label>
+                            <select class="form-control" id="typeSelect_2" name="type" onchange="changeFunc_2(value);">
+                              <option value="plot">plot</option>
+                              <option value="hist">hist</option>
+                              <option value="heatmap">heatmap</option>
+                              <option value="fill_between">fill_between</option>
+                            </select>
+                         </div>
+                         <div class="form-group" id="plotOptions_2">
+                            <label for="drawSelect_2">Тип графика</label>
+                            <select class="form-control" id="drawSelect_2" name="draw">
+                              <option value="lines">линия</option>
+                              <option value="markers">точки</option>
+                            </select>
+                         </div>
+                         <div class="form-group" id="histOptions_2">
+                            <label for="histSelect_2">Кол-во столбцов</label>
+                             <input type="number" id="histSelect_2" min="2" value="2" name="bins">
+                         </div>
+                         <button class="btn btn-secondary" type="submit">Построить график</button>
+                      </div>
+                  </div>
               </div>
-            </div>
-            </div>
-       </div>
-    </form>
+          </form>
+      </div>
+    </div>
+
+
 
     <hr>
     <a href="{% url 'show_dataset' %}" target="_blank" class="btn btn-primary">Показать выборку данных</a>
@@ -196,6 +255,7 @@
 
     $(function(){
         $("#histOptions").hide();
+        $("#histOptions_2").hide();
         }
     )
 
@@ -216,6 +276,26 @@
         if (value == "fill_between") {
             $("#histOptions").hide();
             $("#plotOptions").hide();
+        }
+   }
+
+   function changeFunc_2(value) {
+        value = value.toString();
+        if (value == "plot") {
+            $("#histOptions_2").hide();
+            $("#plotOptions_2").show();
+        }
+        if (value == "hist") {
+            $("#histOptions_2").show();
+            $("#plotOptions_2").hide();
+        }
+        if (value == "heatmap") {
+            $("#histOptions_2").hide();
+            $("#plotOptions_2").hide();
+        }
+        if (value == "fill_between") {
+            $("#histOptions_2").hide();
+            $("#plotOptions_2").hide();
         }
    }
 
