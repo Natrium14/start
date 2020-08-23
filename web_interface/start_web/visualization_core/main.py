@@ -35,7 +35,7 @@ def data_plot(data, params):
     return None
 
 
-# Входная точка для визуализации данных
+# Входная точка для визуализации данных plotly
 def data_plotly(data, params):
     type = params["type"]
     if type == "plot":
@@ -87,7 +87,7 @@ def get_plot(data, draw, plot_size):
     return fig
 
 
-# Визуализация простого графика
+# Визуализация простого графика plotly
 def get_plot_2(data, draw):
     fig = go.Figure()
     if len(data.columns) < 2:
@@ -110,7 +110,7 @@ def get_hist(data, bins, plot_size):
     return fig
 
 
-# Построение гистограммы
+# Построение гистограммы plotly
 def get_hist_2(data, bins):
     x_label = data.columns.values[0]
     fig = px.histogram(data, x=x_label, nbins=bins)
@@ -131,18 +131,19 @@ def get_heatmap(data, plot_size):
     return fig
 
 
-# Построение диаграммы корреляции
+# Построение диаграммы корреляции plotly
 def get_heatmap_2(data):
     fig = px.imshow(data.values)
     return fig
 
 
-# Построение диаграммы с усами
+# Построение диаграммы с усами plotly
 def get_boxplot_2(data):
     fig = px.box(data, y=data.columns[0], points="all")
     return fig
 
 
+# Построение трехмерной диаграммы plotly
 def get_chart_3d(data):
     fig = go.Figure(data=[go.Mesh3d(x=data.iloc[:,0],
                                     y=data.iloc[:,1],
@@ -157,6 +158,7 @@ def get_chart_3d(data):
     return fig
 
 
+# Построение трехмерной плоскости plotly
 def get_chart_3dsurface(data):
     fig = go.Figure(data=[go.Surface(z=data.values)])
     fig.update_layout(title=data.columns[0])
@@ -233,11 +235,11 @@ def model_plotly(model, data, model_columns, train_column):
     if model_name == "DBSCAN":
         return v_dbscan.get_plot_2(model, data, model_columns)
     if model_name == "KMeans":
-        return v_kmeans.get_plot(model, data[model_columns])
+        return v_kmeans.get_plot_2(model, data[model_columns])
     if model_name == "Birch":
-        return v_kmeans.get_plot(model, data[model_columns])
+        return v_kmeans.get_plot_2(model, data[model_columns])
     if model_name == "AgglomerativeClustering":
-        return v_aggcluster.get_plot(model, data[model_columns])
+        return v_aggcluster.get_plot_2(model, data[model_columns])
     if model_name == "RandomForestRegressor":
         return v_RFregressor.get_plot_2(model, data, model_columns, train_column)
     if model_name == "GaussianProcessRegressor":
