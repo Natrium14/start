@@ -96,7 +96,7 @@ def generate_model(method, params):
     if method == "GaussianProcessRegressor":
         try:
             kernel = RBF() + C(constant_value=1)
-            model = GaussianProcessRegressor(kernel=kernel, n_restarts_optimizer=1)
+            model = GaussianProcessRegressor(alpha=1e-12, kernel=None, n_restarts_optimizer=1)
             return model
         except Exception:
             return None

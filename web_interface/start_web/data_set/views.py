@@ -264,6 +264,44 @@ def model_training(request):
         return render(request, "error/error404.html", error_context)
 
 
+def model_selection(request):
+    global data
+
+    context = {}
+
+    #try:
+
+    if data.get_data() is not None:
+        context['dataset_count'] = len(data.get_data()[[data.get_data().columns[0]]])
+        context['dataset_description'] = data.get_data().columns
+
+    if data.get_model() is not None:
+        context['model_description'] = str(data.get_model())
+        context['metrics'] = data.get_metrics()
+
+    # получение сохраненных обучающих выборок
+    context['connection'] = data.get_db_client()
+    db = data.get_db_client()['start']
+    collection = db['sample']
+    samples = list(collection.find())
+    sample_view_array = []
+    print(samples)
+    for s in samples:
+        sample_view_dict = {}
+        sample_view_dict["id"] = s["_id"]
+        sample_view_dict["count"] = len(s["data"])
+        sample_view_array.append(sample_view_dict)
+    context["samples"] = sample_view_array
+
+    return render(request, "data_set/model_selection.html", context)
+    # except Exception:
+    #     error_context = {
+    #         'error': str(sys.exc_info()[0])
+    #     }
+    #     print("Unexpected error:", sys.exc_info()[0])
+    #     return render(request, "error/error404.html", error_context)
+
+
 # Вывод полученной выборки данных в отдельный html файл
 def show_dataset(request):
     global data

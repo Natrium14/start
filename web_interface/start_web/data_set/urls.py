@@ -11,6 +11,7 @@ urlpatterns = [
     path('show_dataset', views.show_dataset, name='show_dataset'),
     path('model_train', views.model_train, name='model_train'),
     path('model_testing', views.model_test_page, name='model_testing'),
+    path('model_selection', views.model_selection, name='model_selection'),
     path('make_plot', views.make_plot, name='make_plot'),
     path('make_plotly', views.make_plotly, name='make_plotly'),
     path('vis_model', views.vis_model, name='vis_model'),

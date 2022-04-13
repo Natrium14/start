@@ -60,6 +60,23 @@ def get_plot_2(model, data, model_columns, train_column):
     time = data.iloc[:, 0].values.reshape(-1)
     y_pred = model.predict(X)
 
-    fig = px.scatter(data, x=data.columns[0], y=train_column, opacity=0.3)
-    fig.add_traces(go.Scatter(x=time, y=y_pred, name=train_column + " prediction", mode='markers'))
+    #fig = px.scatter(data, x=data.columns[0], y=train_column, opacity=0.3)
+    #fig.add_traces(go.Scatter(x=time, y=y_pred, name=train_column + " prediction", mode='markers'))
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+        x=time, y=y_pred,
+        name=train_column + " prediction",
+        mode='markers',
+        marker_line_width=1,
+        marker_color='rgba(140, 140, 140, .8)'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=data.iloc[:, 0].values.reshape(-1), y=data.loc[:, train_column].values.reshape(-1),
+        mode='lines+markers',
+        marker_color='rgba(0, 0, 0, 1)'
+    ))
+
     return fig

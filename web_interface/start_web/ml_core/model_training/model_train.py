@@ -43,7 +43,7 @@ def model_train(model, data, params):
         columns = params["model_columns"]
         column_train = str(params["column_train"])
 
-        data = data[:3000] # костыль
+        data = data[:] # костыль
         X = data.loc[:, columns].values
         X = np.atleast_2d(X)
         x = X

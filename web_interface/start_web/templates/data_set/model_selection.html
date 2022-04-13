@@ -1,0 +1,139 @@
+{% extends "data_set/index.html" %}
+
+{% block data_set_content %}
+
+<div style="margin-top: 2px">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index_dataset' %}">Загрузка данных</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'model_training' %}">Обучение модели</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'model_selection' %}">Подбор модели</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'model_testing' %}">Тестирование модели</a>
+      </li>
+    </ul>
+</div>
+
+
+<table class="table table-sm">
+    <tr>
+
+        <td style="width: 40%">
+
+            <div class="alert alert-success" role="alert">
+                Загруженная (обучающая) выборка
+            </div>
+
+            <div>
+                <p>Количество записей: {{ dataset_count }}</p>
+                <p>
+                    {% for column in dataset_description %}
+                        <ul>
+                            <li>{{ column }}</li>
+                        </ul>
+                    {% endfor %}
+                </p>
+            </div>
+        </td>
+
+            <td>
+                <div class="alert alert-primary" role="alert">
+                    Оценка сходства выборок
+                </div>
+
+                <p>
+                    Эвклидово расстояние:
+                    000
+                </p>
+                <p>
+                    DWT:
+                    000
+                </p>
+
+                <a href="" target="_blank" class="btn btn-danger">Оценка сходства</a>
+
+            </td>
+
+        <td style="width: 40%">
+            <div class="alert alert-primary" role="alert">
+                    Тестовая выборка
+            </div>
+                <div class="form-group mb-2">
+                <label>Выборки данных</label>
+                <select multiple class="form-control" id="datasetSelect">
+                  {% for sample in samples %}
+                        <option>
+                            <span>{{ sample.id }}: {{ sample.count }} строк</span>
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            {% if model_description is not None %}
+
+                <div class="alert alert-success" role="alert">
+                    <h5 class="alert-heading">Модель:</h5>
+                    <p>
+                        {{ model_description }}
+                    </p>
+                    <hr>
+                    {% if metrics is not None %}
+                        {% for metric in metrics %}
+                            {% for name,value in metric.items %}
+                                <span><strong>{{ name }}</strong> : {{ value }}</span>
+                                <br>
+                            {% endfor %}
+                        {% endfor %}
+                    <hr>
+                    {% endif %}
+                </div>
+             {% endif %}
+        </td>
+
+        <td colspan="2">
+
+            <form>
+
+                <div class="alert alert-primary" role="alert">
+                     Тестирование модели на тестовой выборке
+                </div>
+
+                <a href="" target="_blank" class="btn btn-warning">Тестирование</a>
+
+                <div class="form-group mb-4">
+                <label>Результаты тестирования:</label>
+                <br>
+                Максимальная остаточная ошибка: 26.30761
+                <br>
+                Оценка дисперсии регрессии: 0.7589
+                <br>
+                Среднеквадратичная ошибка: 91.4068
+                <br>
+                Средняя абсолютная ошибка: 5.9808
+                <br>
+                <!--Количество "аномальных" значений: 85-->
+                <hr>
+                <a href="{% url 'vis_model' %}" target="_blank" class="btn btn-primary">Визуализация результата</a>
+            </div>
+
+            </form>
+
+        </td>
+    </tr>
+
+</table>
+
+
+
+{% endblock %}
